@@ -1,0 +1,30 @@
+{
+  "name": "savvywombat/color",
+  "description": "Package for manipulating colors in multiple color spaces.",
+  "type": "library",
+  "homepage": "https://github.com/SavvyWombat/color",
+  "keywords": ["color", "savvywombat", "savvy wombat"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Stuart Jones",
+      "email": "stuart@savvywombat.com.au"
+    }
+  ],
+  "require": {
+    "php": "^7.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "SavvyWombat\\Color\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Tests\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.5"
+  }
+}
