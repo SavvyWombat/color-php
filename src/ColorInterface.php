@@ -12,4 +12,5 @@ interface ColorInterface
     public function alpha(): float;
 
     public function fromString(string $colorSpec): ColorInterface;
+    public function __toString(): string;
 }

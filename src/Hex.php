@@ -39,4 +39,18 @@ class Hex extends AbstractColor implements ColorInterface
 
         return new Hex($matches[1], $matches[2], $matches[3], $matches[4]);
     }
+
+    public function __toString(): string
+    {
+        $red = dechex($this->red);
+        $green = dechex($this->green);
+        $blue = dechex($this->blue);
+
+        if ($this->alpha === 1) {
+            return "#{$red}{$green}{$blue}";
+        }
+
+        $alpha = dechex($this->alpha * 255);
+        return "#{$red}{$green}{$blue}{$alpha}";
+    }
 }

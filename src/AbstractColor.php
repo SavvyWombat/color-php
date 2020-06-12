@@ -30,7 +30,6 @@ abstract class AbstractColor
         while (empty($matches) && $accepted) {
             $pattern = array_pop($accepted);
             preg_match("/^ *{$pattern} *$/i", $colorSpec, $matches);
-            var_dump($pattern, $matches);
         }
         
         return $matches;

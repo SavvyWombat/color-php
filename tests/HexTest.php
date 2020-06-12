@@ -14,7 +14,7 @@ class HexTest extends TestCase
      */
     public function creates_a_hex_color_from_a_hex_string()
     {
-        $hex = Hex::fromString("#123456");
+        $hex = Hex::fromString('#123456');
 
         $this->assertInstanceOf(Hex::class, $hex);
 
@@ -29,7 +29,7 @@ class HexTest extends TestCase
      */
     public function creates_a_hex_color_from_a_three_letter_hex_string()
     {
-        $hex = Hex::fromString("#123");
+        $hex = Hex::fromString('#123');
 
         $this->assertInstanceOf(Hex::class, $hex);
 
@@ -44,7 +44,7 @@ class HexTest extends TestCase
      */
     public function creates_a_hex_color_from_a_hex_string_with_alpha()
     {
-        $hex = Hex::fromString("#12345678");
+        $hex = Hex::fromString('#12345678');
 
         $this->assertInstanceOf(Hex::class, $hex);
 
@@ -52,5 +52,25 @@ class HexTest extends TestCase
         $this->assertEquals(52, $hex->green());
         $this->assertEquals(86, $hex->blue());
         $this->assertEquals(0.47, $hex->alpha());
+    }
+
+    /**
+     * @test
+     */
+    public function castable_to_string()
+    {
+        $hex = Hex::fromString('#ABCDEF');
+
+        $this->assertEquals('#abcdef', (string) $hex);
+    }
+
+    /**
+     * @test
+     */
+    public function castable_to_string_with_alpha_channel()
+    {
+        $hex = Hex::fromString('#ABCDEF12');
+
+        $this->assertEquals('#abcdef12', (string) $hex);
     }
 }
