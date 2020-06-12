@@ -57,4 +57,9 @@ abstract class AbstractColor
     {
         return round($this->alpha, 2);
     }
+
+    public function toRgb(): Rgb
+    {
+        return new Rgb($this->red, $this->green, $this->blue, $this->alpha);
+    }
 }

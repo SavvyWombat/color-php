@@ -42,6 +42,40 @@ class RgbTest extends TestCase
     /**
      * @test
      */
+    public function creates_a_new_rgb_color_from_an_rgb_color()
+    {
+        $rgb = Rgb::fromString('rgb(48,96,192)');
+        $newRgb = Rgb::fromRgb($rgb);
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($newRgb, $rgb);
+
+        $this->assertEquals(48, $newRgb->red());
+        $this->assertEquals(96, $newRgb->green());
+        $this->assertEquals(192, $newRgb->blue());
+        $this->assertEquals(1, $newRgb->alpha());
+    }
+
+    /**
+     * @test
+     */
+    public function creates_a_new_rgb_color_from_an_rgb_color_with_alpha()
+    {
+        $rgb = Rgb::fromString('rgba(48,96,192,0.75)');
+        $newRgb = Rgb::fromRgb($rgb);
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($newRgb, $rgb);
+
+        $this->assertEquals(48, $newRgb->red());
+        $this->assertEquals(96, $newRgb->green());
+        $this->assertEquals(192, $newRgb->blue());
+        $this->assertEquals(0.75, $newRgb->alpha());
+    }
+
+    /**
+     * @test
+     */
     public function castable_to_string()
     {
         $rgb = Rgb::fromString('rgb(32,64,128)');

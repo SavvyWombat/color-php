@@ -23,7 +23,7 @@ class Hex extends AbstractColor implements ColorInterface
         $this->alpha = hexdec($alpha) / 255;
     }
 
-    public function fromString(string $colorSpec): ColorInterface
+    public static function fromString(string $colorSpec): ColorInterface
     {
         $matches = parent::match($colorSpec, self::class);
 
@@ -36,6 +36,16 @@ class Hex extends AbstractColor implements ColorInterface
         }
 
         return new Hex($matches[1], $matches[2], $matches[3], $matches[4]);
+    }
+
+    public static function fromRgb(Rgb $rgb): ColorInterface
+    {
+        return new Hex(
+            str_pad(dechex($rgb->red()), 2, '0', STR_PAD_LEFT),
+            str_pad(dechex($rgb->green()), 2, '0', STR_PAD_LEFT),
+            str_pad(dechex($rgb->blue()), 2, '0', STR_PAD_LEFT),
+            str_pad(dechex($rgb->alpha() * 255), 2, '0', STR_PAD_LEFT)
+        );
     }
 
     public function __toString(): string

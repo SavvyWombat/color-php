@@ -14,7 +14,7 @@ class Rgb extends AbstractColor implements ColorInterface
         $this->alpha = round($alpha, 2);
     }
 
-    public function fromString(string $colorSpec): ColorInterface
+    public static function fromString(string $colorSpec): ColorInterface
     {
         $matches = parent::match($colorSpec, self::class);
 
@@ -26,6 +26,16 @@ class Rgb extends AbstractColor implements ColorInterface
         }
 
         return new Rgb((int) $matches[1], (int) $matches[2], (int) $matches[3], (float) $matches[4]);
+    }
+
+    public static function fromRgb(Rgb $rgb): ColorInterface
+    {
+        return new Rgb(
+            $rgb->red(),
+            $rgb->green(),
+            $rgb->blue(),
+            $rgb->alpha()
+        );
     }
 
     public function __toString(): string

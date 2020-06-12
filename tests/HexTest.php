@@ -6,6 +6,7 @@ namespace SavvyWombat\Color\Test;
 
 use PHPUnit\Framework\TestCase;
 use SavvyWombat\Color\Hex;
+use SavvyWombat\Color\Rgb;
 
 class HexTest extends TestCase
 {
@@ -52,6 +53,38 @@ class HexTest extends TestCase
         $this->assertEquals(52, $hex->green());
         $this->assertEquals(86, $hex->blue());
         $this->assertEquals(0.47, $hex->alpha());
+    }
+
+    /**
+     * @test
+     */
+    public function creates_a_hex_color_from_an_rgb_color()
+    {
+        $rgb = Rgb::fromString('rgb(12,36,108)');
+        $hex = Hex::fromRgb($rgb);
+
+        $this->assertInstanceOf(Hex::class, $hex);
+
+        $this->assertEquals(12, $hex->red());
+        $this->assertEquals(36, $hex->green());
+        $this->assertEquals(108, $hex->blue());
+        $this->assertEquals(1, $hex->alpha());
+    }
+
+    /**
+     * @test
+     */
+    public function creates_a_hex_color_from_an_rgb_color_with_alpha()
+    {
+        $rgb = Rgb::fromString('rgba(12,36,108,0.33)');
+        $hex = Hex::fromRgb($rgb);
+
+        $this->assertInstanceOf(Hex::class, $hex);
+
+        $this->assertEquals(12, $hex->red());
+        $this->assertEquals(36, $hex->green());
+        $this->assertEquals(108, $hex->blue());
+        $this->assertEquals(0.33, $hex->alpha());
     }
 
     /**
