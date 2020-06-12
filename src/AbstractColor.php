@@ -15,6 +15,9 @@ abstract class AbstractColor
         '#([0-9a-f])([0-9a-f])([0-9a-f])' => Hex::class,
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
+
+        'rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)' => Rgb::class,
+        'rgba\((\d{1,3}),(\d{1,3}),(\d{1,3}),([0-1](.\d{1,2})?)\)' => Rgb::class,
     ];
 
     final protected static function match(string $colorSpec, string $filter): ?array

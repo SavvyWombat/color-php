@@ -21,7 +21,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "SavvyWombat\\Color\\Tests\\": "tests/"
+      "SavvyWombat\\Color\\Test\\": "tests/"
     }
   },
   "require-dev": {
