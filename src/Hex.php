@@ -6,7 +6,8 @@ namespace SavvyWombat\Color;
 
 class Hex extends AbstractColor implements ColorInterface
 {
-    public function __construct(string $red, string $green, string $blue, string $alpha = 'ff') {
+    public function __construct(string $red, string $green, string $blue, string $alpha = 'ff')
+    {
         if (strlen($red) === 1) {
             $red .= $red;
         }

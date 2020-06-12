@@ -11,6 +11,12 @@ abstract class AbstractColor
     protected $blue;
     protected $alpha;
 
+    private static $supportedColors = [
+        Hex::class,
+        Hsl::class,
+        Rgb::class,
+    ];
+
     private static $acceptable = [
         '#([0-9a-f])([0-9a-f])([0-9a-f])' => Hex::class,
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
@@ -64,5 +70,14 @@ abstract class AbstractColor
     public function toRgb(): Rgb
     {
         return new Rgb($this->red, $this->green, $this->blue, $this->alpha);
+    }
+
+    public function to($color): ColorInterface
+    {
+        if (!in_array($color, AbstractColor::$supportedColors)) {
+            throw InvalidColorException::unsupportedColor($color);
+        }
+
+        return call_user_func([$color, 'fromRgb'], $this->toRgb());
     }
 }
