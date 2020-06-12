@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace SavvyWombat\Color;
 
-use PHPUnit\Util\Color;
-
 class Hex extends AbstractColor implements ColorInterface
 {
     public function __construct(string $red, string $green, string $blue, string $alpha = 'ff') {
