@@ -1,5 +1,8 @@
 .idea/
+coverage/
 vendor/
 
 composer.lock
 phpunit.xml
+
+.phpunit.result.cache
