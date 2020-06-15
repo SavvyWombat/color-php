@@ -18,10 +18,10 @@ class RgbTest extends TestCase
 
         $this->assertInstanceOf(Rgb::class, $rgb);
 
-        $this->assertEquals(16, $rgb->red());
-        $this->assertEquals(32, $rgb->green());
-        $this->assertEquals(64, $rgb->blue());
-        $this->assertEquals(1, $rgb->alpha());
+        $this->assertEquals(16, $rgb->red);
+        $this->assertEquals(32, $rgb->green);
+        $this->assertEquals(64, $rgb->blue);
+        $this->assertEquals(1, $rgb->alpha);
     }
 
     /**
@@ -33,10 +33,10 @@ class RgbTest extends TestCase
 
         $this->assertInstanceOf(Rgb::class, $rgb);
 
-        $this->assertEquals(16, $rgb->red());
-        $this->assertEquals(32, $rgb->green());
-        $this->assertEquals(64, $rgb->blue());
-        $this->assertEquals(0.33, $rgb->alpha());
+        $this->assertEquals(16, $rgb->red);
+        $this->assertEquals(32, $rgb->green);
+        $this->assertEquals(64, $rgb->blue);
+        $this->assertEquals(0.33, $rgb->alpha);
     }
 
     /**
@@ -50,10 +50,10 @@ class RgbTest extends TestCase
         $this->assertInstanceOf(Rgb::class, $newRgb);
         $this->assertNotSame($newRgb, $rgb);
 
-        $this->assertEquals(48, $newRgb->red());
-        $this->assertEquals(96, $newRgb->green());
-        $this->assertEquals(192, $newRgb->blue());
-        $this->assertEquals(1, $newRgb->alpha());
+        $this->assertEquals(48, $newRgb->red);
+        $this->assertEquals(96, $newRgb->green);
+        $this->assertEquals(192, $newRgb->blue);
+        $this->assertEquals(1, $newRgb->alpha);
     }
 
     /**
@@ -67,10 +67,10 @@ class RgbTest extends TestCase
         $this->assertInstanceOf(Rgb::class, $newRgb);
         $this->assertNotSame($newRgb, $rgb);
 
-        $this->assertEquals(48, $newRgb->red());
-        $this->assertEquals(96, $newRgb->green());
-        $this->assertEquals(192, $newRgb->blue());
-        $this->assertEquals(0.75, $newRgb->alpha());
+        $this->assertEquals(48, $newRgb->red);
+        $this->assertEquals(96, $newRgb->green);
+        $this->assertEquals(192, $newRgb->blue);
+        $this->assertEquals(0.75, $newRgb->alpha);
     }
 
     /**

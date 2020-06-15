@@ -19,10 +19,10 @@ class HslTest extends TestCase
 
         $this->assertInstanceOf(Hsl::class, $hsl);
 
-        $this->assertEquals(16, $hsl->hue());
-        $this->assertEquals(32, $hsl->saturation());
-        $this->assertEquals(64, $hsl->lightness());
-        $this->assertEquals(1, $hsl->alpha());
+        $this->assertEquals(16, $hsl->hue);
+        $this->assertEquals(32, $hsl->saturation);
+        $this->assertEquals(64, $hsl->lightness);
+        $this->assertEquals(1, $hsl->alpha);
     }
 
     /**
@@ -34,10 +34,10 @@ class HslTest extends TestCase
 
         $this->assertInstanceOf(Hsl::class, $hsl);
 
-        $this->assertEquals(16, $hsl->hue());
-        $this->assertEquals(32, $hsl->saturation());
-        $this->assertEquals(64, $hsl->lightness());
-        $this->assertEquals(0.33, $hsl->alpha());
+        $this->assertEquals(16, $hsl->hue);
+        $this->assertEquals(32, $hsl->saturation);
+        $this->assertEquals(64, $hsl->lightness);
+        $this->assertEquals(0.33, $hsl->alpha);
     }
 
     /**
@@ -50,10 +50,10 @@ class HslTest extends TestCase
 
         $this->assertInstanceOf(Hsl::class, $hsl);
 
-        $this->assertEquals(48, $hsl->red());
-        $this->assertEquals(96, $hsl->green());
-        $this->assertEquals(192, $hsl->blue());
-        $this->assertEquals(1, $hsl->alpha());
+        $this->assertEquals(48, $hsl->red);
+        $this->assertEquals(96, $hsl->green);
+        $this->assertEquals(192, $hsl->blue);
+        $this->assertEquals(1, $hsl->alpha);
     }
 
     /**
@@ -66,10 +66,10 @@ class HslTest extends TestCase
 
         $this->assertInstanceOf(Hsl::class, $hsl);
 
-        $this->assertEquals(48, $hsl->red());
-        $this->assertEquals(96, $hsl->green());
-        $this->assertEquals(192, $hsl->blue());
-        $this->assertEquals(0.35, $hsl->alpha());
+        $this->assertEquals(48, $hsl->red);
+        $this->assertEquals(96, $hsl->green);
+        $this->assertEquals(192, $hsl->blue);
+        $this->assertEquals(0.35, $hsl->alpha);
     }
 
     /**

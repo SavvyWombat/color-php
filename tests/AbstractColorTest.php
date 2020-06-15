@@ -23,10 +23,10 @@ class AbstractColorTest extends TestCase
         $rgb = $baseColor->to(Rgb::class);
 
         $this->assertInstanceOf(Rgb::class, $rgb);
-        $this->assertEquals(100, $rgb->red());
-        $this->assertEquals(101, $rgb->green());
-        $this->assertEquals(110, $rgb->blue());
-        $this->assertEquals(0.45, $rgb->alpha());
+        $this->assertEquals(100, $rgb->red);
+        $this->assertEquals(101, $rgb->green);
+        $this->assertEquals(110, $rgb->blue);
+        $this->assertEquals(0.45, $rgb->alpha);
     }
 
     /**
@@ -49,10 +49,10 @@ class AbstractColorTest extends TestCase
         $hex = $baseColor->to(Hex::class);
 
         $this->assertInstanceOf(Hex::class, $hex);
-        $this->assertEquals(100, $hex->red());
-        $this->assertEquals(101, $hex->green());
-        $this->assertEquals(110, $hex->blue());
-        $this->assertEquals(0.45, $hex->alpha());
+        $this->assertEquals(100, $hex->red);
+        $this->assertEquals(101, $hex->green);
+        $this->assertEquals(110, $hex->blue);
+        $this->assertEquals(0.45, $hex->alpha);
     }
 
     /**
@@ -64,10 +64,10 @@ class AbstractColorTest extends TestCase
         $hsl = $baseColor->to(Hsl::class);
 
         $this->assertInstanceOf(Hsl::class, $hsl);
-        $this->assertEquals(100, $hsl->red());
-        $this->assertEquals(101, $hsl->green());
-        $this->assertEquals(110, $hsl->blue());
-        $this->assertEquals(0.45, $hsl->alpha());
+        $this->assertEquals(100, $hsl->red);
+        $this->assertEquals(101, $hsl->green);
+        $this->assertEquals(110, $hsl->blue);
+        $this->assertEquals(0.45, $hsl->alpha);
     }
 
     /**
@@ -79,10 +79,10 @@ class AbstractColorTest extends TestCase
         $rgb = $baseColor->to(Rgb::class);
 
         $this->assertInstanceOf(Rgb::class, $rgb);
-        $this->assertEquals(100, $rgb->red());
-        $this->assertEquals(101, $rgb->green());
-        $this->assertEquals(110, $rgb->blue());
-        $this->assertEquals(0.45, $rgb->alpha());
+        $this->assertEquals(100, $rgb->red);
+        $this->assertEquals(101, $rgb->green);
+        $this->assertEquals(110, $rgb->blue);
+        $this->assertEquals(0.45, $rgb->alpha);
     }
 }
 
@@ -93,6 +93,6 @@ class BaseColor extends AbstractColor
         $this->red = $red;
         $this->green = $green;
         $this->blue = $blue;
-        $this->alpha = $alpha;
+        $this->alpha = round($alpha, 2);
     }
 }

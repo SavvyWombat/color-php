@@ -15,7 +15,7 @@ class Hsl extends AbstractColor implements ColorInterface
         $this->hue = round($hue, 1);
         $this->saturation = round($saturation, 1);
         $this->lightness = round($lightness, 1);
-        $this->alpha = round($alpha, 2);
+        $this->alpha = $alpha;
 
         [$red, $green, $blue] = static::hslToRgb($this->hue, $this->saturation, $this->lightness);
         $this->red = $red;
@@ -48,23 +48,8 @@ class Hsl extends AbstractColor implements ColorInterface
 
     public static function fromRgb(Rgb $rgb): ColorInterface
     {
-        [$hue, $saturation, $lightness] = static::rgbToHsl($rgb->red(), $rgb->green(), $rgb->blue());
-        return new Hsl($hue, $saturation, $lightness, $rgb->alpha());
-    }
-
-    public function hue(): float
-    {
-        return $this->hue;
-    }
-
-    public function saturation(): float
-    {
-        return $this->saturation;
-    }
-
-    public function lightness(): float
-    {
-        return $this->lightness;
+        [$hue, $saturation, $lightness] = static::rgbToHsl($rgb->red, $rgb->green, $rgb->blue);
+        return new Hsl($hue, $saturation, $lightness, $rgb->alpha);
     }
 
     public static function rgbToHsl(int $red, int $green, int $blue): array

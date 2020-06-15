@@ -47,26 +47,6 @@ abstract class AbstractColor
         return $matches;
     }
 
-    public function red(): int
-    {
-        return $this->red;
-    }
-
-    public function green(): int
-    {
-        return $this->green;
-    }
-
-    public function blue(): int
-    {
-        return $this->blue;
-    }
-
-    public function alpha(): float
-    {
-        return round($this->alpha, 2);
-    }
-
     public function toRgb(): Rgb
     {
         return new Rgb($this->red, $this->green, $this->blue, $this->alpha);
@@ -79,5 +59,12 @@ abstract class AbstractColor
         }
 
         return call_user_func([$color, 'fromRgb'], $this->toRgb());
+    }
+
+    public function __get($name)
+    {
+        if (property_exists($this, $name)) {
+            return $this->$name;
+        }
     }
 }

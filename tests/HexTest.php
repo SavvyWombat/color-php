@@ -19,10 +19,10 @@ class HexTest extends TestCase
 
         $this->assertInstanceOf(Hex::class, $hex);
 
-        $this->assertEquals(18, $hex->red());
-        $this->assertEquals(52, $hex->green());
-        $this->assertEquals(86, $hex->blue());
-        $this->assertEquals(1, $hex->alpha());
+        $this->assertEquals(18, $hex->red);
+        $this->assertEquals(52, $hex->green);
+        $this->assertEquals(86, $hex->blue);
+        $this->assertEquals(1, $hex->alpha);
     }
 
     /**
@@ -34,10 +34,10 @@ class HexTest extends TestCase
 
         $this->assertInstanceOf(Hex::class, $hex);
 
-        $this->assertEquals(17, $hex->red());
-        $this->assertEquals(34, $hex->green());
-        $this->assertEquals(51, $hex->blue());
-        $this->assertEquals(1, $hex->alpha());
+        $this->assertEquals(17, $hex->red);
+        $this->assertEquals(34, $hex->green);
+        $this->assertEquals(51, $hex->blue);
+        $this->assertEquals(1, $hex->alpha);
     }
 
     /**
@@ -49,10 +49,10 @@ class HexTest extends TestCase
 
         $this->assertInstanceOf(Hex::class, $hex);
 
-        $this->assertEquals(18, $hex->red());
-        $this->assertEquals(52, $hex->green());
-        $this->assertEquals(86, $hex->blue());
-        $this->assertEquals(0.47, $hex->alpha());
+        $this->assertEquals(18, $hex->red);
+        $this->assertEquals(52, $hex->green);
+        $this->assertEquals(86, $hex->blue);
+        $this->assertEquals(0.47, $hex->alpha);
     }
 
     /**
@@ -65,10 +65,10 @@ class HexTest extends TestCase
 
         $this->assertInstanceOf(Hex::class, $hex);
 
-        $this->assertEquals(12, $hex->red());
-        $this->assertEquals(36, $hex->green());
-        $this->assertEquals(108, $hex->blue());
-        $this->assertEquals(1, $hex->alpha());
+        $this->assertEquals(12, $hex->red);
+        $this->assertEquals(36, $hex->green);
+        $this->assertEquals(108, $hex->blue);
+        $this->assertEquals(1, $hex->alpha);
     }
 
     /**
@@ -81,10 +81,10 @@ class HexTest extends TestCase
 
         $this->assertInstanceOf(Hex::class, $hex);
 
-        $this->assertEquals(12, $hex->red());
-        $this->assertEquals(36, $hex->green());
-        $this->assertEquals(108, $hex->blue());
-        $this->assertEquals(0.33, $hex->alpha());
+        $this->assertEquals(12, $hex->red);
+        $this->assertEquals(36, $hex->green);
+        $this->assertEquals(108, $hex->blue);
+        $this->assertEquals(0.33, $hex->alpha);
     }
 
     /**

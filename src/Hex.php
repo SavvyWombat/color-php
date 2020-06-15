@@ -6,6 +6,11 @@ namespace SavvyWombat\Color;
 
 class Hex extends AbstractColor implements ColorInterface
 {
+    protected $hexRed;
+    protected $hexGreen;
+    protected $hexBlue;
+    protected $hexAlpha;
+
     public function __construct(string $red, string $green, string $blue, string $alpha = 'ff')
     {
         if (strlen($red) === 1) {
@@ -18,10 +23,15 @@ class Hex extends AbstractColor implements ColorInterface
             $blue .= $blue;
         }
 
+        $this->hexRed = strtoLower($red);
+        $this->hexGreen = strtolower($green);
+        $this->hexBlue = strtolower($blue);
+        $this->hexAlpha = strtolower($alpha);
+
         $this->red = hexdec($red);
         $this->green = hexdec($green);
         $this->blue = hexdec($blue);
-        $this->alpha = hexdec($alpha) / 255;
+        $this->alpha = round(hexdec($alpha) / 255, 2);
     }
 
     public static function fromString(string $colorSpec): ColorInterface
@@ -42,24 +52,19 @@ class Hex extends AbstractColor implements ColorInterface
     public static function fromRgb(Rgb $rgb): ColorInterface
     {
         return new Hex(
-            str_pad(dechex($rgb->red()), 2, '0', STR_PAD_LEFT),
-            str_pad(dechex($rgb->green()), 2, '0', STR_PAD_LEFT),
-            str_pad(dechex($rgb->blue()), 2, '0', STR_PAD_LEFT),
-            str_pad(dechex($rgb->alpha() * 255), 2, '0', STR_PAD_LEFT)
+            str_pad(dechex($rgb->red), 2, '0', STR_PAD_LEFT),
+            str_pad(dechex($rgb->green), 2, '0', STR_PAD_LEFT),
+            str_pad(dechex($rgb->blue), 2, '0', STR_PAD_LEFT),
+            str_pad(dechex($rgb->alpha * 255), 2, '0', STR_PAD_LEFT)
         );
     }
 
     public function __toString(): string
     {
-        $red = dechex($this->red);
-        $green = dechex($this->green);
-        $blue = dechex($this->blue);
-
-        if ($this->alpha === 1) {
-            return "#{$red}{$green}{$blue}";
+        if ($this->hexAlpha === 'ff') {
+            return "#{$this->hexRed}{$this->hexGreen}{$this->hexBlue}";
         }
 
-        $alpha = dechex($this->alpha * 255);
-        return "#{$red}{$green}{$blue}{$alpha}";
+        return "#{$this->hexRed}{$this->hexGreen}{$this->hexBlue}{$this->hexAlpha}";
     }
 }

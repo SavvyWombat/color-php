@@ -31,10 +31,10 @@ class Rgb extends AbstractColor implements ColorInterface
     public static function fromRgb(Rgb $rgb): ColorInterface
     {
         return new Rgb(
-            $rgb->red(),
-            $rgb->green(),
-            $rgb->blue(),
-            $rgb->alpha()
+            $rgb->red,
+            $rgb->green,
+            $rgb->blue,
+            $rgb->alpha
         );
     }
 
