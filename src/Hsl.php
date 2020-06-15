@@ -39,11 +39,18 @@ class Hsl extends AbstractColor implements ColorInterface
 
     public function __toString(): string
     {
+        $hue = round($this->hue);
+        if ($hue === 0.0) { // deals with -0 from rounding
+            $hue = 0;
+        }
+        $saturation = round($this->saturation);
+        $lightness = round($this->lightness);
+
         if ($this->alpha === 1.0) {
-            return "hsl({$this->hue},{$this->saturation},{$this->lightness})";
+            return "hsl({$hue},{$saturation},{$lightness})";
         }
 
-        return "hsla({$this->hue},{$this->saturation},{$this->lightness},{$this->alpha})";
+        return "hsla({$hue},{$saturation},{$lightness},{$this->alpha})";
     }
 
     public function hue($hue): self

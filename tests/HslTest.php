@@ -351,4 +351,134 @@ class HslTest extends TestCase
         $this->assertNotSame($hsl, $newHsl);
         $this->assertEquals('hsla(16,30,64,0.4)', (string) $newHsl);
     }
+
+    /**
+     * @test
+     */
+    public function can_set_red_to_a_new_value()
+    {
+        $hsl = Hsl::fromString('hsl(16,30,64)');
+        $newHsl = $hsl->red(127);
+
+        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertNotSame($hsl, $newHsl);
+        $this->assertEquals('hsl(142,10,54)', (string) $newHsl);
+    }
+
+    /**
+     * @test
+     */
+    public function can_increase_redness()
+    {
+        $hsl = Hsl::fromString('hsl(16,30,64)');
+        $newHsl = $hsl->red('+64');
+
+        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertNotSame($hsl, $newHsl);
+        $this->assertEquals('hsl(7,100,77)', (string) $newHsl);
+    }
+
+    /**
+     * @test
+     */
+    public function can_decrease_redness()
+    {
+        $hsl = Hsl::fromString('hsl(16,30,64)');
+        $newHsl = $hsl->red('-64');
+
+        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertNotSame($hsl, $newHsl);
+        $this->assertEquals('hsl(143,10,54)', (string) $newHsl);
+    }
+
+    /**
+     * @test
+     */
+    public function can_increase_redness_by_relative_amount()
+    {
+        $hsl = Hsl::fromString('hsl(16,30,64)');
+        $newHsl = $hsl->red('+10%');
+
+        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertNotSame($hsl, $newHsl);
+        $this->assertEquals('hsl(12,45,68)', (string) $newHsl);
+    }
+
+    /**
+     * @test
+     */
+    public function can_decrease_redness_by_relative_amount()
+    {
+        $hsl = Hsl::fromString('hsl(16,30,64)');
+        $newHsl = $hsl->red('-10%');
+
+        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertNotSame($hsl, $newHsl);
+        $this->assertEquals('hsl(24,18,60)', (string) $newHsl);
+    }
+
+    /**
+     * @test
+     */
+    public function can_set_green_to_a_new_value()
+    {
+        $hsl = Hsl::fromString('hsl(16,30,64)');
+        $newHsl = $hsl->green(127);
+
+        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertNotSame($hsl, $newHsl);
+        $this->assertEquals('hsl(-8,33,62)', (string) $newHsl);
+    }
+
+    /**
+     * @test
+     */
+    public function can_increase_greenness()
+    {
+        $hsl = Hsl::fromString('hsl(16,30,64)');
+        $newHsl = $hsl->green('+64');
+
+        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertNotSame($hsl, $newHsl);
+        $this->assertEquals('hsl(78,49,69)', (string) $newHsl);
+    }
+
+    /**
+     * @test
+     */
+    public function can_decrease_greenness()
+    {
+        $hsl = Hsl::fromString('hsl(16,30,64)');
+        $newHsl = $hsl->green('-64');
+
+        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertNotSame($hsl, $newHsl);
+        $this->assertEquals('hsl(-28,45,54)', (string) $newHsl);
+    }
+
+    /**
+     * @test
+     */
+    public function can_increase_greenness_by_relative_amount()
+    {
+        $hsl = Hsl::fromString('hsl(16,30,64)');
+        $newHsl = $hsl->green('+10%');
+
+        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertNotSame($hsl, $newHsl);
+        $this->assertEquals('hsl(32,30,64)', (string) $newHsl);
+    }
+
+    /**
+     * @test
+     */
+    public function can_decrease_greenness_by_relative_amount()
+    {
+        $hsl = Hsl::fromString('hsl(16,30,64)');
+        $newHsl = $hsl->green('-10%');
+
+        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertNotSame($hsl, $newHsl);
+        $this->assertEquals('hsl(0,30,64)', (string) $newHsl);
+    }
 }

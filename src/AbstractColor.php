@@ -47,6 +47,30 @@ abstract class AbstractColor
         return $matches;
     }
 
+    public function red($red): ColorInterface
+    {
+        $red = $this->adjustValue($this->red, $red);
+
+        $rgb = new Rgb($red, $this->green, $this->blue, $this->alpha);
+        return static::fromRgb($rgb);
+    }
+
+    public function green($green): ColorInterface
+    {
+        $green = $this->adjustValue($this->green, $green);
+
+        $rgb = new Rgb($this->red, $green, $this->blue, $this->alpha);
+        return static::fromRgb($rgb);
+    }
+
+    public function blue($blue): ColorInterface
+    {
+        $blue = $this->adjustValue($this->blue, $blue);
+
+        $rgb = new Rgb($this->red, $this->green, $blue, $this->alpha);
+        return static::fromRgb($rgb);
+    }
+
     public function alpha($alpha): ColorInterface
     {
         $alpha = $this->adjustValue($this->alpha, $alpha);
