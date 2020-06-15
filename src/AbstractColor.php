@@ -61,6 +61,29 @@ abstract class AbstractColor
         return call_user_func([$color, 'fromRgb'], $this->toRgb());
     }
 
+    public final function adjustValue($originalValue, $newValue)
+    {
+        if (is_string($newValue)) {
+            if ($newValue{0} === '+') {
+                $delta = substr($newValue, 1);
+                if (substr($delta, -1) === '%') {
+                    $delta = $originalValue * (substr($delta, 0, -1) / 100);
+                }
+                return $originalValue + $delta;
+            }
+
+            if ($newValue{0} === '-') {
+                $delta = substr($newValue, 1);
+                if (substr($delta, -1) === '%') {
+                    $delta = $originalValue * (substr($delta, 0, -1) / 100);
+                }
+                return $originalValue - $delta;
+            }
+        }
+
+        return $newValue;
+    }
+
     public function __get($name)
     {
         if (property_exists($this, $name)) {

@@ -10,7 +10,7 @@ class Hsl extends AbstractColor implements ColorInterface
     protected $saturation;
     protected $lightness;
 
-    public function __construct(float $hue, float $saturation, float $lightness, $alpha = 1)
+    public function __construct(float $hue, float $saturation, float $lightness, $alpha = 1.0)
     {
         $this->hue = round($hue, 1);
         $this->saturation = round($saturation, 1);
@@ -44,6 +44,34 @@ class Hsl extends AbstractColor implements ColorInterface
         }
 
         return "hsla({$this->hue},{$this->saturation},{$this->lightness},{$this->alpha})";
+    }
+
+    public function hue($hue): self
+    {
+        $hue = $this->adjustValue($this->hue, $hue);
+
+        return new self($hue, $this->saturation, $this->lightness);
+    }
+
+    public function saturation($saturation): self
+    {
+        $saturation = $this->adjustValue($this->saturation, $saturation);
+
+        return new self($this->hue, $saturation, $this->lightness);
+    }
+
+    public function lightness($lightness): self
+    {
+        $lightness = $this->adjustValue($this->lightness, $lightness);
+
+        return new self($this->hue, $this->saturation, $lightness);
+    }
+
+    public function alpha($alpha): self
+    {
+        $alpha = $this->adjustValue($this->alpha, $alpha);
+
+        return new self($this->hue, $this->saturation, $this->lightness, $alpha);
     }
 
     public static function fromRgb(Rgb $rgb): ColorInterface
