@@ -47,6 +47,14 @@ abstract class AbstractColor
         return $matches;
     }
 
+    public function alpha($alpha): ColorInterface
+    {
+        $alpha = $this->adjustValue($this->alpha, $alpha);
+
+        $rgb = new Rgb($this->red, $this->green, $this->blue, $alpha);
+        return static::fromRgb($rgb);
+    }
+
     public function toRgb(): Rgb
     {
         return new Rgb($this->red, $this->green, $this->blue, $this->alpha);
@@ -81,7 +89,7 @@ abstract class AbstractColor
             }
         }
 
-        return $newValue;
+        return (float) $newValue;
     }
 
     public function __get($name)

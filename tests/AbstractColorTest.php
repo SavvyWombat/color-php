@@ -52,7 +52,7 @@ class AbstractColorTest extends TestCase
         $this->assertEquals(100, $hex->red);
         $this->assertEquals(101, $hex->green);
         $this->assertEquals(110, $hex->blue);
-        $this->assertEquals(0.45, $hex->alpha);
+        $this->assertEquals(0.45, round($hex->alpha, 2));
     }
 
     /**

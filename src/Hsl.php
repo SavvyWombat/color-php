@@ -12,9 +12,9 @@ class Hsl extends AbstractColor implements ColorInterface
 
     public function __construct(float $hue, float $saturation, float $lightness, $alpha = 1.0)
     {
-        $this->hue = round($hue, 1);
-        $this->saturation = round($saturation, 1);
-        $this->lightness = round($lightness, 1);
+        $this->hue = $hue;
+        $this->saturation = $saturation;
+        $this->lightness = $lightness;
         $this->alpha = $alpha;
 
         [$red, $green, $blue] = static::hslToRgb($this->hue, $this->saturation, $this->lightness);
@@ -67,20 +67,13 @@ class Hsl extends AbstractColor implements ColorInterface
         return new self($this->hue, $this->saturation, $lightness);
     }
 
-    public function alpha($alpha): self
-    {
-        $alpha = $this->adjustValue($this->alpha, $alpha);
-
-        return new self($this->hue, $this->saturation, $this->lightness, $alpha);
-    }
-
     public static function fromRgb(Rgb $rgb): ColorInterface
     {
         [$hue, $saturation, $lightness] = static::rgbToHsl($rgb->red, $rgb->green, $rgb->blue);
         return new Hsl($hue, $saturation, $lightness, $rgb->alpha);
     }
 
-    public static function rgbToHsl(int $red, int $green, int $blue): array
+    public static function rgbToHsl(float $red, float $green, float $blue): array
     {
         $r = $red / 255;
         $g = $green / 255;
@@ -138,7 +131,7 @@ class Hsl extends AbstractColor implements ColorInterface
     /**
      * @see https://drafts.csswg.org/css-color-3/#hsl-color
      */
-    protected static function hueToRgb(float $m1, float $m2, float $h): int
+    protected static function hueToRgb(float $m1, float $m2, float $h): float
     {
         if ($h < 0) {
             $h = $h + 1;
@@ -148,14 +141,14 @@ class Hsl extends AbstractColor implements ColorInterface
         }
 
         if ($h * 6 < 1) {
-            return (int) round(($m1 + ($m2 - $m1) * $h * 6) * 255);
+            return ($m1 + ($m2 - $m1) * $h * 6) * 255;
         }
         if ($h * 2 < 1) {
-            return (int) round($m2 * 255);
+            return $m2 * 255;
         }
         if ($h * 3 < 2) {
-            return (int) round(($m1 + ($m2 - $m1) * ((2/3) - $h) * 6) * 255);
+            return ($m1 + ($m2 - $m1) * ((2/3) - $h) * 6) * 255;
         }
-        return (int) round($m1 * 255);
+        return $m1 * 255;
     }
 }

@@ -92,4 +92,69 @@ class RgbTest extends TestCase
 
         $this->assertEquals('rgba(32,64,128,0.67)', (string) $rgb);
     }
+
+    /**
+     * @test
+     */
+    public function can_set_alpha_to_a_new_value()
+    {
+        $rgb = Rgb::fromString('rgb(16,30,64)');
+        $newRgb = $rgb->alpha('0.5');
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgba(16,30,64,0.5)', (string) $newRgb);
+    }
+
+    /**
+     * @test
+     */
+    public function can_increase_alpha()
+    {
+        $rgb = Rgb::fromString('rgba(16,30,64,0.25)');
+        $newRgb = $rgb->alpha('+0.5');
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgba(16,30,64,0.75)', (string) $newRgb);
+    }
+
+    /**
+     * @test
+     */
+    public function can_decrease_alpha()
+    {
+        $rgb = Rgb::fromString('rgba(16,30,64,0.66)');
+        $newRgb = $rgb->alpha('-0.5');
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgba(16,30,64,0.16)', (string) $newRgb);
+    }
+
+    /**
+     * @test
+     */
+    public function can_increase_alpha_by_a_relative_amount()
+    {
+        $rgb = Rgb::fromString('rgba(16,30,64,0.5)');
+        $newRgb = $rgb->alpha('+20%');
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgba(16,30,64,0.6)', (string) $newRgb);
+    }
+
+    /**
+     * @test
+     */
+    public function can_decrease_alpha_by_a_relative_amount()
+    {
+        $rgb = Rgb::fromString('rgba(16,30,64,0.5)');
+        $newRgb = $rgb->alpha('-20%');
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgba(16,30,64,0.4)', (string) $newRgb);
+    }
 }

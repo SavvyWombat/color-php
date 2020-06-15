@@ -31,7 +31,7 @@ class Hex extends AbstractColor implements ColorInterface
         $this->red = hexdec($red);
         $this->green = hexdec($green);
         $this->blue = hexdec($blue);
-        $this->alpha = round(hexdec($alpha) / 255, 2);
+        $this->alpha = hexdec($alpha) / 255;
     }
 
     public static function fromString(string $colorSpec): ColorInterface

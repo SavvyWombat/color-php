@@ -52,7 +52,7 @@ class HexTest extends TestCase
         $this->assertEquals(18, $hex->red);
         $this->assertEquals(52, $hex->green);
         $this->assertEquals(86, $hex->blue);
-        $this->assertEquals(0.47, $hex->alpha);
+        $this->assertEquals(0.47, round($hex->alpha, 2));
     }
 
     /**
@@ -84,7 +84,7 @@ class HexTest extends TestCase
         $this->assertEquals(12, $hex->red);
         $this->assertEquals(36, $hex->green);
         $this->assertEquals(108, $hex->blue);
-        $this->assertEquals(0.33, $hex->alpha);
+        $this->assertEquals(0.33, round($hex->alpha, 2));
     }
 
     /**
@@ -105,5 +105,70 @@ class HexTest extends TestCase
         $hex = Hex::fromString('#ABCDEF12');
 
         $this->assertEquals('#abcdef12', (string) $hex);
+    }
+
+    /**
+     * @test
+     */
+    public function can_set_alpha_to_a_new_value()
+    {
+        $hex = Hex::fromString('#123456');
+        $newHex = $hex->alpha('0.5');
+
+        $this->assertInstanceOf(Hex::class, $newHex);
+        $this->assertNotSame($hex, $newHex);
+        $this->assertEquals('#1234567f', (string) $newHex);
+    }
+
+    /**
+     * @test
+     */
+    public function can_increase_alpha()
+    {
+        $hex = Hex::fromString('#12345610');
+        $newHex = $hex->alpha('+0.5');
+
+        $this->assertInstanceOf(Hex::class, $newHex);
+        $this->assertNotSame($hex, $newHex);
+        $this->assertEquals('#1234568f', (string) $newHex);
+    }
+
+    /**
+     * @test
+     */
+    public function can_decrease_alpha()
+    {
+        $hex = Hex::fromString('#123456ff');
+        $newHex = $hex->alpha('-0.5');
+
+        $this->assertInstanceOf(Hex::class, $newHex);
+        $this->assertNotSame($hex, $newHex);
+        $this->assertEquals('#1234567f', (string) $newHex);
+    }
+
+    /**
+     * @test
+     */
+    public function can_increase_alpha_by_a_relative_amount()
+    {
+        $hex = Hex::fromString('#12345610');
+        $newHex = $hex->alpha('+20%');
+
+        $this->assertInstanceOf(Hex::class, $newHex);
+        $this->assertNotSame($hex, $newHex);
+        $this->assertEquals('#12345613', (string) $newHex);
+    }
+
+    /**
+     * @test
+     */
+    public function can_decrease_alpha_by_a_relative_amount()
+    {
+        $hex = Hex::fromString('#12345650');
+        $newHex = $hex->alpha('-20%');
+
+        $this->assertInstanceOf(Hex::class, $newHex);
+        $this->assertNotSame($hex, $newHex);
+        $this->assertEquals('#12345640', (string) $newHex);
     }
 }

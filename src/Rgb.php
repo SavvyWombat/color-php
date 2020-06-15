@@ -6,12 +6,12 @@ namespace SavvyWombat\Color;
 
 class Rgb extends AbstractColor implements ColorInterface
 {
-    public function __construct(int $red, int $green, int $blue, float $alpha = 1.0)
+    public function __construct(float $red, float $green, float $blue, float $alpha = 1.0)
     {
         $this->red = $red;
         $this->green = $green;
         $this->blue = $blue;
-        $this->alpha = round($alpha, 2);
+        $this->alpha = $alpha;
     }
 
     public static function fromString(string $colorSpec): ColorInterface
