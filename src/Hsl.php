@@ -28,7 +28,7 @@ class Hsl extends AbstractColor implements ColorInterface
         $channels = parent::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
-            throw InvalidColorSpecException::invalidHslSpec($colorSpec);
+            throw InvalidColorException::invalidHslSpec($colorSpec);
         }
         if (!isset($channels[4])) {
             $channels[4] = 1;

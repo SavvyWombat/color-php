@@ -6,53 +6,47 @@ namespace SavvyWombat\Color\Test;
 
 use PHPUnit\Framework\TestCase;
 use SavvyWombat\Color\Hex;
+use SavvyWombat\Color\InvalidColorException;
 use SavvyWombat\Color\Rgb;
 
 class HexTest extends TestCase
 {
     /**
      * @test
+     * @dataProvider valid_hex_strings
      */
-    public function creates_a_hex_color_from_a_hex_string()
+    public function creates_a_hex_color_from_a_hex_string($colorSpec, $red, $green, $blue, $alpha)
     {
-        $hex = Hex::fromString('#123456');
+        $hex = Hex::fromString($colorSpec);
 
         $this->assertInstanceOf(Hex::class, $hex);
 
-        $this->assertEquals(18, $hex->red);
-        $this->assertEquals(52, $hex->green);
-        $this->assertEquals(86, $hex->blue);
-        $this->assertEquals(1, $hex->alpha);
+        $this->assertEquals($red, $hex->red);
+        $this->assertEquals($green, $hex->green);
+        $this->assertEquals($blue, $hex->blue);
+        $this->assertEquals($alpha, round($hex->alpha, 2));
     }
 
     /**
      * @test
+     * @dataProvider invalid_hex_strings
      */
-    public function creates_a_hex_color_from_a_three_letter_hex_string()
+    public function throws_error_if_color_spec_is_invalid($colorSpec)
     {
-        $hex = Hex::fromString('#123');
+        $this->expectException(InvalidColorException::class);
 
-        $this->assertInstanceOf(Hex::class, $hex);
-
-        $this->assertEquals(17, $hex->red);
-        $this->assertEquals(34, $hex->green);
-        $this->assertEquals(51, $hex->blue);
-        $this->assertEquals(1, $hex->alpha);
+        Hex::fromString($colorSpec);
     }
 
     /**
      * @test
+     * @dataProvider invalid_channels
      */
-    public function creates_a_hex_color_from_a_hex_string_with_alpha()
+    public function throws_error_if_channel_is_not_valid($red, $green, $blue, $alpha)
     {
-        $hex = Hex::fromString('#12345678');
+        $this->expectException(InvalidColorException::class);
 
-        $this->assertInstanceOf(Hex::class, $hex);
-
-        $this->assertEquals(18, $hex->red);
-        $this->assertEquals(52, $hex->green);
-        $this->assertEquals(86, $hex->blue);
-        $this->assertEquals(0.47, round($hex->alpha, 2));
+        new Hex($red, $green, $blue, $alpha);
     }
 
     /**
@@ -170,5 +164,46 @@ class HexTest extends TestCase
         $this->assertInstanceOf(Hex::class, $newHex);
         $this->assertNotSame($hex, $newHex);
         $this->assertEquals('#12345640', (string) $newHex);
+    }
+
+    public function valid_hex_strings()
+    {
+        return [
+            '#123' => ['#123', 17, 34, 51, 1],
+            '#1234' => ['#1234', 17, 34, 51, 0.27],
+            '#123456' => ['#123456', 18, 52, 86, 1],
+            '#12345678' => ['#12345678', 18, 52, 86, 0.47],
+        ];
+    }
+
+    public function invalid_hex_strings()
+    {
+        return [
+            '(empty string)' => [''],
+            '123' => ['123'],
+            '#12' => ['#12'],
+            'rgb(12,34,56)' => ['rgb(12,34,56)'],
+        ];
+    }
+
+    public function invalid_channels()
+    {
+        return [
+            'red:' => ['', '34', '56', '78'],
+            'red:g0' => ['g0', '34', '56', '78'],
+            'red:123' => ['123', '34', '56', '78'],
+
+            'green:' => ['12', '', '56', '78'],
+            'green:g0' => ['12', 'g0', '56', '78'],
+            'green:123' => ['12', '123', '56', '78'],
+
+            'blue:' => ['12', '34', '', '78'],
+            'blue:g0' => ['12', '34', 'g0', '78'],
+            'blue:123' => ['12', '34', '123', '78'],
+
+            'alpha:' => ['12', '34', '56', ''],
+            'alpha:g0' => ['12', '34', '56', 'g0'],
+            'alpha:123' => ['12', '34', '56', '123'],
+        ];
     }
 }

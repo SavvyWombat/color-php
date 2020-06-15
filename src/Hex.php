@@ -22,6 +22,14 @@ class Hex extends AbstractColor implements ColorInterface
         if (strlen($blue) === 1) {
             $blue .= $blue;
         }
+        if (strlen($alpha) === 1) {
+            $alpha .= $alpha;
+        }
+
+        self::validateChannel('red', $red);
+        self::validateChannel('green', $green);
+        self::validateChannel('blue', $blue);
+        self::validateChannel('alpha', $alpha);
 
         $this->hexRed = strtoLower($red);
         $this->hexGreen = strtolower($green);
@@ -34,12 +42,19 @@ class Hex extends AbstractColor implements ColorInterface
         $this->alpha = hexdec($alpha) / 255;
     }
 
+    public static function validateChannel($channel, $value)
+    {
+        if (!preg_match("/^[0-9a-f]{2}$/i", $value)) {
+            throw InvalidColorException::invalidChannel($channel, $value, 'must be a valid hex value (0-f or 00-ff)');
+        }
+    }
+
     public static function fromString(string $colorSpec): ColorInterface
     {
         $channels = parent::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
-            throw InvalidColorSpecException::invalidHexSpec($colorSpec);
+            throw InvalidColorException::invalidHexSpec($colorSpec);
         }
 
         if (!isset($channels[4])) {

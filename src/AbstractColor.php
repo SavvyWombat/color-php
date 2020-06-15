@@ -19,6 +19,7 @@ abstract class AbstractColor
 
     private static $acceptedColorSpecs = [
         '#([0-9a-f])([0-9a-f])([0-9a-f])' => Hex::class,
+        '#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])' => Hex::class,
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
 

@@ -19,7 +19,7 @@ class Rgb extends AbstractColor implements ColorInterface
         $channels = parent::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
-            throw InvalidColorSpecException::invalidRgbSpec($colorSpec);
+            throw InvalidColorException::invalidRgbSpec($colorSpec);
         }
         if (!isset($channels[4])) {
             $channels[4] = 1;
