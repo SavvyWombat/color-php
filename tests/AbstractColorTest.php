@@ -20,7 +20,7 @@ class AbstractColorTest extends TestCase
     {
         $baseColor = new BaseColor(100, 101, 110, 0.45);
 
-        $rgb = $baseColor->to(Rgb::class);
+        $rgb = $baseColor->toRgb();
 
         $this->assertInstanceOf(Rgb::class, $rgb);
         $this->assertEquals(100, $rgb->red);
@@ -46,7 +46,7 @@ class AbstractColorTest extends TestCase
     public function can_convert_to_hex()
     {
         $baseColor = new BaseColor(100, 101, 110, 0.45);
-        $hex = $baseColor->to(Hex::class);
+        $hex = $baseColor->toHex();
 
         $this->assertInstanceOf(Hex::class, $hex);
         $this->assertEquals(100, $hex->red);
@@ -61,7 +61,7 @@ class AbstractColorTest extends TestCase
     public function can_convert_to_hsl()
     {
         $baseColor = new BaseColor(100, 101, 110, 0.45);
-        $hsl = $baseColor->to(Hsl::class);
+        $hsl = $baseColor->toHsl();
 
         $this->assertInstanceOf(Hsl::class, $hsl);
         $this->assertEquals(100, $hsl->red);
@@ -76,7 +76,7 @@ class AbstractColorTest extends TestCase
     public function can_convert_to_rgb()
     {
         $baseColor = new BaseColor(100, 101, 110, 0.45);
-        $rgb = $baseColor->to(Rgb::class);
+        $rgb = $baseColor->toRgb();
 
         $this->assertInstanceOf(Rgb::class, $rgb);
         $this->assertEquals(100, $rgb->red);

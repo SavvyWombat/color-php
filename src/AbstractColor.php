@@ -12,9 +12,9 @@ abstract class AbstractColor
     protected $alpha;
 
     private static $supportedColors = [
-        Hex::class,
-        Hsl::class,
-        Rgb::class,
+        'Hex' => Hex::class,
+        'Hsl' => Hsl::class,
+        'Rgb' => Rgb::class,
     ];
 
     private static $acceptedColorSpecs = [
@@ -58,21 +58,30 @@ abstract class AbstractColor
         return $matches;
     }
 
-    public function toRgb(): Rgb
+    final protected static function supportedColor(string $color): ?string
+    {
+        if (isset(AbstractColor::$supportedColors[$color])) {
+            return AbstractColor::$supportedColors[$color];
+        }
+
+        return null;
+    }
+
+    final public function toRgb(): Rgb
     {
         return new Rgb($this->red, $this->green, $this->blue, $this->alpha);
     }
 
-    public function to($color): ColorInterface
+    private function to($color): ColorInterface
     {
-        if (!in_array($color, AbstractColor::$supportedColors)) {
+        if (AbstractColor::supportedColor($color) === null) {
             throw InvalidColorException::unsupportedColor($color);
         }
 
-        return call_user_func([$color, 'fromRgb'], $this->toRgb());
+        return call_user_func([AbstractColor::supportedColor($color), 'fromRgb'], $this->toRgb());
     }
 
-    public final function adjustValue($originalValue, $newValue)
+    final public function adjustValue($originalValue, $newValue)
     {
         if (is_string($newValue)) {
             if ($newValue{0} === '+') {
@@ -104,6 +113,10 @@ abstract class AbstractColor
 
     public function __call($name, $arguments)
     {
+        if (substr($name, 0, 2) === 'to') {
+            return $this->to(substr($name, 2));
+        }
+
         if (isset(self::$availableModifiers[$name])) {
             $converter = (self::$availableModifiers[$name])::fromRgb($this->toRgb());
             $converter = $converter->$name($arguments[0]);
