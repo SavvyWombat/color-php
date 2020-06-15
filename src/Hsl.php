@@ -74,6 +74,13 @@ class Hsl extends AbstractColor implements ColorInterface
         return new self($this->hue, $this->saturation, $lightness);
     }
 
+    public function alpha($alpha): self
+    {
+        $alpha = $this->adjustValue($this->alpha, $alpha);
+
+        return new self($this->hue, $this->saturation, $this->lightness, $alpha);
+    }
+
     public static function fromRgb(Rgb $rgb): ColorInterface
     {
         [$hue, $saturation, $lightness] = static::rgbToHsl($rgb->red, $rgb->green, $rgb->blue);
