@@ -17,7 +17,7 @@ abstract class AbstractColor
         Rgb::class,
     ];
 
-    private static $acceptable = [
+    private static $acceptedColorSpecs = [
         '#([0-9a-f])([0-9a-f])([0-9a-f])' => Hex::class,
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
@@ -29,7 +29,7 @@ abstract class AbstractColor
         'rgba\((\d{1,3}),(\d{1,3}),(\d{1,3}),([0-1](.\d{1,2})?)\)' => Rgb::class,
     ];
 
-    private static $modifiers = [
+    private static $availableModifiers = [
         'red' => Rgb::class,
         'blue' => Rgb::class,
         'green' => Rgb::class,
@@ -43,7 +43,7 @@ abstract class AbstractColor
     final protected static function extractChannels(string $colorSpec, string $filter): ?array
     {
         $accepted = array_keys(array_filter(
-            AbstractColor::$acceptable,
+            AbstractColor::$acceptedColorSpecs,
             function($value) use ($filter) {
                 return $value === $filter;
             }
@@ -104,8 +104,8 @@ abstract class AbstractColor
 
     public function __call($name, $arguments)
     {
-        if (isset(self::$modifiers[$name])) {
-            $converter = (self::$modifiers[$name])::fromRgb($this->toRgb());
+        if (isset(self::$availableModifiers[$name])) {
+            $converter = (self::$availableModifiers[$name])::fromRgb($this->toRgb());
             $converter = $converter->$name($arguments[0]);
             return static::fromRgb($converter->toRgb());
         }
