@@ -14,6 +14,20 @@ class Rgb extends AbstractColor implements ColorInterface
         $this->alpha = $alpha;
     }
 
+    public static function fromString(string $colorSpec): ColorInterface
+    {
+        $channels = parent::extractChannels($colorSpec, self::class);
+
+        if (empty($channels)) {
+            throw InvalidColorSpecException::invalidRgbSpec($colorSpec);
+        }
+        if (!isset($channels[4])) {
+            $channels[4] = 1;
+        }
+
+        return new Rgb((int) $channels[1], (int) $channels[2], (int) $channels[3], (float) $channels[4]);
+    }
+
     public function red($red): self
     {
         $red = $this->adjustValue($this->red, $red);
@@ -40,20 +54,6 @@ class Rgb extends AbstractColor implements ColorInterface
         $alpha = $this->adjustValue($this->alpha, $alpha);
 
         return new self($this->red, $this->green, $this->blue, $alpha);
-    }
-
-    public static function fromString(string $colorSpec): ColorInterface
-    {
-        $matches = parent::match($colorSpec, self::class);
-
-        if (empty($matches)) {
-            throw InvalidColorSpecException::invalidRgbSpec($colorSpec);
-        }
-        if (!isset($matches[4])) {
-            $matches[4] = 1;
-        }
-
-        return new Rgb((int) $matches[1], (int) $matches[2], (int) $matches[3], (float) $matches[4]);
     }
 
     public static function fromRgb(Rgb $rgb): ColorInterface

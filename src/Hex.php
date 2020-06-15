@@ -36,17 +36,17 @@ class Hex extends AbstractColor implements ColorInterface
 
     public static function fromString(string $colorSpec): ColorInterface
     {
-        $matches = parent::match($colorSpec, self::class);
+        $channels = parent::extractChannels($colorSpec, self::class);
 
-        if (empty($matches)) {
+        if (empty($channels)) {
             throw InvalidColorSpecException::invalidHexSpec($colorSpec);
         }
 
-        if (!isset($matches[4])) {
-            $matches[4] = 'ff';
+        if (!isset($channels[4])) {
+            $channels[4] = 'ff';
         }
 
-        return new Hex($matches[1], $matches[2], $matches[3], $matches[4]);
+        return new Hex($channels[1], $channels[2], $channels[3], $channels[4]);
     }
 
     public static function fromRgb(Rgb $rgb): ColorInterface

@@ -25,16 +25,16 @@ class Hsl extends AbstractColor implements ColorInterface
 
     public static function fromString(string $colorSpec): ColorInterface
     {
-        $matches = parent::match($colorSpec, self::class);
+        $channels = parent::extractChannels($colorSpec, self::class);
 
-        if (empty($matches)) {
+        if (empty($channels)) {
             throw InvalidColorSpecException::invalidHslSpec($colorSpec);
         }
-        if (!isset($matches[4])) {
-            $matches[4] = 1;
+        if (!isset($channels[4])) {
+            $channels[4] = 1;
         }
 
-        return new Hsl((float) $matches[1], (float) $matches[2], (float) $matches[3], (float) $matches[4]);
+        return new Hsl((float) $channels[1], (float) $channels[2], (float) $channels[3], (float) $channels[4]);
     }
 
     public function __toString(): string

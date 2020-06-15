@@ -40,7 +40,7 @@ abstract class AbstractColor
         'lightness' => Hsl::class,
     ];
 
-    final protected static function match(string $colorSpec, string $filter): ?array
+    final protected static function extractChannels(string $colorSpec, string $filter): ?array
     {
         $accepted = array_keys(array_filter(
             AbstractColor::$acceptable,
