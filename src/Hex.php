@@ -55,7 +55,7 @@ class Hex extends AbstractColor implements ColorInterface
             str_pad(dechex($rgb->red), 2, '0', STR_PAD_LEFT),
             str_pad(dechex($rgb->green), 2, '0', STR_PAD_LEFT),
             str_pad(dechex($rgb->blue), 2, '0', STR_PAD_LEFT),
-            str_pad(dechex($rgb->alpha * 255), 2, '0', STR_PAD_LEFT)
+            str_pad(dechex(round($rgb->alpha * 255)), 2, '0', STR_PAD_LEFT)
         );
     }
 

@@ -14,6 +14,34 @@ class Rgb extends AbstractColor implements ColorInterface
         $this->alpha = $alpha;
     }
 
+    public function red($red): self
+    {
+        $red = $this->adjustValue($this->red, $red);
+
+        return new self($red, $this->green, $this->blue, $this->alpha);
+    }
+
+    public function green($green): self
+    {
+        $green = $this->adjustValue($this->green, $green);
+
+        return new self($this->red, $green, $this->blue, $this->alpha);
+    }
+
+    public function blue($blue): self
+    {
+        $blue = $this->adjustValue($this->blue, $blue);
+
+        return new self($this->red, $this->green, $blue, $this->alpha);
+    }
+
+    public function alpha($alpha): self
+    {
+        $alpha = $this->adjustValue($this->alpha, $alpha);
+
+        return new self($this->red, $this->green, $this->blue, $alpha);
+    }
+
     public static function fromString(string $colorSpec): ColorInterface
     {
         $matches = parent::match($colorSpec, self::class);

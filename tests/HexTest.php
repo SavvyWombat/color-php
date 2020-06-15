@@ -117,7 +117,7 @@ class HexTest extends TestCase
 
         $this->assertInstanceOf(Hex::class, $newHex);
         $this->assertNotSame($hex, $newHex);
-        $this->assertEquals('#1234567f', (string) $newHex);
+        $this->assertEquals('#12345680', (string) $newHex);
     }
 
     /**
@@ -130,7 +130,7 @@ class HexTest extends TestCase
 
         $this->assertInstanceOf(Hex::class, $newHex);
         $this->assertNotSame($hex, $newHex);
-        $this->assertEquals('#1234568f', (string) $newHex);
+        $this->assertEquals('#12345690', (string) $newHex);
     }
 
     /**
@@ -143,7 +143,7 @@ class HexTest extends TestCase
 
         $this->assertInstanceOf(Hex::class, $newHex);
         $this->assertNotSame($hex, $newHex);
-        $this->assertEquals('#1234567f', (string) $newHex);
+        $this->assertEquals('#12345680', (string) $newHex);
     }
 
     /**

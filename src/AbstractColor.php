@@ -29,6 +29,17 @@ abstract class AbstractColor
         'rgba\((\d{1,3}),(\d{1,3}),(\d{1,3}),([0-1](.\d{1,2})?)\)' => Rgb::class,
     ];
 
+    private static $modifiers = [
+        'red' => Rgb::class,
+        'blue' => Rgb::class,
+        'green' => Rgb::class,
+        'alpha' => Rgb::class,
+
+        'hue' => Hsl::class,
+        'saturation' => Hsl::class,
+        'lightness' => Hsl::class,
+    ];
+
     final protected static function match(string $colorSpec, string $filter): ?array
     {
         $accepted = array_keys(array_filter(
@@ -45,38 +56,6 @@ abstract class AbstractColor
         }
         
         return $matches;
-    }
-
-    public function red($red): ColorInterface
-    {
-        $red = $this->adjustValue($this->red, $red);
-
-        $rgb = new Rgb($red, $this->green, $this->blue, $this->alpha);
-        return static::fromRgb($rgb);
-    }
-
-    public function green($green): ColorInterface
-    {
-        $green = $this->adjustValue($this->green, $green);
-
-        $rgb = new Rgb($this->red, $green, $this->blue, $this->alpha);
-        return static::fromRgb($rgb);
-    }
-
-    public function blue($blue): ColorInterface
-    {
-        $blue = $this->adjustValue($this->blue, $blue);
-
-        $rgb = new Rgb($this->red, $this->green, $blue, $this->alpha);
-        return static::fromRgb($rgb);
-    }
-
-    public function alpha($alpha): ColorInterface
-    {
-        $alpha = $this->adjustValue($this->alpha, $alpha);
-
-        $rgb = new Rgb($this->red, $this->green, $this->blue, $alpha);
-        return static::fromRgb($rgb);
     }
 
     public function toRgb(): Rgb
@@ -120,6 +99,15 @@ abstract class AbstractColor
     {
         if (property_exists($this, $name)) {
             return $this->$name;
+        }
+    }
+
+    public function __call($name, $arguments)
+    {
+        if (isset(self::$modifiers[$name])) {
+            $converter = (self::$modifiers[$name])::fromRgb($this->toRgb());
+            $converter = $converter->$name($arguments[0]);
+            return static::fromRgb($converter->toRgb());
         }
     }
 }

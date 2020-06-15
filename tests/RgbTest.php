@@ -157,4 +157,69 @@ class RgbTest extends TestCase
         $this->assertNotSame($rgb, $newRgb);
         $this->assertEquals('rgba(16,30,64,0.4)', (string) $newRgb);
     }
+
+    /**
+     * @test
+     */
+    public function can_set_hue_to_a_new_value()
+    {
+        $rgb = Rgb::fromString('rgb(16,32,64)');
+        $newRgb = $rgb->hue(90);
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgb(40,64,16)', (string) $newRgb);
+    }
+
+    /**
+     * @test
+     */
+    public function can_increase_hue()
+    {
+        $rgb = Rgb::fromString('rgb(16,32,64)');
+        $newRgb = $rgb->hue('+180');
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgb(64,48,16)', (string) $newRgb);
+    }
+
+    /**
+     * @test
+     */
+    public function can_decrease_hue()
+    {
+        $rgb = Rgb::fromString('rgb(16,32,64)');
+        $newRgb = $rgb->hue('-90');
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgb(16,64,24)', (string) $newRgb);
+    }
+
+    /**
+     * @test
+     */
+    public function can_increase_hue_by_a_relative_amount()
+    {
+        $rgb = Rgb::fromString('rgb(16,32,64)');
+        $newRgb = $rgb->hue('+50%');
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgb(64,16,40)', (string) $newRgb);
+    }
+
+    /**
+     * @test
+     */
+    public function can_decrease_hue_by_a_relative_amount()
+    {
+        $rgb = Rgb::fromString('rgb(16,32,64)');
+        $newRgb = $rgb->hue('-25%');
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgb(16,64,52)', (string) $newRgb);
+    }
 }
