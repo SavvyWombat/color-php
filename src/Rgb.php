@@ -8,10 +8,28 @@ class Rgb extends AbstractColor implements ColorInterface
 {
     public function __construct(float $red, float $green, float $blue, float $alpha = 1.0)
     {
-        $this->red = $red;
-        $this->green = $green;
-        $this->blue = $blue;
-        $this->alpha = $alpha;
+        $this->red = self::validateRgbChannel('red', $red);
+        $this->green = self::validateRgbChannel('green', $green);;
+        $this->blue = self::validateRgbChannel('blue', $blue);;
+        $this->alpha = self::validateAlphaChannel($alpha);;
+    }
+
+    public static function validateRgbChannel($channel, $value)
+    {
+        if ($value < 0 || $value > 255) {
+            throw InvalidColorException::invalidChannel($channel, $value, 'must be a valid rgb value (0-255)');
+        }
+
+        return $value;
+    }
+
+    public static function validateAlphaChannel($value)
+    {
+        if ($value < 0 || $value > 1) {
+            throw InvalidColorException::invalidChannel('alpha', $value, 'must be a valid alpha value (0-1)');
+        }
+
+        return $value;
     }
 
     public static function fromString(string $colorSpec): ColorInterface
@@ -32,12 +50,28 @@ class Rgb extends AbstractColor implements ColorInterface
     {
         $red = $this->adjustValue($this->red, $red);
 
+        if ($red > 255) {
+            $red = 255;
+        }
+
+        if ($red < 0) {
+            $red = 0;
+        }
+
         return new self($red, $this->green, $this->blue, $this->alpha);
     }
 
     public function green($green): self
     {
         $green = $this->adjustValue($this->green, $green);
+
+        if ($green > 255) {
+            $green = 255;
+        }
+
+        if ($green < 0) {
+            $green = 0;
+        }
 
         return new self($this->red, $green, $this->blue, $this->alpha);
     }
@@ -46,12 +80,28 @@ class Rgb extends AbstractColor implements ColorInterface
     {
         $blue = $this->adjustValue($this->blue, $blue);
 
+        if ($blue > 255) {
+            $blue = 255;
+        }
+
+        if ($blue < 0) {
+            $blue = 0;
+        }
+
         return new self($this->red, $this->green, $blue, $this->alpha);
     }
 
     public function alpha($alpha): self
     {
         $alpha = $this->adjustValue($this->alpha, $alpha);
+
+        if ($alpha > 1) {
+            $alpha = 1;
+        }
+
+        if ($alpha < 0) {
+            $alpha = 0;
+        }
 
         return new self($this->red, $this->green, $this->blue, $alpha);
     }
@@ -68,10 +118,15 @@ class Rgb extends AbstractColor implements ColorInterface
 
     public function __toString(): string
     {
-        if ($this->alpha === 1.0) {
-            return "rgb({$this->red},{$this->green},{$this->blue})";
+        $red = round($this->red);
+        $green = round($this->green);
+        $blue = round($this->blue);
+        $alpha = round($this->alpha, 2);
+
+        if ($alpha === 1.0) {
+            return "rgb({$red},{$green},{$blue})";
         }
 
-        return "rgba({$this->red},{$this->green},{$this->blue},{$this->alpha})";
+        return "rgba({$red},{$green},{$blue},{$alpha})";
     }
 }

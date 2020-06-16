@@ -5,38 +5,47 @@ declare(strict_types=1);
 namespace SavvyWombat\Color\Test;
 
 use PHPUnit\Framework\TestCase;
+use SavvyWombat\Color\InvalidColorException;
 use SavvyWombat\Color\Rgb;
 
 class RgbTest extends TestCase
 {
     /**
      * @test
+     * @dataProvider valid_color_strings
      */
-    public function creates_an_rgb_color_from_an_rgb_string()
+    public function creates_an_rgb_color_from_a_string($colorSpec, $red, $green, $blue, $alpha)
     {
-        $rgb = Rgb::fromString('rgb(16,32,64)');
+        $rgb = Rgb::fromString($colorSpec);
 
         $this->assertInstanceOf(Rgb::class, $rgb);
 
-        $this->assertEquals(16, $rgb->red);
-        $this->assertEquals(32, $rgb->green);
-        $this->assertEquals(64, $rgb->blue);
-        $this->assertEquals(1, $rgb->alpha);
+        $this->assertEquals($red, $rgb->red);
+        $this->assertEquals($green, $rgb->green);
+        $this->assertEquals($blue, $rgb->blue);
+        $this->assertEquals($alpha, round($rgb->alpha, 2));
     }
 
     /**
      * @test
+     * @dataProvider invalid_color_strings
      */
-    public function creates_an_rgb_color_from_an_rgba_string()
+    public function throws_an_error_if_provided_an_invalid_color_string($colorSpec)
     {
-        $rgb = Rgb::fromString('rgba(16,32,64,0.33)');
+        $this->expectException(InvalidColorException::class);
 
-        $this->assertInstanceOf(Rgb::class, $rgb);
+        Rgb::fromString($colorSpec);
+    }
 
-        $this->assertEquals(16, $rgb->red);
-        $this->assertEquals(32, $rgb->green);
-        $this->assertEquals(64, $rgb->blue);
-        $this->assertEquals(0.33, $rgb->alpha);
+    /**
+     * @test
+     * @dataProvider invalid_color_values
+     */
+    public function throws_an_error_if_passed_invalid_color_values($red, $green, $blue, $alpha)
+    {
+        $this->expectException(InvalidColorException::class);
+
+        new Rgb($red, $green, $blue, $alpha);
     }
 
     /**
@@ -95,131 +104,240 @@ class RgbTest extends TestCase
 
     /**
      * @test
+     * @dataProvider modify_red_channel
      */
-    public function can_set_alpha_to_a_new_value()
+    public function can_modify_red_channel($initialColor, $newRedValue, $result)
     {
-        $rgb = Rgb::fromString('rgb(16,30,64)');
-        $newRgb = $rgb->alpha('0.5');
+        $rgb = Rgb::fromString($initialColor);
+        $newRgb = $rgb->red($newRedValue);
 
         $this->assertInstanceOf(Rgb::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgba(16,30,64,0.5)', (string) $newRgb);
+        $this->assertEquals($initialColor, (string) $rgb);
+        $this->assertEquals($result, (string) $newRgb);
     }
 
     /**
      * @test
+     * @dataProvider modify_green_channel
      */
-    public function can_increase_alpha()
+    public function can_modify_green_channel($initialColor, $newGreenValue, $result)
     {
-        $rgb = Rgb::fromString('rgba(16,30,64,0.25)');
-        $newRgb = $rgb->alpha('+0.5');
+        $rgb = Rgb::fromString($initialColor);
+        $newRgb = $rgb->green($newGreenValue);
 
         $this->assertInstanceOf(Rgb::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgba(16,30,64,0.75)', (string) $newRgb);
+        $this->assertEquals($initialColor, (string) $rgb);
+        $this->assertEquals($result, (string) $newRgb);
     }
 
     /**
      * @test
+     * @dataProvider modify_blue_channel
      */
-    public function can_decrease_alpha()
+    public function can_modify_blue_channel($initialColor, $newBlueValue, $result)
     {
-        $rgb = Rgb::fromString('rgba(16,30,64,0.66)');
-        $newRgb = $rgb->alpha('-0.5');
+        $rgb = Rgb::fromString($initialColor);
+        $newRgb = $rgb->blue($newBlueValue);
 
         $this->assertInstanceOf(Rgb::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgba(16,30,64,0.16)', (string) $newRgb);
+        $this->assertEquals($initialColor, (string) $rgb);
+        $this->assertEquals($result, (string) $newRgb);
     }
 
     /**
      * @test
+     * @dataProvider modify_alpha_channel
      */
-    public function can_increase_alpha_by_a_relative_amount()
+    public function can_modify_alpha_channel($initialColor, $newAlphaValue, $result)
     {
-        $rgb = Rgb::fromString('rgba(16,30,64,0.5)');
-        $newRgb = $rgb->alpha('+20%');
+        $rgb = Rgb::fromString($initialColor);
+        $newRgb = $rgb->alpha($newAlphaValue);
 
         $this->assertInstanceOf(Rgb::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgba(16,30,64,0.6)', (string) $newRgb);
+        $this->assertEquals($initialColor, (string) $rgb);
+        $this->assertEquals($result, (string) $newRgb);
     }
 
     /**
      * @test
+     * @dataProvider modify_hue
      */
-    public function can_decrease_alpha_by_a_relative_amount()
+    public function can_modify_hue($initialColor, $newHueValue, $result)
     {
-        $rgb = Rgb::fromString('rgba(16,30,64,0.5)');
-        $newRgb = $rgb->alpha('-20%');
+        $rgb = Rgb::fromString($initialColor);
+        $newRgb = $rgb->hue($newHueValue);
 
         $this->assertInstanceOf(Rgb::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgba(16,30,64,0.4)', (string) $newRgb);
+        $this->assertEquals($initialColor, (string) $rgb);
+        $this->assertEquals($result, (string) $newRgb);
     }
 
     /**
      * @test
+     * @dataProvider modify_saturation
      */
-    public function can_set_hue_to_a_new_value()
+    public function can_modify_saturation($initialColor, $newSaturationValue, $result)
     {
-        $rgb = Rgb::fromString('rgb(16,32,64)');
-        $newRgb = $rgb->hue(90);
+        $rgb = Rgb::fromString($initialColor);
+        $newRgb = $rgb->saturation($newSaturationValue);
 
         $this->assertInstanceOf(Rgb::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgb(40,64,16)', (string) $newRgb);
+        $this->assertEquals($initialColor, (string) $rgb);
+        $this->assertEquals($result, (string) $newRgb);
     }
 
     /**
      * @test
+     * @dataProvider modify_lightness
      */
-    public function can_increase_hue()
+    public function can_modify_lightness($initialColor, $newLightnessValue, $result)
     {
-        $rgb = Rgb::fromString('rgb(16,32,64)');
-        $newRgb = $rgb->hue('+180');
+        $rgb = Rgb::fromString($initialColor);
+        $newRgb = $rgb->lightness($newLightnessValue);
 
         $this->assertInstanceOf(Rgb::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgb(64,48,16)', (string) $newRgb);
+        $this->assertEquals($initialColor, (string) $rgb);
+        $this->assertEquals($result, (string) $newRgb);
     }
 
-    /**
-     * @test
-     */
-    public function can_decrease_hue()
+    public function valid_color_strings()
     {
-        $rgb = Rgb::fromString('rgb(16,32,64)');
-        $newRgb = $rgb->hue('-90');
-
-        $this->assertInstanceOf(Rgb::class, $newRgb);
-        $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgb(16,64,24)', (string) $newRgb);
+        return [
+            'rgb(16,32,64)' => ['rgb(16,32,64)', 16, 32, 64, 1],
+            'rgba(16,32,64,0.33)' => ['rgba(16,32,64,0.33)', 16, 32, 64, 0.33],
+        ];
     }
 
-    /**
-     * @test
-     */
-    public function can_increase_hue_by_a_relative_amount()
+    public function invalid_color_strings()
     {
-        $rgb = Rgb::fromString('rgb(16,32,64)');
-        $newRgb = $rgb->hue('+50%');
-
-        $this->assertInstanceOf(Rgb::class, $newRgb);
-        $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgb(64,16,40)', (string) $newRgb);
+        return [
+            '(empty string)' => [''],
+            '12' => ['12'],
+            'rgb(16,32,64,0.33)' => ['rgb(16,32,64,0.33)'],
+            'rgba(16,32,64)' => ['rgba(16,32,64)'],
+            '#123456' => ['#123456'],
+        ];
     }
 
-    /**
-     * @test
-     */
-    public function can_decrease_hue_by_a_relative_amount()
+    public function invalid_color_values()
     {
-        $rgb = Rgb::fromString('rgb(16,32,64)');
-        $newRgb = $rgb->hue('-25%');
+        return [
+            'red:negative' => [-1, 34, 56, 1.0],
+            'red:too-big' => [256, 34, 56, 1.0],
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
-        $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgb(16,64,52)', (string) $newRgb);
+            'green:negative' => [34, -1, 56, 1.0],
+            'green:too-big' => [34, 256, 56, 1.0],
+
+            'blue:negative' => [34, 56, -1, 1.0],
+            'blue:too-big' => [34, 56, 256, 1.0],
+
+            'alpha:negative' => [12, 34, 56, -0.1],
+            'alpha:too-big' => [12, 34, 56, 1.1],
+        ];
+    }
+
+    public function modify_red_channel()
+    {
+        return [
+            'red:127' => ['rgb(12,34,56)', 127, 'rgb(127,34,56)'],
+            'red:+10' => ['rgb(12,34,56)', '+10', 'rgb(22,34,56)'],
+            'red:-10' => ['rgb(12,34,56)', '-10', 'rgb(2,34,56)'],
+            'red:+10%' => ['rgb(12,34,56)', '+10%', 'rgb(13,34,56)'],
+            'red:-10%' => ['rgb(12,34,56)', '-10%', 'rgb(11,34,56)'],
+
+            'red:+300' => ['rgb(12,34,56)', '+300', 'rgb(255,34,56)'],
+            'red:-300' => ['rgb(12,34,56)', '-300', 'rgb(0,34,56)'],
+        ];
+    }
+
+    public function modify_green_channel()
+    {
+        return [
+            'green:127' => ['rgb(12,34,56)', 127, 'rgb(12,127,56)'],
+            'green:+10' => ['rgb(12,34,56)', '+10', 'rgb(12,44,56)'],
+            'green:-10' => ['rgb(12,34,56)', '-10', 'rgb(12,24,56)'],
+            'green:+10%' => ['rgb(12,34,56)', '+10%', 'rgb(12,37,56)'],
+            'green:-10%' => ['rgb(12,34,56)', '-10%', 'rgb(12,31,56)'],
+
+            'green:+300' => ['rgb(12,34,56)', '+300', 'rgb(12,255,56)'],
+            'green:-300' => ['rgb(12,34,56)', '-300', 'rgb(12,0,56)'],
+        ];
+    }
+
+    public function modify_blue_channel()
+    {
+        return [
+            'blue:127' => ['rgb(12,34,56)', 127, 'rgb(12,34,127)'],
+            'blue:+10' => ['rgb(12,34,56)', '+10', 'rgb(12,34,66)'],
+            'blue:-10' => ['rgb(12,34,56)', '-10', 'rgb(12,34,46)'],
+            'blue:+10%' => ['rgb(12,34,56)', '+10%', 'rgb(12,34,62)'],
+            'blue:-10%' => ['rgb(12,34,56)', '-10%', 'rgb(12,34,50)'],
+
+            'blue:+300' => ['rgb(12,34,56)', '+300', 'rgb(12,34,255)'],
+            'blue:-300' => ['rgb(12,34,56)', '-300', 'rgb(12,34,0)'],
+        ];
+    }
+
+    public function modify_alpha_channel()
+    {
+        return [
+            'alpha:0.5' => ['rgb(12,34,56)', 0.5, 'rgba(12,34,56,0.5)'],
+            'alpha:+0.1' => ['rgba(12,34,56,0.5)', '+0.1', 'rgba(12,34,56,0.6)'],
+            'alpha:-0.1' => ['rgba(12,34,56,0.5)', '-0.1', 'rgba(12,34,56,0.4)'],
+            'alpha:+10%' => ['rgba(12,34,56,0.5)', '+10%', 'rgba(12,34,56,0.55)'],
+            'alpha:-10%' => ['rgba(12,34,56,0.5)', '-10%', 'rgba(12,34,56,0.45)'],
+
+            'alpha:+2' => ['rgba(12,34,56,0.5)', '+2', 'rgb(12,34,56)'],
+            'alpha:-2' => ['rgba(12,34,56,0.5)', '-2', 'rgba(12,34,56,0)'],
+        ];
+    }
+
+    public function modify_hue()
+    {
+        return [
+            'hue:180' => ['rgb(12,34,56)', 180, 'rgb(12,56,56)'],
+            'hue:+45' => ['rgb(12,34,56)', '+45', 'rgb(23,12,56)'],
+            'hue:-45' => ['rgb(12,34,56)', '-45', 'rgb(12,56,45)'],
+            'hue:+10%' => ['rgb(12,34,56)', '+10%', 'rgb(12,19,56)'],
+            'hue:-10%' => ['rgb(12,34,56)', '-10%', 'rgb(12,49,56)'],
+
+            'hue:+450' => ['rgb(12,34,56)', '+450', 'rgb(56,12,56)'],
+            'hue:-450' => ['rgb(12,34,56)', '-450', 'rgb(12,56,12)'],
+        ];
+    }
+
+    public function modify_saturation()
+    {
+        return [
+            'saturation:25' => ['rgb(12,34,56)', 25, 'rgb(26,34,43)'],
+            'saturation:+25' => ['rgb(12,34,56)', '+25', 'rgb(4,34,65)'],
+            'saturation:-25' => ['rgb(12,34,56)', '-25', 'rgb(21,34,48)'],
+            'saturation:+10%' => ['rgb(12,34,56)', '+10%', 'rgb(10,34,58)'],
+            'saturation:-10%' => ['rgb(12,34,56)', '-10%', 'rgb(14,34,54)'],
+
+            'saturation:+100' => ['rgb(12,34,56)', '+100', 'rgb(0,34,68)'],
+            'saturation:-100' => ['rgb(12,34,56)', '-100', 'rgb(34,34,34)'],
+        ];
+    }
+
+    public function modify_lightness()
+    {
+        return [
+            'lightness:25' => ['rgb(12,34,56)', 25, 'rgb(23,64,105)'],
+            'lightness:+10' => ['rgb(12,34,56)', '+10', 'rgb(21,60,98)'],
+            'lightness:-10' => ['rgb(12,34,56)', '-10', 'rgb(3,9,14)'],
+            'lightness:+10%' => ['rgb(12,34,56)', '+10%', 'rgb(13,37,62)'],
+            'lightness:-10%' => ['rgb(12,34,56)', '-10%', 'rgb(11,31,50)'],
+
+            'lightness:+100' => ['rgb(12,34,56)', '+100', 'rgb(255,255,255)'],
+            'lightness:-100' => ['rgb(12,34,56)', '-100', 'rgb(0,0,0)'],
+        ];
     }
 }
