@@ -2,11 +2,11 @@
 
 namespace SavvyWombat\Color;
 
-use Exception;
+use Exception as BaseException;
 
-class InvalidColorException extends Exception
+class Exception extends BaseException
 {
-    public static function unsupportedColor(string $color): self
+    public static function unregisteredColor(string $color): self
     {
         return new static("`{$color}` is not supported.");
     }
@@ -14,6 +14,11 @@ class InvalidColorException extends Exception
     public static function invalidChannel(string $channel, $value, $message): self
     {
         return new static("`{$value}` is not a valid value for `{$channel}`. `{$channel}` `{$message}`");
+    }
+
+    public static function invalidColorSpec(string $colorSpec): self
+    {
+        return new static("Could not find a registered color specific for `{$colorSpec}`.");
     }
 
     public static function invalidHexSpec(string $colorSpec): self

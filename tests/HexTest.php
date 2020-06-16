@@ -6,7 +6,7 @@ namespace SavvyWombat\Color\Test;
 
 use PHPUnit\Framework\TestCase;
 use SavvyWombat\Color\Hex;
-use SavvyWombat\Color\InvalidColorException;
+use SavvyWombat\Color\Exception;
 use SavvyWombat\Color\Rgb;
 
 class HexTest extends TestCase
@@ -33,7 +33,7 @@ class HexTest extends TestCase
      */
     public function throws_error_if_color_spec_is_invalid($colorSpec)
     {
-        $this->expectException(InvalidColorException::class);
+        $this->expectException(Exception::class);
 
         Hex::fromString($colorSpec);
     }
@@ -44,7 +44,7 @@ class HexTest extends TestCase
      */
     public function throws_error_if_channel_is_not_valid($red, $green, $blue, $alpha)
     {
-        $this->expectException(InvalidColorException::class);
+        $this->expectException(Exception::class);
 
         new Hex($red, $green, $blue, $alpha);
     }

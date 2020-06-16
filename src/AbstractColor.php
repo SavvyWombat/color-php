@@ -44,15 +44,15 @@ abstract class AbstractColor
     final public static function registerColor(string $name, string $className)
     {
         if (!class_exists($className)) {
-            throw new InvalidColorException("Could not register `{$name}`. `{$className}` does not exist.");
+            throw new Exception("Could not register `{$name}`. `{$className}` does not exist.");
         }
 
         if (!in_array(ColorInterface::class, class_implements($className))) {
-            throw new InvalidColorException("Could not register `{$name}`. `{$className}` does not implement `{ColorInterface::class}`.");
+            throw new Exception("Could not register `{$name}`. `{$className}` does not implement `{ColorInterface::class}`.");
         }
 
         if (!in_array(AbstractColor::class, class_parents($className))) {
-            throw new InvalidColorException("Could not register `{$name}`. `{$className}` does not extend `{AbstractColor::class}`.");
+            throw new Exception("Could not register `{$name}`. `{$className}` does not extend `{AbstractColor::class}`.");
         }
 
         static::$registeredColors[$name] = $className;
@@ -61,6 +61,20 @@ abstract class AbstractColor
     final public static function registeredColors()
     {
         return static::$registeredColors;
+    }
+
+    final public static function registerColorSpec(string $pattern, string $className)
+    {
+        if (!in_array($className, static::$registeredColors)) {
+            throw new Exception("Could not register `{$pattern}`. You must registered the color `{$className}` first.");
+        }
+
+        static::$registeredColorSpecs[$pattern] = $className;
+    }
+
+    final public static function registeredColorSpecs()
+    {
+        return static::$registeredColorSpecs;
     }
 
     final protected static function extractChannels(string $colorSpec, string $filter): ?array
@@ -81,22 +95,31 @@ abstract class AbstractColor
         return $matches;
     }
 
-    final protected static function supportedColor(string $color): ?string
-    {
-        if (isset(AbstractColor::$registeredColors[$color])) {
-            return AbstractColor::$registeredColors[$color];
-        }
-
-        return null;
-    }
-
     public static function validateAlphaChannel($value)
     {
         if ($value < 0 || $value > 1) {
-            throw InvalidColorException::invalidChannel('alpha', $value, 'must be a valid alpha value (0-1)');
+            throw Exception::invalidChannel('alpha', $value, 'must be a valid alpha value (0-1)');
         }
 
         return $value;
+    }
+
+    public static function fromString(string $colorSpec): ColorInterface
+    {
+        $patterns = array_keys(self::$registeredColorSpecs);
+
+        $found = false;
+        foreach ($patterns as $pattern) {
+            if (preg_match("/^ *{$pattern} *$/i", $colorSpec)) {
+                $found = $pattern;
+            }
+        }
+
+        if (!$found) {
+            throw Exception::invalidColorSpec($colorSpec);
+        }
+
+        return (self::$registeredColorSpecs[$found])::fromString($colorSpec);
     }
 
     final public function toRgb(): Rgb
@@ -106,11 +129,11 @@ abstract class AbstractColor
 
     private function to($color): ColorInterface
     {
-        if (AbstractColor::supportedColor($color) === null) {
-            throw InvalidColorException::unsupportedColor($color);
+        if (AbstractColor::registeredColors($color) === null) {
+            throw Exception::unregisteredColor($color);
         }
 
-        return call_user_func([AbstractColor::supportedColor($color), 'fromRgb'], $this->toRgb());
+        return call_user_func([AbstractColor::registeredColors($color), 'fromRgb'], $this->toRgb());
     }
 
     final public function adjustValue($originalValue, $newValue)

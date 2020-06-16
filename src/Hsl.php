@@ -26,7 +26,7 @@ class Hsl extends AbstractColor implements ColorInterface
     public static function validateHslChannel($channel, $value)
     {
         if ($value < 0 || $value > 100) {
-            throw InvalidColorException::invalidChannel($channel, $value, 'must be a valid hsl value (0-100)');
+            throw Exception::invalidChannel($channel, $value, 'must be a valid hsl value (0-100)');
         }
 
         return $value;
@@ -37,7 +37,7 @@ class Hsl extends AbstractColor implements ColorInterface
         $channels = parent::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
-            throw InvalidColorException::invalidHslSpec($colorSpec);
+            throw Exception::invalidHslSpec($colorSpec);
         }
         if (!isset($channels[4])) {
             $channels[4] = 1;

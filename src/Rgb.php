@@ -17,7 +17,7 @@ class Rgb extends AbstractColor implements ColorInterface
     public static function validateRgbChannel($channel, $value)
     {
         if ($value < 0 || $value > 255) {
-            throw InvalidColorException::invalidChannel($channel, $value, 'must be a valid rgb value (0-255)');
+            throw Exception::invalidChannel($channel, $value, 'must be a valid rgb value (0-255)');
         }
 
         return $value;
@@ -28,7 +28,7 @@ class Rgb extends AbstractColor implements ColorInterface
         $channels = parent::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
-            throw InvalidColorException::invalidRgbSpec($colorSpec);
+            throw Exception::invalidRgbSpec($colorSpec);
         }
         if (!isset($channels[4])) {
             $channels[4] = 1;

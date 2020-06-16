@@ -6,7 +6,7 @@ namespace SavvyWombat\Color\Test;
 
 use PHPUnit\Framework\TestCase;
 use SavvyWombat\Color\Hsl;
-use SavvyWombat\Color\InvalidColorException;
+use SavvyWombat\Color\Exception;
 use SavvyWombat\Color\Rgb;
 
 class HslTest extends TestCase
@@ -33,7 +33,7 @@ class HslTest extends TestCase
      */
     public function throws_an_error_if_provided_an_invalid_color_string($colorSpec)
     {
-        $this->expectException(InvalidColorException::class);
+        $this->expectException(Exception::class);
 
         Hsl::fromString($colorSpec);
     }
@@ -44,7 +44,7 @@ class HslTest extends TestCase
      */
     public function throws_an_error_if_passed_invalid_color_values($hue, $saturation, $lightness, $alpha)
     {
-        $this->expectException(InvalidColorException::class);
+        $this->expectException(Exception::class);
 
         new Hsl($hue, $saturation, $lightness, $alpha);
     }

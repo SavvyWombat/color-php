@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SavvyWombat\Color\Test;
 
 use PHPUnit\Framework\TestCase;
-use SavvyWombat\Color\InvalidColorException;
+use SavvyWombat\Color\Exception;
 use SavvyWombat\Color\Rgb;
 
 class RgbTest extends TestCase
@@ -32,7 +32,7 @@ class RgbTest extends TestCase
      */
     public function throws_an_error_if_provided_an_invalid_color_string($colorSpec)
     {
-        $this->expectException(InvalidColorException::class);
+        $this->expectException(Exception::class);
 
         Rgb::fromString($colorSpec);
     }
@@ -43,7 +43,7 @@ class RgbTest extends TestCase
      */
     public function throws_an_error_if_passed_invalid_color_values($red, $green, $blue, $alpha)
     {
-        $this->expectException(InvalidColorException::class);
+        $this->expectException(Exception::class);
 
         new Rgb($red, $green, $blue, $alpha);
     }

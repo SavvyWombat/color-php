@@ -40,7 +40,7 @@ class Hex extends AbstractColor implements ColorInterface
     public static function validateChannel($channel, $value)
     {
         if (!preg_match("/^[0-9a-f]{2}$/i", $value)) {
-            throw InvalidColorException::invalidChannel($channel, $value, 'must be a valid hex value (0-f or 00-ff)');
+            throw Exception::invalidChannel($channel, $value, 'must be a valid hex value (0-f or 00-ff)');
         }
 
         return $value;
@@ -51,7 +51,7 @@ class Hex extends AbstractColor implements ColorInterface
         $channels = parent::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
-            throw InvalidColorException::invalidHexSpec($colorSpec);
+            throw Exception::invalidHexSpec($colorSpec);
         }
 
         if (!isset($channels[4])) {
