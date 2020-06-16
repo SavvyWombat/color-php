@@ -6,6 +6,7 @@ namespace SavvyWombat\Color\Test;
 
 use PHPUnit\Framework\TestCase;
 use SavvyWombat\Color\AbstractColor;
+use SavvyWombat\Color\ColorInterface;
 use SavvyWombat\Color\Hex;
 use SavvyWombat\Color\Hsl;
 use SavvyWombat\Color\InvalidColorException;
@@ -84,6 +85,49 @@ class AbstractColorTest extends TestCase
         $this->assertEquals(110, $rgb->blue);
         $this->assertEquals(0.45, $rgb->alpha);
     }
+
+    /**
+     * @test
+     */
+    public function can_register_new_color()
+    {
+        AbstractColor::registerColor('Gray', Gray::class);
+
+        $registeredColors = AbstractColor::registeredColors();
+
+        $this->assertArrayHasKey('Gray', $registeredColors);
+        $this->assertEquals(Gray::class, $registeredColors['Gray']);
+    }
+
+    /**
+     * @test
+     */
+    public function color_class_must_exist()
+    {
+        $this->expectException(InvalidColorException::class);
+
+        AbstractColor::registerColor('Gray', 'DoesNotExist');
+    }
+
+    /**
+     * @test
+     */
+    public function colors_must_implement_interface()
+    {
+        $this->expectException(InvalidColorException::class);
+
+        AbstractColor::registerColor('Gray', Whatever::class);
+    }
+
+    /**
+     * @test
+     */
+    public function colors_must_extend_abstract()
+    {
+        $this->expectException(InvalidColorException::class);
+
+        AbstractColor::registerColor('Gray', Whatever::class);
+    }
 }
 
 class BaseColor extends AbstractColor
@@ -96,3 +140,7 @@ class BaseColor extends AbstractColor
         $this->alpha = round($alpha, 2);
     }
 }
+
+abstract class DoesNotImplementInterface extends AbstractColor {}
+abstract class DoesNotExtendAbsract implements ColorInterface {}
+abstract class Gray extends AbstractColor implements ColorInterface {}

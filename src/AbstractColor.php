@@ -11,13 +11,13 @@ abstract class AbstractColor
     protected $blue;
     protected $alpha;
 
-    private static $supportedColors = [
+    private static $registeredColors = [
         'Hex' => Hex::class,
         'Hsl' => Hsl::class,
         'Rgb' => Rgb::class,
     ];
 
-    private static $acceptedColorSpecs = [
+    private static $registeredColorSpecs = [
         '#([0-9a-f])([0-9a-f])([0-9a-f])' => Hex::class,
         '#([0-9a-f])([0-9a-f])([0-9a-f])([0-9a-f])' => Hex::class,
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
@@ -41,10 +41,32 @@ abstract class AbstractColor
         'lightness' => Hsl::class,
     ];
 
+    final public static function registerColor(string $name, string $className)
+    {
+        if (!class_exists($className)) {
+            throw new InvalidColorException("Could not register `{$name}`. `{$className}` does not exist.");
+        }
+
+        if (!in_array(ColorInterface::class, class_implements($className))) {
+            throw new InvalidColorException("Could not register `{$name}`. `{$className}` does not implement `{ColorInterface::class}`.");
+        }
+
+        if (!in_array(AbstractColor::class, class_parents($className))) {
+            throw new InvalidColorException("Could not register `{$name}`. `{$className}` does not extend `{AbstractColor::class}`.");
+        }
+
+        static::$registeredColors[$name] = $className;
+    }
+
+    final public static function registeredColors()
+    {
+        return static::$registeredColors;
+    }
+
     final protected static function extractChannels(string $colorSpec, string $filter): ?array
     {
         $accepted = array_keys(array_filter(
-            AbstractColor::$acceptedColorSpecs,
+            AbstractColor::$registeredColorSpecs,
             function($value) use ($filter) {
                 return $value === $filter;
             }
@@ -61,8 +83,8 @@ abstract class AbstractColor
 
     final protected static function supportedColor(string $color): ?string
     {
-        if (isset(AbstractColor::$supportedColors[$color])) {
-            return AbstractColor::$supportedColors[$color];
+        if (isset(AbstractColor::$registeredColors[$color])) {
+            return AbstractColor::$registeredColors[$color];
         }
 
         return null;
