@@ -17,7 +17,7 @@ abstract class Color
      *
      * More colors can be added or overridden via Color::registerColor()
      */
-    private static $registeredColors = [
+    private static $registeredColorTypes = [
         'Hex' => Hex::class,
         'Hsl' => Hsl::class,
         'Rgb' => Rgb::class,
@@ -75,12 +75,12 @@ abstract class Color
             throw new Exception("Could not register `{$name}`. `{$className}` does not extend `{Color::class}`.");
         }
 
-        static::$registeredColors[$name] = $className;
+        static::$registeredColorTypes[$name] = $className;
     }
 
     final public static function registeredColors()
     {
-        return static::$registeredColors;
+        return static::$registeredColorTypes;
     }
 
     /**
@@ -90,7 +90,7 @@ abstract class Color
      */
     final public static function registerColorSpec(string $pattern, string $className)
     {
-        if (!in_array($className, static::$registeredColors)) {
+        if (!in_array($className, static::$registeredColorTypes)) {
             throw new Exception("Could not register `{$pattern}` as a color spec. You must register the color `{$className}` first.");
         }
 
@@ -108,7 +108,7 @@ abstract class Color
      */
     final public static function registerModifier(string $name, string $className)
     {
-        if (!in_array($className, static::$registeredColors)) {
+        if (!in_array($className, static::$registeredColorTypes)) {
             throw new Exception("Could not register `{$name}` as a modifier. You must register the color `{$className}` first.");
         }
 

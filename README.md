@@ -1,13 +1,13 @@
 # SavvyWombat Color
 
-A PHP package to help convert between and manipulate HSL and RGB colorspaces.
+A PHP package to help convert between and manipulate HSL and RGB colorspaces/types.
 
 Main features:
 
 - support for CSS Color Module Level 3 color specifications ( #323C46, rgb(50,60,70), hsl(210,16.7,23.5) );
 - support for alpha transparency ( #323C4680, rgba(50,60,70,0.5), hsl(210,16.7,23.5,0.5) );
-- modifiers to change red/green/blue or hue/saturation/lightness and alpha on any color;
-- able to extend with custom colorspaces which can then be converted and/or modified;
+- modifiers to change red/green/blue or hue/saturation/lightness and alpha on any color type;
+- able to extend with custom colorspaces/types which can then be converted and/or modified;
 - able to extend with custom modifiers;
 - immutable behaviour.
 
@@ -57,7 +57,7 @@ Color::fromString('hsl(10,20,30,0.4)'); // Hsl
 
 ## Converting a color
 
-Colors can be converted to any other registered color:
+Colors can be converted to any other registered color type:
 
 ```php
 echo (string) Color::fromString('#123')->toHsl(); // hsl(210,50,8.6)
@@ -72,7 +72,7 @@ echo (string) Color::fromString('hsl(135,50,75)')->toRgb(); // rgb(159,223,175)
 
 ## Modifying a color
 
-The following methods are available on any registered color model by default:
+The following methods are available on any registered color type by default:
 
 - `red($value)`
 - `green($value)`
@@ -100,9 +100,9 @@ Hue is not clamped, as it is possible to rotate more than 360 in either directio
 
 # Extending
 
-## Custom color spaces/models
+## Custom color types
 
-The package allows you to create your own color spaces/models. These must extend `Color`, and implement the following methods from the `ColorInterface`:
+The package allows you to create your own color types. These must extend `Color`, and implement the following methods from the `ColorInterface`:
 
 ```php
     public static function fromString(string $colorSpec): ColorInterface;
@@ -150,7 +150,7 @@ abstract class Color
 }
 ```
 
-You will need to register the color model to allow conversion to and from your new model:
+You will need to register the color type to allow conversion to and from your new model:
 
 ```php
 Color::registerColor('Cmyk', CMYK::class);
@@ -158,13 +158,13 @@ Color::registerColor('Cmyk', CMYK::class);
 echo (string) Color::fromString('rgb(50,100,150)')->toCMYK(); // cmyk(67,33,0,41)
 ```
 
-You can replace existing colors with new models.
+You can replace existing color types with new ones.
 
-You can get a list of registered colors via `Color::registeredColors()`.
+You can get a list of registered color types via `Color::registeredColors()`.
 
 ## Custom color specifications
 
-Once you've registered your color model, you can register color specification patterns that can be used to create that color from a string.
+Once you've registered your color type, you can register color specification patterns that can be used to create that color from a string.
 
 The patterns use regex, without the start and end delimiters. `fromString` will add the delimiters automatically. 
 
@@ -221,6 +221,6 @@ public function hue($hue): self
 
 When you call the `hue` method directly on an `Hsl` object, it will create a new copy of the model with the updated hue value.
 
-When you call the `hue` method on any other color object, it will first convert to `Hsl` (via an `Rgb` object), update the hue value, and convert back to an object of the original type.
+When you call the `hue` method on any other color type, it will first convert to `Hsl` (via an `Rgb` object), update the hue value, and convert back to an object of the original type.
 
 In this way, it is possible to adjust the hue of an RGB color, or vary the amount of green in an HSL color.
