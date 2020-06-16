@@ -221,6 +221,42 @@ class AbstractColorTest extends TestCase
 
         $this->assertInstanceOf(Gray::class, $gray);
     }
+
+    /**
+     * @test
+     */
+    public function can_register_new_color_modifier()
+    {
+        AbstractColor::registerColor('Gray', Gray::class);
+        AbstractColor::registerModifier('lightness', Gray::class);
+
+        $rgb = Rgb::fromString('rgb(25,50,75)');
+        $newRgb = $rgb->lightness(100);
+
+        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertNotSame($rgb, $newRgb);
+        $this->assertEquals('rgb(100,100,100)', (string) $newRgb);
+    }
+
+    /**
+     * @test
+     */
+    public function color_for_modifier_must_be_registered()
+    {
+        $this->expectException(Exception::class);
+
+        AbstractColor::registerModifier('lightness', Gray::class);
+    }
+
+    /**
+     * @test
+     */
+    public function modifier_method_must_exist()
+    {
+        $this->expectException(Exception::class);
+
+        AbstractColor::registerModifier('doesNotExists', Gray::class);
+    }
 }
 
 class BaseColor extends AbstractColor
@@ -268,5 +304,10 @@ class Gray extends AbstractColor implements ColorInterface
     public static function fromRgb(Rgb $rgb): ColorInterface
     {
         return new Gray(($rgb->red + $rgb->green + $rgb->blue) / 3, $rgb->alpha);
+    }
+
+    public function lightness($value): ColorInterface
+    {
+        return new Gray($value, $this->alpha);
     }
 }

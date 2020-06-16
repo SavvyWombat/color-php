@@ -30,7 +30,7 @@ abstract class AbstractColor
         'rgba\((\d{1,3}),(\d{1,3}),(\d{1,3}),([0-1](.\d{1,2})?)\)' => Rgb::class,
     ];
 
-    private static $availableModifiers = [
+    private static $registeredModifiers = [
         'red' => Rgb::class,
         'blue' => Rgb::class,
         'green' => Rgb::class,
@@ -66,7 +66,7 @@ abstract class AbstractColor
     final public static function registerColorSpec(string $pattern, string $className)
     {
         if (!in_array($className, static::$registeredColors)) {
-            throw new Exception("Could not register `{$pattern}`. You must registered the color `{$className}` first.");
+            throw new Exception("Could not register `{$pattern}` as a color spec. You must register the color `{$className}` first.");
         }
 
         static::$registeredColorSpecs[$pattern] = $className;
@@ -75,6 +75,24 @@ abstract class AbstractColor
     final public static function registeredColorSpecs()
     {
         return static::$registeredColorSpecs;
+    }
+
+    final public static function registerModifier(string $name, string $className)
+    {
+        if (!in_array($className, static::$registeredColors)) {
+            throw new Exception("Could not register `{$name}` as a modifier. You must register the color `{$className}` first.");
+        }
+
+        if (!method_exists($className, $name)) {
+            throw new Exception("Could not register `{$name}` as a modifier. `{$className}` does not have this method.");
+        }
+
+        static::$registeredModifiers[$name] = $className;
+    }
+
+    final public static function registeredModifiers()
+    {
+        return static::$registeredModifiers;
     }
 
     final protected static function extractChannels(string $colorSpec, string $filter): ?array
@@ -172,8 +190,8 @@ abstract class AbstractColor
             return $this->to(substr($name, 2));
         }
 
-        if (isset(self::$availableModifiers[$name])) {
-            $converter = (self::$availableModifiers[$name])::fromRgb($this->toRgb());
+        if (isset(self::$registeredModifiers[$name])) {
+            $converter = (self::$registeredModifiers[$name])::fromRgb($this->toRgb());
             $converter = $converter->$name($arguments[0]);
             return static::fromRgb($converter->toRgb());
         }
