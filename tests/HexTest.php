@@ -88,7 +88,7 @@ class HexTest extends TestCase
     {
         $hex = Hex::fromString('#ABCDEF');
 
-        $this->assertEquals('#abcdef', (string) $hex);
+        $this->assertEquals('#ABCDEF', (string) $hex);
     }
 
     /**
@@ -98,7 +98,7 @@ class HexTest extends TestCase
     {
         $hex = Hex::fromString('#ABCDEF12');
 
-        $this->assertEquals('#abcdef12', (string) $hex);
+        $this->assertEquals('#ABCDEF12', (string) $hex);
     }
 
     /**

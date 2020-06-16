@@ -26,10 +26,10 @@ class Hex extends AbstractColor implements ColorInterface
             $alpha .= $alpha;
         }
 
-        $this->hexRed = strtoLower(self::validateChannel('red', $red));
-        $this->hexGreen = strtolower(self::validateChannel('green', $green));
-        $this->hexBlue = strtolower(self::validateChannel('blue', $blue));
-        $this->hexAlpha = strtolower( self::validateChannel('alpha', $alpha));
+        $this->hexRed = strtoupper(self::validateChannel('red', $red));
+        $this->hexGreen = strtoupper(self::validateChannel('green', $green));
+        $this->hexBlue = strtoupper(self::validateChannel('blue', $blue));
+        $this->hexAlpha = strtoupper( self::validateChannel('alpha', $alpha));
 
         $this->red = hexdec($red);
         $this->green = hexdec($green);
@@ -73,7 +73,7 @@ class Hex extends AbstractColor implements ColorInterface
 
     public function __toString(): string
     {
-        if ($this->hexAlpha === 'ff') {
+        if ($this->hexAlpha === 'FF') {
             return "#{$this->hexRed}{$this->hexGreen}{$this->hexBlue}";
         }
 
