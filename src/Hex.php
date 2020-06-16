@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SavvyWombat\Color;
 
-class Hex extends AbstractColor implements ColorInterface
+class Hex extends Color implements ColorInterface
 {
     protected $hexRed;
     protected $hexGreen;

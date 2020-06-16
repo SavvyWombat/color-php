@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SavvyWombat\Color;
 
-class Hsl extends AbstractColor implements ColorInterface
+class Hsl extends Color implements ColorInterface
 {
     protected $hue;
     protected $saturation;

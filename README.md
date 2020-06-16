@@ -32,27 +32,27 @@ echo (string) $rgb->toHex(); // #323C46
 
 # Installation
 
+```
 composer require savvywombat\color
+```
 
 # Usage
-
-The package comes with support for Hex, Hsl, and Rgb.
 
 ## Creating a color
 
 The following patterns are available by default to create a color:
 
 ```php
-AbstractColor::fromString('#123'); // Hex: #112233
-AbstractColor::fromString('#1234'); // Hex (with alpha): #11223344
-AbstractColor::fromString('#123456'); // Hex: #123456
-AbstractColor::fromString('#12345678'); // Hex: #12345678
+Color::fromString('#123'); // Hex: #112233
+Color::fromString('#1234'); // Hex (with alpha): #11223344
+Color::fromString('#123456'); // Hex: #123456
+Color::fromString('#12345678'); // Hex: #12345678
 
-AbstractColor::fromString('rgb(10,20,30)'); // Rgb
-AbstractColor::fromString('rgba(10,20,30,0.4)'); // Rgb
+Color::fromString('rgb(10,20,30)'); // Rgb
+Color::fromString('rgba(10,20,30,0.4)'); // Rgb
 
-AbstractColor::fromString('hsl(10,20,30)'); // Hsl
-AbstractColor::fromString('hsl(10,20,30,0.4)'); // Hsl
+Color::fromString('hsl(10,20,30)'); // Hsl
+Color::fromString('hsl(10,20,30,0.4)'); // Hsl
 ```
 
 ## Converting a color
@@ -60,14 +60,14 @@ AbstractColor::fromString('hsl(10,20,30,0.4)'); // Hsl
 Colors can be converted to any other registered color:
 
 ```php
-echo (string) AbstractColor::fromString('#123')->toHsl(); // hsl(210,50,8.6)
-echo (string) AbstractColor::fromString('#123')->toRgb(); // rgb(17,34,51)
+echo (string) Color::fromString('#123')->toHsl(); // hsl(210,50,8.6)
+echo (string) Color::fromString('#123')->toRgb(); // rgb(17,34,51)
 
-echo (string) AbstractColor::fromString('rgb(25,75,125)')->toHex(); // #194B7D
-echo (string) AbstractColor::fromString('rgb(25,75,125)')->toHsl(); // hsl(210,66.7,39.4)
+echo (string) Color::fromString('rgb(25,75,125)')->toHex(); // #194B7D
+echo (string) Color::fromString('rgb(25,75,125)')->toHsl(); // hsl(210,66.7,39.4)
 
-echo (string) AbstractColor::fromString('hsl(135,50,75)')->toHex(); // #9FDFAF
-echo (string) AbstractColor::fromString('hsl(135,50,75)')->toRgb(); // rgb(159,223,175)
+echo (string) Color::fromString('hsl(135,50,75)')->toHex(); // #9FDFAF
+echo (string) Color::fromString('hsl(135,50,75)')->toRgb(); // rgb(159,223,175)
 ```
 
 ## Modifying a color
@@ -102,7 +102,7 @@ Hue is not clamped, as it is possible to rotate more than 360 in either directio
 
 ## Custom color spaces/models
 
-The package allows you to create your own color spaces/models. These must extend `AbstractColor`, and implement the following methods from the `ColorInterface`:
+The package allows you to create your own color spaces/models. These must extend `Color`, and implement the following methods from the `ColorInterface`:
 
 ```php
     public static function fromString(string $colorSpec): ColorInterface;
@@ -115,7 +115,7 @@ For easy conversion and modification, it is recommended that you set equivalent 
 See below about using `fromString` and custom color specifications.
 
 ```php
-class Hsl extends AbstractColor implements ColorInterface
+class Hsl extends Color implements ColorInterface
 {
     protected $hue;
     protected $saturation;
@@ -141,7 +141,7 @@ class Hsl extends AbstractColor implements ColorInterface
 Alternatively, you can reimplement the default `toRgb()` method:
 
 ```php
-abstract class AbstractColor
+abstract class Color
 {
     public function toRgb(): Rgb
     {
@@ -153,14 +153,14 @@ abstract class AbstractColor
 You will need to register the color model to allow conversion to and from your new model:
 
 ```php
-AbstractColor::registerColor('Cmyk', CMYK::class);
+Color::registerColor('Cmyk', CMYK::class);
 
-echo (string) AbstractColor::fromString('rgb(50,100,150)')->toCMYK(); // cmyk(67,33,0,41)
+echo (string) Color::fromString('rgb(50,100,150)')->toCMYK(); // cmyk(67,33,0,41)
 ```
 
 You can replace existing colors with new models.
 
-You can get a list of registered colors via `AbstractColor::registeredColors()`.
+You can get a list of registered colors via `Color::registeredColors()`.
 
 ## Custom color specifications
 
@@ -169,13 +169,13 @@ Once you've registered your color model, you can register color specification pa
 The patterns use regex, without the start and end delimiters. `fromString` will add the delimiters automatically. 
 
 ```php
-AbstractColor::registerColor('Cmyk', Cmyk::class);
-AbstractColor::registerColorSpec('cmyk\((\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?)\)', Cmyk::class);
+Color::registerColor('Cmyk', Cmyk::class);
+Color::registerColorSpec('cmyk\((\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?)\)', Cmyk::class);
 ```
 
 You can register multiple patterns and even override existing patterns to map to different classes.
 
-You can get a list of registered patterns via `AbstractColor::registeredColorSpecs()`.
+You can get a list of registered patterns via `Color::registeredColorSpecs()`.
 
 ### `fromString(string $colorSpec): ColorInterface`
 
@@ -202,10 +202,10 @@ public static function fromString(string $colorSpec): ColorInterface
 You can also register custom modifiers that are made available to all other models.
 
 ```php
-AbstractColor::registerColor('Cmyk', Cmyk::class);
-AbstractColor::registerModifier('cyan', Cmyk::class);
+Color::registerColor('Cmyk', Cmyk::class);
+Color::registerModifier('cyan', Cmyk::class);
 
-echo (string) AbstractColor::fromString('#102030')->cyan(50); // #182030
+echo (string) Color::fromString('#102030')->cyan(50); // #182030
 ```
 
 Modifiers are methods on your class, and can be written as follows:

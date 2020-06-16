@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace SavvyWombat\Color\Test;
 
 use PHPUnit\Framework\TestCase;
-use SavvyWombat\Color\AbstractColor;
+use SavvyWombat\Color\Color;
 use SavvyWombat\Color\ColorInterface;
 use SavvyWombat\Color\Hex;
 use SavvyWombat\Color\Hsl;
@@ -91,9 +91,9 @@ class AbstractColorTest extends TestCase
      */
     public function can_register_new_color()
     {
-        AbstractColor::registerColor('Gray', Gray::class);
+        Color::registerColor('Gray', Gray::class);
 
-        $registeredColors = AbstractColor::registeredColors();
+        $registeredColors = Color::registeredColors();
 
         $this->assertArrayHasKey('Gray', $registeredColors);
         $this->assertEquals(Gray::class, $registeredColors['Gray']);
@@ -106,7 +106,7 @@ class AbstractColorTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        AbstractColor::registerColor('Gray', 'DoesNotExist');
+        Color::registerColor('Gray', 'DoesNotExist');
     }
 
     /**
@@ -116,7 +116,7 @@ class AbstractColorTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        AbstractColor::registerColor('Gray', DoesNotImplementInterface::class);
+        Color::registerColor('Gray', DoesNotImplementInterface::class);
     }
 
     /**
@@ -126,7 +126,7 @@ class AbstractColorTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        AbstractColor::registerColor('Gray', DoesNotExtendAbstract::class);
+        Color::registerColor('Gray', DoesNotExtendAbstract::class);
     }
 
     /**
@@ -136,7 +136,7 @@ class AbstractColorTest extends TestCase
     {
         $rgb = new Rgb(25, 50, 75, 0.5);
 
-        AbstractColor::registerColor('Gray', Gray::class);
+        Color::registerColor('Gray', Gray::class);
 
         $gray = $rgb->toGray();
         $this->assertInstanceOf(Gray::class, $gray);
@@ -151,7 +151,7 @@ class AbstractColorTest extends TestCase
     {
         $hsl = new Hsl(25, 50, 75, 0.5);
 
-        AbstractColor::registerColor('Gray', Gray::class);
+        Color::registerColor('Gray', Gray::class);
 
         $gray = $hsl->toGray();
         $this->assertInstanceOf(Gray::class, $gray);
@@ -164,10 +164,10 @@ class AbstractColorTest extends TestCase
      */
     public function can_register_new_color_spec_patterns()
     {
-        AbstractColor::registerColor('Gray', Gray::class);
-        AbstractColor::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
+        Color::registerColor('Gray', Gray::class);
+        Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
 
-        $registeredColorSpecs = AbstractColor::registeredColorSpecs();
+        $registeredColorSpecs = Color::registeredColorSpecs();
 
         $this->assertArrayHasKey('gray\((\d{1,3})\)', $registeredColorSpecs);
         $this->assertEquals(Gray::class, $registeredColorSpecs['gray\((\d{1,3})\)']);
@@ -180,7 +180,7 @@ class AbstractColorTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        AbstractColor::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
+        Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
     }
 
     /**
@@ -188,8 +188,8 @@ class AbstractColorTest extends TestCase
      */
     public function new_color_spec_can_be_used()
     {
-        AbstractColor::registerColor('Gray', Gray::class);
-        AbstractColor::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
+        Color::registerColor('Gray', Gray::class);
+        Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
 
         $gray = Gray::fromString('gray(50)');
 
@@ -203,8 +203,8 @@ class AbstractColorTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        AbstractColor::registerColor('Gray', Gray::class);
-        AbstractColor::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
+        Color::registerColor('Gray', Gray::class);
+        Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
 
         Rgb::fromString('gray(50)');
     }
@@ -214,10 +214,10 @@ class AbstractColorTest extends TestCase
      */
     public function new_color_spec_can_be_used_by_the_abstract()
     {
-        AbstractColor::registerColor('Gray', Gray::class);
-        AbstractColor::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
+        Color::registerColor('Gray', Gray::class);
+        Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
 
-        $gray = AbstractColor::fromString('gray(50)');
+        $gray = Color::fromString('gray(50)');
 
         $this->assertInstanceOf(Gray::class, $gray);
     }
@@ -227,8 +227,8 @@ class AbstractColorTest extends TestCase
      */
     public function can_register_new_color_modifier()
     {
-        AbstractColor::registerColor('Gray', Gray::class);
-        AbstractColor::registerModifier('lightness', Gray::class);
+        Color::registerColor('Gray', Gray::class);
+        Color::registerModifier('lightness', Gray::class);
 
         $rgb = Rgb::fromString('rgb(25,50,75)');
         $newRgb = $rgb->lightness(100);
@@ -245,7 +245,7 @@ class AbstractColorTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        AbstractColor::registerModifier('lightness', Gray::class);
+        Color::registerModifier('lightness', Gray::class);
     }
 
     /**
@@ -255,11 +255,11 @@ class AbstractColorTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        AbstractColor::registerModifier('doesNotExists', Gray::class);
+        Color::registerModifier('doesNotExists', Gray::class);
     }
 }
 
-class BaseColor extends AbstractColor
+class BaseColor extends Color
 {
     public function __construct($red, $green, $blue, $alpha)
     {
@@ -270,10 +270,10 @@ class BaseColor extends AbstractColor
     }
 }
 
-abstract class DoesNotImplementInterface extends AbstractColor {}
+abstract class DoesNotImplementInterface extends Color {}
 abstract class DoesNotExtendAbstract implements ColorInterface {}
 
-class Gray extends AbstractColor implements ColorInterface
+class Gray extends Color implements ColorInterface
 {
     protected $value;
 

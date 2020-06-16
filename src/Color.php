@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SavvyWombat\Color;
 
-abstract class AbstractColor
+abstract class Color
 {
     protected $red;
     protected $green;
@@ -15,7 +15,7 @@ abstract class AbstractColor
      * List of registered colors.
      * This allows conversion using methods such as `toHex`.
      *
-     * More colors can be added or overridden via AbstractColor::registerColor()
+     * More colors can be added or overridden via Color::registerColor()
      */
     private static $registeredColors = [
         'Hex' => Hex::class,
@@ -25,7 +25,7 @@ abstract class AbstractColor
 
     /**
      * List of registered color specifications.
-     * Regex patterns to match against strings provided to AbstractColor::fromString().
+     * Regex patterns to match against strings provided to Color::fromString().
      */
     private static $registeredColorSpecs = [
         '#([0-9a-f])([0-9a-f])([0-9a-f])' => Hex::class,
@@ -42,7 +42,7 @@ abstract class AbstractColor
 
     /**
      * List of registered modifiers.
-     * Modifiers can be called on any object which extends AbstractColor.
+     * Modifiers can be called on any object which extends Color.
      */
     private static $registeredModifiers = [
         'red' => Rgb::class,
@@ -57,7 +57,7 @@ abstract class AbstractColor
 
     /**
      * Add or override a color model.
-     * Maps the name to a class which extends AbstractColor and implements ColorInterface.
+     * Maps the name to a class which extends Color and implements ColorInterface.
      *
      * This allows conversion using methods such as `toHex`.
      */
@@ -71,8 +71,8 @@ abstract class AbstractColor
             throw new Exception("Could not register `{$name}`. `{$className}` does not implement `{ColorInterface::class}`.");
         }
 
-        if (!in_array(AbstractColor::class, class_parents($className))) {
-            throw new Exception("Could not register `{$name}`. `{$className}` does not extend `{AbstractColor::class}`.");
+        if (!in_array(Color::class, class_parents($className))) {
+            throw new Exception("Could not register `{$name}`. `{$className}` does not extend `{Color::class}`.");
         }
 
         static::$registeredColors[$name] = $className;
@@ -84,7 +84,7 @@ abstract class AbstractColor
     }
 
     /**
-     * Register a color specification pattern for matching the argument to AbstractColor::fromString() against a registered color.
+     * Register a color specification pattern for matching the argument to Color::fromString() against a registered color.
      *
      * When searching, the regex will be completed as "/^ *{$pattern} *$/i" and any matches returned as an array so that fromString() can construct the relevant class.
      */
@@ -133,7 +133,7 @@ abstract class AbstractColor
     final protected static function extractChannels(string $colorSpec, string $filter): ?array
     {
         $accepted = array_keys(array_filter(
-            AbstractColor::$registeredColorSpecs,
+            Color::$registeredColorSpecs,
             function($value) use ($filter) {
                 return $value === $filter;
             }
@@ -183,7 +183,7 @@ abstract class AbstractColor
     }
 
     /**
-     * Convert any subclass of AbstractColor to Rgb.
+     * Convert any subclass of Color to Rgb.
      * Expects the subclass to set RGB equivalents - otherwise the subclass will have to reimplement this method.
      */
     public function toRgb(): Rgb
@@ -196,11 +196,11 @@ abstract class AbstractColor
      */
     private function to($color): ColorInterface
     {
-        if (!isset(AbstractColor::registeredColors()[$color])) {
+        if (!isset(Color::registeredColors()[$color])) {
             throw Exception::unregisteredColor($color);
         }
 
-        return call_user_func([AbstractColor::registeredColors()[$color], 'fromRgb'], $this->toRgb());
+        return call_user_func([Color::registeredColors()[$color], 'fromRgb'], $this->toRgb());
     }
 
     /**

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SavvyWombat\Color;
 
-class Rgb extends AbstractColor implements ColorInterface
+class Rgb extends Color implements ColorInterface
 {
     public function __construct(float $red, float $green, float $blue, float $alpha = 1.0)
     {
