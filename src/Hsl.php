@@ -13,14 +13,23 @@ class Hsl extends AbstractColor implements ColorInterface
     public function __construct(float $hue, float $saturation, float $lightness, $alpha = 1.0)
     {
         $this->hue = $hue;
-        $this->saturation = $saturation;
-        $this->lightness = $lightness;
-        $this->alpha = $alpha;
+        $this->saturation = self::validateHslChannel('saturation)', $saturation);
+        $this->lightness = self::validateHslChannel('lightness', $lightness);
+        $this->alpha = self::validateAlphaChannel($alpha);
 
         [$red, $green, $blue] = static::hslToRgb($this->hue, $this->saturation, $this->lightness);
         $this->red = $red;
         $this->green = $green;
         $this->blue = $blue;
+    }
+
+    public static function validateHslChannel($channel, $value)
+    {
+        if ($value < 0 || $value > 100) {
+            throw InvalidColorException::invalidChannel($channel, $value, 'must be a valid hsl value (0-100)');
+        }
+
+        return $value;
     }
 
     public static function fromString(string $colorSpec): ColorInterface
@@ -43,10 +52,11 @@ class Hsl extends AbstractColor implements ColorInterface
         if ($hue === 0.0) { // deals with -0 from rounding
             $hue = 0;
         }
-        $saturation = round($this->saturation);
-        $lightness = round($this->lightness);
+        $saturation = round($this->saturation, 1);
+        $lightness = round($this->lightness, 1);
+        $alpha = round($this->alpha, 2);
 
-        if ($this->alpha === 1.0) {
+        if ($alpha === 1.0) {
             return "hsl({$hue},{$saturation},{$lightness})";
         }
 

@@ -68,6 +68,15 @@ abstract class AbstractColor
         return null;
     }
 
+    public static function validateAlphaChannel($value)
+    {
+        if ($value < 0 || $value > 1) {
+            throw InvalidColorException::invalidChannel('alpha', $value, 'must be a valid alpha value (0-1)');
+        }
+
+        return $value;
+    }
+
     final public function toRgb(): Rgb
     {
         return new Rgb($this->red, $this->green, $this->blue, $this->alpha);
