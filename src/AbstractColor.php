@@ -129,11 +129,11 @@ abstract class AbstractColor
 
     private function to($color): ColorInterface
     {
-        if (AbstractColor::registeredColors($color) === null) {
+        if (!isset(AbstractColor::registeredColors()[$color])) {
             throw Exception::unregisteredColor($color);
         }
 
-        return call_user_func([AbstractColor::registeredColors($color), 'fromRgb'], $this->toRgb());
+        return call_user_func([AbstractColor::registeredColors()[$color], 'fromRgb'], $this->toRgb());
     }
 
     final public function adjustValue($originalValue, $newValue)

@@ -141,6 +141,22 @@ class AbstractColorTest extends TestCase
         $gray = $rgb->toGray();
         $this->assertInstanceOf(Gray::class, $gray);
         $this->assertEquals(50, $gray->value);
+        $this->assertEquals(0.5, $gray->alpha);
+    }
+
+    /**
+     * @test
+     */
+    public function can_convert_to_new_color_from_any_other()
+    {
+        $hsl = new Hsl(25, 50, 75, 0.5);
+
+        AbstractColor::registerColor('Gray', Gray::class);
+
+        $gray = $hsl->toGray();
+        $this->assertInstanceOf(Gray::class, $gray);
+        $this->assertEquals(189, round($gray->value));
+        $this->assertEquals(0.5, $gray->alpha);
     }
 
     /**
