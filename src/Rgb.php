@@ -6,6 +6,12 @@ namespace SavvyWombat\Color;
 
 class Rgb extends Color implements ColorInterface
 {
+    /**
+     * While RGB channels are technically integer values in the range of 0..255, we accept floats here to prevent
+     * loss of color information when converting between color types.
+     *
+     * RGB channels are rounded to integer values in the __toString() method.
+     */
     public function __construct(float $red, float $green, float $blue, float $alpha = 1.0)
     {
         $this->red = self::validateRgbChannel('red', $red);
@@ -25,7 +31,7 @@ class Rgb extends Color implements ColorInterface
 
     public static function fromString(string $colorSpec): ColorInterface
     {
-        $channels = parent::extractChannels($colorSpec, self::class);
+        $channels = Color::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
             throw Exception::invalidRgbSpec($colorSpec);

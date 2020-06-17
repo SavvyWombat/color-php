@@ -17,6 +17,7 @@ class Hsl extends Color implements ColorInterface
         $this->lightness = self::validateHslChannel('lightness', $lightness);
         $this->alpha = self::validateAlphaChannel($alpha);
 
+        // calculate RGB equivalent values for easy conversion
         [$red, $green, $blue] = static::hslToRgb($this->hue, $this->saturation, $this->lightness);
         $this->red = $red;
         $this->green = $green;
@@ -34,7 +35,7 @@ class Hsl extends Color implements ColorInterface
 
     public static function fromString(string $colorSpec): ColorInterface
     {
-        $channels = parent::extractChannels($colorSpec, self::class);
+        $channels = Color::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
             throw Exception::invalidHslSpec($colorSpec);

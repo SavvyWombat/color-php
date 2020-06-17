@@ -12,7 +12,7 @@ use SavvyWombat\Color\Hsl;
 use SavvyWombat\Color\Exception;
 use SavvyWombat\Color\Rgb;
 
-class AbstractColorTest extends TestCase
+class ColorTest extends TestCase
 {
     /**
      * @test
@@ -298,7 +298,7 @@ class Gray extends Color implements ColorInterface
     {
         $value = round($this->value);
 
-        return "gray({$value})`";
+        return "gray({$value})";
     }
 
     public static function fromRgb(Rgb $rgb): ColorInterface

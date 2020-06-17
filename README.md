@@ -107,120 +107,158 @@ The package allows you to create your own color types. These must extend `Color`
 ```php
     public static function fromString(string $colorSpec): ColorInterface;
     public function __toString(): string;
+
     public static function fromRgb(Rgb $rgb): ColorInterface;
+    public function toRgb(): Rgb;
 ```
 
-For easy conversion and modification, it is recommended that you set equivalent RGB values in your class (if you're not already working in an RGB colorspace):
+#### Registering color types
 
-See below about using `fromString` and custom color specifications.
-
-```php
-class Hsl extends Color implements ColorInterface
-{
-    protected $hue;
-    protected $saturation;
-    protected $lightness;
-
-    public function __construct(float $hue, float $saturation, float $lightness, $alpha = 1.0)
-    {
-        $this->hue = $hue;
-        $this->saturation = self::validateHslChannel('saturation)', $saturation);
-        $this->lightness = self::validateHslChannel('lightness', $lightness);
-        $this->alpha = self::validateAlphaChannel($alpha);
-
-        [$red, $green, $blue] = static::hslToRgb($this->hue, $this->saturation, $this->lightness);
-        $this->red = $red;
-        $this->green = $green;
-        $this->blue = $blue;
-    }
-
-    ...
-}
-```
-
-Alternatively, you can reimplement the default `toRgb()` method:
+You will need to register the class to allow conversion to and from your new color:
 
 ```php
-abstract class Color
-{
-    public function toRgb(): Rgb
-    {
-        return new Rgb($this->red, $this->green, $this->blue, $this->alpha);
-    }
-}
-```
-
-You will need to register the color type to allow conversion to and from your new model:
-
-```php
-Color::registerColor('Cmyk', CMYK::class);
-
-echo (string) Color::fromString('rgb(50,100,150)')->toCMYK(); // cmyk(67,33,0,41)
+Color::registerColor('Gray', Gray::class);
+echo (string) Color::fromString('#163248')->toGray(); // #323232
 ```
 
 You can replace existing color types with new ones.
 
 You can get a list of registered color types via `Color::registeredColors()`.
 
-## Custom color specifications
-
-Once you've registered your color type, you can register color specification patterns that can be used to create that color from a string.
-
-The patterns use regex, without the start and end delimiters. `fromString` will add the delimiters automatically. 
+### `public static function fromString(string $colorSpec): ColorInterface`
 
 ```php
-Color::registerColor('Cmyk', Cmyk::class);
-Color::registerColorSpec('cmyk\((\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?)\)', Cmyk::class);
+echo (string) Color::fromString('#204060')->toGray(); // gray(25%)
+echo (string) Color::fromString('gray(50%, 0.25)')->toRgb(); // #80808040
 ```
 
-You can register multiple patterns and even override existing patterns to map to different classes.
-
-You can get a list of registered patterns via `Color::registeredColorSpecs()`.
-
-### `fromString(string $colorSpec): ColorInterface`
-
-Your class must implement the static `fromString` method as part of the `ColorInterface` contract.
-
-Example implementation:
+The `fromString` accepts a color specification and tests it against the registered patterns and extracts the information.
 
 ```php
-// cmyk\((\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?)\)
+/**
+ * color spec pattern: 'gray\((\d{1,3}(\.\d{1})?)%\)'
+ * color spec pattern: 'gray\((\d{1,3}(\.\d{1})?)%,([0-1](\.\d{1,2})?)\)'
+ *
+ * If the color spec matches either of the patterns, extractChannels will return the parameters from the string using regex.
+ */
 public static function fromString(string $colorSpec): ColorInterface
 {
-    $channels = parent::extractChannels($colorSpec, self::class);
+    $channels = Color::extractChannels($colorSpec, self::class);
 
-    if (empty($channels)) {
-        throw new \Exception("{$colorSpec} is not a valid CMYK specification.");
+    if (!isset($channels[3])) {
+        $channels[3] = 1.0;
     }
 
-    return new Cmyk((float) $channels[1], (float) $channels[3], (float) $channels[5], (float) $channels[7]);
-} 
-```
-
-## Custom modifiers
-
-You can also register custom modifiers that are made available to all other models.
-
-```php
-Color::registerColor('Cmyk', Cmyk::class);
-Color::registerModifier('cyan', Cmyk::class);
-
-echo (string) Color::fromString('#102030')->cyan(50); // #182030
-```
-
-Modifiers are methods on your class, and can be written as follows:
-
-```php
-public function hue($hue): self
-{
-    $hue = $this->adjustValue($this->hue, $hue);
-
-    return new self($hue, $this->saturation, $this->lightness, $this->alpha);
+    return new Gray((float) $channels[1], $channels[3]);
 }
 ```
 
-When you call the `hue` method directly on an `Hsl` object, it will create a new copy of the model with the updated hue value.
+#### Registering color specification patterns
 
-When you call the `hue` method on any other color type, it will first convert to `Hsl` (via an `Rgb` object), update the hue value, and convert back to an object of the original type.
+To register a color specification pattern you must first register the color type it will apply to:
 
-In this way, it is possible to adjust the hue of an RGB color, or vary the amount of green in an HSL color.
+```php
+Color::registerColor('Gray', Gray::class);
+Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
+```
+
+You register new specifications for any registered color type, including the default types. You can also override registered patterns so that they apply to different color types.
+
+You can get a list of registered color specification via `Color::registeredColorSpecs()`.
+
+### `public function __toString(): string;`
+
+```php
+public function __toString(): string
+{
+    $value = round($this->value, 1);
+    $alpha = round($this->alpha, 2);
+    
+    if ($alpha === 1.0) {
+        return "gray({$value},{$alpha})";
+    }
+
+    return "gray({$value})";
+}
+```
+
+### `public static function fromRgb(Rgb $rgb): ColorInterface`
+
+This method is used to allow conversion from one color type to any another that has been registered. This means that you only have to specify how to convert _to_ your new type _from_ an RGB color.
+
+```php
+public static function fromRgb(Rgb $rgb): ColorInterface
+{
+    $average = ($rgb->red + $rgb->green + $rgb->blue) / 3;
+    $gray = $average * 100 / 255;
+
+    return new Gray($gray, $this->alpha);
+}
+```
+
+### `public function toRgb(): Rgb`
+
+The abstract `\SavvyWombat\Color\Color` already implements this method:
+
+```php
+public function toRgb(): Rgb
+{
+    return new Rgb($this->red, $this->green, $this->blue, $this->alpha);
+}
+```
+
+The red, green, blue and alpha properties are also defined on the abstract. You can either reimplement the method, or set these values in your color type constructor to make use of the default implementation:
+
+```php
+use \SavvyWombat\Color\Color;
+
+class Gray extends Color
+{
+    // gray value in range 0..100
+    protected $value;
+
+    public function __construct(float $value, float $alpha = 1.0)
+    {
+        $this->value = $value;
+        $this->alpha = $alpha;
+
+        // calculate RGB equivalent values for easy conversion
+        $this->red = $value * 2.55; // convert to 0..255 for RGB
+        $this->green = $value * 2.55;
+        $this->blue = $value * 2.55;
+    }
+}
+```
+
+It is recommended that you use the default implementation, as the red, green and blue properties are exposed in the public interface.
+
+## Custom color modifiers
+
+Color modifiers are methods on color types that are registered and made available to all other color types.
+
+Calling a modifier on a color type will convert it to the type that implements the registered method, and then convert the result back to the original type. To help with this implicit conversion, custom modifiers must return an object which extends `Color` - ideally, it should be a copy of the same type the method is implemented on.
+
+```php
+public function gray($gray): self
+{
+    $gray = $this->adjustValue($this->gray, $gray);
+    
+    if ($gray < 0) {
+        $gray = 0;
+    }
+
+    if ($gray > 100) {
+        $gray = 100;
+    }
+
+    return new self($gray, $this->alpha);
+}
+```
+
+`Color::adjustValue($originalValue, $newValue)` handles the various relative arguments (&plusmn;50 or &plusmn;50%) to produce the new calculated value for the property being modified.
+
+The modifier is also responsible for ensuring the new value is valid for the property being modified.
+
+## License
+
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

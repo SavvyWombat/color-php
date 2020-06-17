@@ -18,7 +18,7 @@ class Exception extends BaseException
 
     public static function invalidColorSpec(string $colorSpec): self
     {
-        return new static("Could not find a registered color specific for `{$colorSpec}`.");
+        return new static("Could not find a registered color specification to match `{$colorSpec}`.");
     }
 
     public static function invalidHexSpec(string $colorSpec): self

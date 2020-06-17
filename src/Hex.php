@@ -48,7 +48,7 @@ class Hex extends Color implements ColorInterface
 
     public static function fromString(string $colorSpec): ColorInterface
     {
-        $channels = parent::extractChannels($colorSpec, self::class);
+        $channels = Color::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
             throw Exception::invalidHexSpec($colorSpec);
