@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SavvyWombat\Color;
 
-class Hsl extends Color implements ColorInterface
+class Hsl extends Color
 {
     protected $hue;
     protected $saturation;
@@ -133,7 +133,7 @@ class Hsl extends Color implements ColorInterface
         $d = $cmax - $cmin;
 
         $hue = 0;
-        if ($d !== 0) {
+        if ($d > 0.0) {
             if ($r === $cmax) {
                 $hue = 60 * fmod(($g - $b) / $d, 6);
             }

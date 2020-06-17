@@ -192,7 +192,7 @@ public static function fromRgb(Rgb $rgb): ColorInterface
     $average = ($rgb->red + $rgb->green + $rgb->blue) / 3;
     $gray = $average * 100 / 255;
 
-    return new Gray($gray, $this->alpha);
+    return new Gray($gray, $rgb->alpha);
 }
 ```
 

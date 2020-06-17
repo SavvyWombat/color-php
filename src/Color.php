@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SavvyWombat\Color;
 
-abstract class Color
+abstract class Color implements ColorInterface
 {
     protected $red;
     protected $green;

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SavvyWombat\Color;
 
-class Rgb extends Color implements ColorInterface
+class Rgb extends Color
 {
     /**
      * While RGB channels are technically integer values in the range of 0..255, we accept floats here to prevent

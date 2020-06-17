@@ -19,26 +19,26 @@ class ColorTest extends TestCase
      */
     public function creates_an_rgb_color_with_alpha()
     {
-        $baseColor = new BaseColor(100, 101, 110, 0.45);
+        $color = new Gray(50, 0.45);
 
-        $rgb = $baseColor->toRgb();
+        $rgb = $color->toRgb();
 
         $this->assertInstanceOf(Rgb::class, $rgb);
-        $this->assertEquals(100, $rgb->red);
-        $this->assertEquals(101, $rgb->green);
-        $this->assertEquals(110, $rgb->blue);
-        $this->assertEquals(0.45, $rgb->alpha);
+        $this->assertEquals(128, round($rgb->red));
+        $this->assertEquals(128, round($rgb->green));
+        $this->assertEquals(128, round($rgb->blue));
+        $this->assertEquals(0.45, round($rgb->alpha, 2));
     }
 
     /**
      * @test
      */
-    public function cannot_convert_to_unsupported_color()
+    public function cannot_convert_to_unregistered_color()
     {
         $this->expectException(Exception::class);
 
-        $baseColor = new BaseColor(100, 101, 110, 0.45);
-        $baseColor->to(BaseColor::class);
+        $color = new Gray(50, 0.45);
+        $color->toUnregistered();
     }
 
     /**
@@ -46,13 +46,13 @@ class ColorTest extends TestCase
      */
     public function can_convert_to_hex()
     {
-        $baseColor = new BaseColor(100, 101, 110, 0.45);
-        $hex = $baseColor->toHex();
+        $color = new Gray(50, 0.45);
+        $hex = $color->toHex();
 
         $this->assertInstanceOf(Hex::class, $hex);
-        $this->assertEquals(100, $hex->red);
-        $this->assertEquals(101, $hex->green);
-        $this->assertEquals(110, $hex->blue);
+        $this->assertEquals(128, $hex->red);
+        $this->assertEquals(128, $hex->green);
+        $this->assertEquals(128, $hex->blue);
         $this->assertEquals(0.45, round($hex->alpha, 2));
     }
 
@@ -61,14 +61,14 @@ class ColorTest extends TestCase
      */
     public function can_convert_to_hsl()
     {
-        $baseColor = new BaseColor(100, 101, 110, 0.45);
-        $hsl = $baseColor->toHsl();
+        $color = new Gray(50, 0.45);
+        $hsl = $color->toHsl();
 
         $this->assertInstanceOf(Hsl::class, $hsl);
-        $this->assertEquals(100, $hsl->red);
-        $this->assertEquals(101, $hsl->green);
-        $this->assertEquals(110, $hsl->blue);
-        $this->assertEquals(0.45, $hsl->alpha);
+        $this->assertEquals(128, round($hsl->red));
+        $this->assertEquals(128, round($hsl->green));
+        $this->assertEquals(128, round($hsl->blue));
+        $this->assertEquals(0.45, round($hsl->alpha, 2));
     }
 
     /**
@@ -76,14 +76,14 @@ class ColorTest extends TestCase
      */
     public function can_convert_to_rgb()
     {
-        $baseColor = new BaseColor(100, 101, 110, 0.45);
-        $rgb = $baseColor->toRgb();
+        $color = new Gray(50, 0.45);
+        $rgb = $color->toRgb();
 
         $this->assertInstanceOf(Rgb::class, $rgb);
-        $this->assertEquals(100, $rgb->red);
-        $this->assertEquals(101, $rgb->green);
-        $this->assertEquals(110, $rgb->blue);
-        $this->assertEquals(0.45, $rgb->alpha);
+        $this->assertEquals(128, round($rgb->red));
+        $this->assertEquals(128, round($rgb->green));
+        $this->assertEquals(128, round($rgb->blue));
+        $this->assertEquals(0.45, round($rgb->alpha, 2));
     }
 
     /**
@@ -112,16 +112,6 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function colors_must_implement_interface()
-    {
-        $this->expectException(Exception::class);
-
-        Color::registerColor('Gray', DoesNotImplementInterface::class);
-    }
-
-    /**
-     * @test
-     */
     public function colors_must_extend_abstract()
     {
         $this->expectException(Exception::class);
@@ -140,7 +130,7 @@ class ColorTest extends TestCase
 
         $gray = $rgb->toGray();
         $this->assertInstanceOf(Gray::class, $gray);
-        $this->assertEquals(50, $gray->value);
+        $this->assertEquals(19.6, round($gray->value, 1));
         $this->assertEquals(0.5, $gray->alpha);
     }
 
@@ -155,22 +145,8 @@ class ColorTest extends TestCase
 
         $gray = $hsl->toGray();
         $this->assertInstanceOf(Gray::class, $gray);
-        $this->assertEquals(189, round($gray->value));
+        $this->assertEquals(74.3, round($gray->value, 1));
         $this->assertEquals(0.5, $gray->alpha);
-    }
-
-    /**
-     * @test
-     */
-    public function can_register_new_color_spec_patterns()
-    {
-        Color::registerColor('Gray', Gray::class);
-        Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
-
-        $registeredColorSpecs = Color::registeredColorSpecs();
-
-        $this->assertArrayHasKey('gray\((\d{1,3})\)', $registeredColorSpecs);
-        $this->assertEquals(Gray::class, $registeredColorSpecs['gray\((\d{1,3})\)']);
     }
 
     /**
@@ -180,7 +156,7 @@ class ColorTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
+        Color::registerColorSpec('gray\((\d{1,3}(\.\d{1})?)%\)', Gray::class);
     }
 
     /**
@@ -189,11 +165,12 @@ class ColorTest extends TestCase
     public function new_color_spec_can_be_used()
     {
         Color::registerColor('Gray', Gray::class);
-        Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
+        Color::registerColorSpec('gray\((\d{1,3}(\.\d{1})?)%\)', Gray::class);
 
-        $gray = Gray::fromString('gray(50)');
+        $gray = Gray::fromString('gray(50%)');
 
         $this->assertInstanceOf(Gray::class, $gray);
+        $this->assertEquals('gray(50%)', (string) $gray);
     }
 
     /**
@@ -204,9 +181,9 @@ class ColorTest extends TestCase
         $this->expectException(Exception::class);
 
         Color::registerColor('Gray', Gray::class);
-        Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
+        Color::registerColorSpec('gray\((\d{1,3}(\.\d{1})?)%\)', Gray::class);
 
-        Rgb::fromString('gray(50)');
+        Rgb::fromString('gray(50%)');
     }
 
     /**
@@ -215,11 +192,12 @@ class ColorTest extends TestCase
     public function new_color_spec_can_be_used_by_the_abstract()
     {
         Color::registerColor('Gray', Gray::class);
-        Color::registerColorSpec('gray\((\d{1,3})\)', Gray::class);
+        Color::registerColorSpec('gray\((\d{1,3}(\.\d{1})?)%\)', Gray::class);
 
-        $gray = Color::fromString('gray(50)');
+        $gray = Color::fromString('gray(50%)');
 
         $this->assertInstanceOf(Gray::class, $gray);
+        $this->assertEquals('gray(50%)', (string) $gray);
     }
 
     /**
@@ -228,14 +206,14 @@ class ColorTest extends TestCase
     public function can_register_new_color_modifier()
     {
         Color::registerColor('Gray', Gray::class);
-        Color::registerModifier('lightness', Gray::class);
+        Color::registerModifier('gray', Gray::class);
 
         $rgb = Rgb::fromString('rgb(25,50,75)');
-        $newRgb = $rgb->lightness(100);
+        $newRgb = $rgb->gray('25');
 
         $this->assertInstanceOf(Rgb::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
-        $this->assertEquals('rgb(100,100,100)', (string) $newRgb);
+        $this->assertEquals('rgb(64,64,64)', (string) $newRgb);
     }
 
     /**
@@ -245,7 +223,7 @@ class ColorTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        Color::registerModifier('lightness', Gray::class);
+        Color::registerModifier('gray', Gray::class);
     }
 
     /**
@@ -255,18 +233,7 @@ class ColorTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        Color::registerModifier('doesNotExists', Gray::class);
-    }
-}
-
-class BaseColor extends Color
-{
-    public function __construct($red, $green, $blue, $alpha)
-    {
-        $this->red = $red;
-        $this->green = $green;
-        $this->blue = $blue;
-        $this->alpha = round($alpha, 2);
+        Color::registerModifier('doesNotExist', Gray::class);
     }
 }
 
@@ -282,32 +249,56 @@ class Gray extends Color implements ColorInterface
         $this->value = $value;
         $this->alpha = $alpha;
 
-        $this->red = $value;
-        $this->green = $value;
-        $this->blue = $value;
+        // calculate RGB equivalent values for easy conversion
+        $this->red = $value * 2.55; // convert to 0..255 for RGB
+        $this->green = $value * 2.55;
+        $this->blue = $value * 2.55;
     }
 
     public static function fromString(string $colorSpec): ColorInterface
     {
-        $channels = parent::extractChannels($colorSpec, self::class);
+        $channels = Color::extractChannels($colorSpec, self::class);
 
-        return new Gray((float) $channels[1]);
+        if (!isset($channels[3])) {
+            $channels[3] = 1.0;
+        }
+
+        return new Gray((float) $channels[1], $channels[3]);
     }
 
     public function __toString(): string
     {
-        $value = round($this->value);
+        $value = round($this->value, 1);
+        $alpha = round($this->alpha, 2);
 
-        return "gray({$value})";
+        if ($alpha === 1.0) {
+            return "gray({$value}%)";
+        }
+
+        return "gray({$value}%,{$alpha})";
     }
 
     public static function fromRgb(Rgb $rgb): ColorInterface
     {
-        return new Gray(($rgb->red + $rgb->green + $rgb->blue) / 3, $rgb->alpha);
+        $average = ($rgb->red + $rgb->green + $rgb->blue) / 3;
+        $gray = $average * 100 / 255;
+
+        return new Gray($gray, $rgb->alpha);
     }
 
-    public function lightness($value): ColorInterface
+    public function gray($gray): self
     {
-        return new Gray($value, $this->alpha);
+        $gray = $this->adjustValue($this->gray, $gray);
+
+        if ($gray < 0) {
+            $gray = 0;
+        }
+
+        if ($gray > 100) {
+            $gray = 100;
+        }
+
+        return new self($gray, $this->alpha);
     }
+
 }
