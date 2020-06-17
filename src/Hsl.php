@@ -58,22 +58,22 @@ class Hsl extends Color
         $alpha = round($this->alpha, 2);
 
         if ($alpha === 1.0) {
-            return "hsl({$hue},{$saturation},{$lightness})";
+            return "hsl({$hue},{$saturation}%,{$lightness}%)";
         }
 
-        return "hsla({$hue},{$saturation},{$lightness},{$this->alpha})";
+        return "hsla({$hue},{$saturation}%,{$lightness}%,{$alpha})";
     }
 
     public function hue($hue): self
     {
         $hue = $this->adjustValue($this->hue, $hue);
 
-        return new self($hue, $this->saturation, $this->lightness);
+        return new self($hue, $this->saturation, $this->lightness, $this->alpha);
     }
 
     public function saturation($saturation): self
     {
-        $saturation = $this->adjustValue($this->saturation, $saturation);
+        $saturation = $this->adjustValue($this->saturation, $saturation, 100);
 
         if ($saturation > 100) {
             $saturation = 100;
@@ -83,12 +83,12 @@ class Hsl extends Color
             $saturation = 0;
         }
 
-        return new self($this->hue, $saturation, $this->lightness);
+        return new self($this->hue, $saturation, $this->lightness, $this->alpha);
     }
 
     public function lightness($lightness): self
     {
-        $lightness = $this->adjustValue($this->lightness, $lightness);
+        $lightness = $this->adjustValue($this->lightness, $lightness, 100);
 
         if ($lightness > 100) {
             $lightness = 100;
@@ -98,22 +98,7 @@ class Hsl extends Color
             $lightness = 0;
         }
 
-        return new self($this->hue, $this->saturation, $lightness);
-    }
-
-    public function alpha($alpha): self
-    {
-        $alpha = $this->adjustValue($this->alpha, $alpha);
-
-        if ($alpha > 1) {
-            $alpha = 1;
-        }
-
-        if ($alpha < 0) {
-            $alpha = 0;
-        }
-
-        return new self($this->hue, $this->saturation, $this->lightness, $alpha);
+        return new self($this->hue, $this->saturation, $lightness, $this->alpha);
     }
 
     public static function fromRgb(Rgb $rgb): ColorInterface

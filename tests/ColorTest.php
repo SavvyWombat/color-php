@@ -235,6 +235,78 @@ class ColorTest extends TestCase
 
         Color::registerModifier('doesNotExist', Gray::class);
     }
+
+    /**
+     * @test
+     */
+    public function adjust_value_returns_absolute_value()
+    {
+        $color = new Gray(50);
+
+        $this->assertEquals(100, $color->adjustValue(50, '100'));
+    }
+
+    /**
+     * @test
+     */
+    public function adjust_value_increases_original_value()
+    {
+        $color = new Gray(50);
+
+        $this->assertEquals(60, $color->adjustValue(50, '+10'));
+    }
+
+    /**
+     * @test
+     */
+    public function adjust_value_decreases_original_value()
+    {
+        $color = new Gray(50);
+
+        $this->assertEquals(40, $color->adjustValue(50, '-10'));
+    }
+
+    /**
+     * @test
+     */
+    public function adjust_value_increases_by_percentage()
+    {
+        $color = new Gray(50);
+
+        $this->assertEquals(55, $color->adjustValue(50, '+10%'));
+    }
+
+    /**
+     * @test
+     */
+    public function adjust_value_decreases_by_percentage()
+    {
+        $color = new Gray(50);
+
+        $this->assertEquals(45, $color->adjustValue(50, '-10%'));
+    }
+
+    /**
+     * @test
+     */
+    public function adjust_value_increase_by_fraction()
+    {
+        $color = new Gray(50);
+
+        $this->assertEquals(75, $color->adjustValue(50, '+1/2', 100));
+        $this->assertEquals(152.5, $color->adjustValue(50, '+1/2', 255));
+    }
+
+    /**
+     * @test
+     */
+    public function adjust_value_decrease_by_fraction()
+    {
+        $color = new Gray(50);
+
+        $this->assertEquals(16.67, round($color->adjustValue(50, '-2/3', 100), 2));
+        $this->assertEquals(30, round($color->adjustValue(50, '-2/3', 100, 20), 2));
+    }
 }
 
 abstract class DoesNotImplementInterface extends Color {}
@@ -288,7 +360,7 @@ class Gray extends Color implements ColorInterface
 
     public function gray($gray): self
     {
-        $gray = $this->adjustValue($this->gray, $gray);
+        $gray = $this->adjustValue($this->gray, $gray, 100);
 
         if ($gray < 0) {
             $gray = 0;

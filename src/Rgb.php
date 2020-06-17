@@ -45,7 +45,7 @@ class Rgb extends Color
 
     public function red($red): self
     {
-        $red = $this->adjustValue($this->red, $red);
+        $red = $this->adjustValue($this->red, $red, 255);
 
         if ($red > 255) {
             $red = 255;
@@ -60,7 +60,7 @@ class Rgb extends Color
 
     public function green($green): self
     {
-        $green = $this->adjustValue($this->green, $green);
+        $green = $this->adjustValue($this->green, $green, 255);
 
         if ($green > 255) {
             $green = 255;
@@ -75,7 +75,7 @@ class Rgb extends Color
 
     public function blue($blue): self
     {
-        $blue = $this->adjustValue($this->blue, $blue);
+        $blue = $this->adjustValue($this->blue, $blue, 255);
 
         if ($blue > 255) {
             $blue = 255;
@@ -90,7 +90,7 @@ class Rgb extends Color
 
     public function alpha($alpha): self
     {
-        $alpha = $this->adjustValue($this->alpha, $alpha);
+        $alpha = $this->adjustValue($this->alpha, $alpha, 1);
 
         if ($alpha > 1) {
             $alpha = 1;

@@ -4,8 +4,8 @@ A PHP package to help convert between and manipulate HSL and RGB colorspaces/typ
 
 Main features:
 
-- support for CSS Color Module Level 3 color specifications ( #323C46, rgb(50,60,70), hsl(210,16.7,23.5) );
-- support for alpha transparency ( #323C4680, rgba(50,60,70,0.5), hsla(210,16.7,23.5,0.5) );
+- support for CSS Color Module Level 3 color specifications ( #323C46, rgb(50,60,70), hsl(210,16.7%,23.5%) );
+- support for alpha transparency ( #323C4680, rgba(50,60,70,0.5), hsla(210,16.7%,23.5%,0.5) );
 - modifiers to change red/green/blue or hue/saturation/lightness and alpha on any color type;
 - able to extend with custom colorspaces/types which can then be converted and/or modified;
 - able to extend with custom modifiers;
@@ -16,10 +16,10 @@ $rgb = new \SavvyWombat\Color\Rgb(50, 60, 70);
 echo (string) $rgb; // rgb(50,60,70)
 
 $hsl = $rgb->toHsl();
-echo (string) $hsl; // hsl(210,16.7,23.5);
+echo (string) $hsl; // hsl(210,16.7%,23.5%);
 
 $redderHsl = $hsl->red('+50');
-echo (string) $redderHsl; // hsl(345,25,31.4);
+echo (string) $redderHsl; // hsl(345,25%,31.4%);
 
 $lighterRgb = $rgb->lighten('+10%');
 echo (string) $lighterRgb; // rgb(55,66,77);
@@ -51,8 +51,8 @@ Color::fromString('#12345678'); // Hex: #12345678
 Color::fromString('rgb(10,20,30)'); // Rgb
 Color::fromString('rgba(10,20,30,0.4)'); // Rgb
 
-Color::fromString('hsl(10,20,30)'); // Hsl
-Color::fromString('hsl(10,20,30,0.4)'); // Hsl
+Color::fromString('hsl(10,20%,30%)'); // Hsl
+Color::fromString('hsl(10,20%,30%,0.4)'); // Hsl
 ```
 
 ## Converting a color
@@ -60,14 +60,14 @@ Color::fromString('hsl(10,20,30,0.4)'); // Hsl
 Colors can be converted to any other registered color type:
 
 ```php
-echo (string) Color::fromString('#123')->toHsl(); // hsl(210,50,8.6)
+echo (string) Color::fromString('#123')->toHsl(); // hsl(210,50%,8.6%)
 echo (string) Color::fromString('#123')->toRgb(); // rgb(17,34,51)
 
 echo (string) Color::fromString('rgb(25,75,125)')->toHex(); // #194B7D
-echo (string) Color::fromString('rgb(25,75,125)')->toHsl(); // hsl(210,66.7,39.4)
+echo (string) Color::fromString('rgb(25,75,125)')->toHsl(); // hsl(210,66.7%,39.4%)
 
-echo (string) Color::fromString('hsl(135,50,75)')->toHex(); // #9FDFAF
-echo (string) Color::fromString('hsl(135,50,75)')->toRgb(); // rgb(159,223,175)
+echo (string) Color::fromString('hsl(135,50%,75%)')->toHex(); // #9FDFAF
+echo (string) Color::fromString('hsl(135,50%,75%)')->toRgb(); // rgb(159,223,175)
 ```
 
 ## Modifying a color
@@ -90,13 +90,15 @@ $newHsl = $hsl->red('+50'); // add 50 to the current value
 $newHsl = $hsl->red('-50'); // remove 50 from the current value
 $newHsl = $hsl->red('+50%'); // increase the current value by 50%
 $newHsl = $hsl->red('-50%'); // decrease the current value by 50%
+$newHsl = $hsl->red('+1/2'); // set to a value halfway between the current value and 255 (maximum red value)
+$newHsl = $hsl->red('-1/2'); // set to a value halfway between the current value and 0 (minimum red value)
 ```
 
 Red, green, blue values are clamped in the range of 0..255. This means that adding 100 to a color which already has a red value of 200 will return a color with red set to 255.
 
 Similarly, saturation and lightness are clamped in the range 0..100, while alpha is clamped between 0 and 1.
 
-Hue is not clamped, as it is possible to rotate more than 360 in either direction (and 420&deg; is equivalent to 60&deg;). 
+Hue is not clamped, as it is possible to rotate more than 360 in either direction (and 420&deg; is equivalent to 60&deg;). Because of this, the fractional pattern ('+1/2') should not be used as there is no minimum or maximum. 
 
 # Extending
 
@@ -241,7 +243,7 @@ Calling a modifier on a color type will convert it to the type that implements t
 ```php
 public function gray($gray): self
 {
-    $gray = $this->adjustValue($this->gray, $gray);
+    $gray = $this->adjustValue($this->gray, $gray, 100);
     
     if ($gray < 0) {
         $gray = 0;
@@ -255,7 +257,7 @@ public function gray($gray): self
 }
 ```
 
-`Color::adjustValue($originalValue, $newValue)` handles the various relative arguments (&plusmn;50 or &plusmn;50%) to produce the new calculated value for the property being modified.
+`Color::adjustValue($originalValue, $newValue, $max = 0, $min = 0)` handles the various relative arguments (&plusmn;50 or &plusmn;50%) to produce the new calculated value for the property being modified.
 
 The modifier is also responsible for ensuring the new value is valid for the property being modified.
 

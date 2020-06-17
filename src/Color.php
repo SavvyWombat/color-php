@@ -33,8 +33,8 @@ abstract class Color implements ColorInterface
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
 
-        'hsl\((\d{1,3}),(\d{1,3}(\.\d{1,2})?),(\d{1,3}(\.\d{1,2})?)\)' => Hsl::class,
-        'hsla\((\d{1,3}),(\d{1,3}(\.\d{1})?),(\d{1,3}(\.\d{1})?),([0-1](\.\d{1,2})?)\)' => Hsl::class,
+        'hsl\((\d{1,3}),(\d{1,3}(\.\d{1,2})?)%,(\d{1,3}(\.\d{1,2})?)%\)' => Hsl::class,
+        'hsla\((\d{1,3}),(\d{1,3}(\.\d{1})?)%,(\d{1,3}(\.\d{1})?)%,([0-1](\.\d{1,2})?)\)' => Hsl::class,
 
         'rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)' => Rgb::class,
         'rgba\((\d{1,3}),(\d{1,3}),(\d{1,3}),([0-1](\.\d{1,2})?)\)' => Rgb::class,
@@ -212,16 +212,24 @@ abstract class Color implements ColorInterface
      * -50 will remove 50 from the $originalValue
      * +50% will increase the $originalValue by 50%
      * -50% will decrease the $originalValue by 50%
+     * +1/2 will return a value halfway between $originalValue and $max
+     * -1/2 will return a value halfway between $originalValue and $min
      *
      * The calling modifier is responsible for ensuring the returned value is suitable for the modified property.
      */
-    final public function adjustValue($originalValue, $newValue)
+    final public function adjustValue($originalValue, $newValue, $max = 0, $min = 0)
     {
         if (is_string($newValue)) {
             if ($newValue{0} === '+') {
                 $delta = substr($newValue, 1);
                 if (substr($delta, -1) === '%') {
                     $delta = $originalValue * (substr($delta, 0, -1) / 100);
+                }
+                if (strpos($newValue, '/')) {
+                    $matches = [];
+                    if (preg_match('/^\+([0-9]+)\/([0-9]+)$/', $newValue, $matches)) {
+                        $delta = ($max - $originalValue) * $matches[1] / $matches[2];
+                    }
                 }
                 return $originalValue + $delta;
             }
@@ -230,6 +238,12 @@ abstract class Color implements ColorInterface
                 $delta = substr($newValue, 1);
                 if (substr($delta, -1) === '%') {
                     $delta = $originalValue * (substr($delta, 0, -1) / 100);
+                }
+                if (strpos($newValue, '/')) {
+                    $matches = [];
+                    if (preg_match('/^\-([0-9]+)\/([0-9]+)$/', $newValue, $matches)) {
+                        $delta = ($originalValue - $min) * $matches[1] / $matches[2];
+                    }
                 }
                 return $originalValue - $delta;
             }
