@@ -5,7 +5,7 @@ A PHP package to help convert between and manipulate HSL and RGB colorspaces/typ
 Main features:
 
 - support for CSS Color Module Level 3 color specifications ( #323C46, rgb(50,60,70), hsl(210,16.7,23.5) );
-- support for alpha transparency ( #323C4680, rgba(50,60,70,0.5), hsl(210,16.7,23.5,0.5) );
+- support for alpha transparency ( #323C4680, rgba(50,60,70,0.5), hsla(210,16.7,23.5,0.5) );
 - modifiers to change red/green/blue or hue/saturation/lightness and alpha on any color type;
 - able to extend with custom colorspaces/types which can then be converted and/or modified;
 - able to extend with custom modifiers;
