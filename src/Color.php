@@ -220,7 +220,7 @@ abstract class Color implements ColorInterface
     final public function adjustValue($originalValue, $newValue, $max = 0, $min = 0)
     {
         if (is_string($newValue)) {
-            if ($newValue{0} === '+') {
+            if ($newValue[0] === '+') {
                 $delta = substr($newValue, 1);
                 if (substr($delta, -1) === '%') {
                     $delta = $originalValue * (substr($delta, 0, -1) / 100);
@@ -234,7 +234,7 @@ abstract class Color implements ColorInterface
                 return $originalValue + $delta;
             }
 
-            if ($newValue{0} === '-') {
+            if ($newValue[0] === '-') {
                 $delta = substr($newValue, 1);
                 if (substr($delta, -1) === '%') {
                     $delta = $originalValue * (substr($delta, 0, -1) / 100);
