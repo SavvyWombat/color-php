@@ -206,6 +206,19 @@ class HslTest extends TestCase
         $this->assertEquals($result, (string) $newHsl);
     }
 
+    /**
+     * @test
+     * @dataProvider hsl_to_rgb
+     */
+    public function converts_to_rgb($hslString, $rgbString)
+    {
+        $hsl = Hsl::fromString($hslString);
+        $rgb = $hsl->toRgb();
+
+        $this->assertInstanceOf(Rgb::class, $rgb);
+        $this->assertEquals($rgbString, (string) $rgb);
+    }
+
     public function valid_color_strings()
     {
         return [
@@ -344,6 +357,18 @@ class HslTest extends TestCase
 
             'lightness:+2/5' => ['hsla(12,34%,56%,0.5)', '+2/5', 'hsla(12,34%,73.6%,0.5)'],
             'lightness:-1/3' => ['hsla(12,34%,56%,0.5)', '-1/3', 'hsla(12,34%,37.3%,0.5)'],
+        ];
+    }
+
+    public function hsl_to_rgb()
+    {
+        return [
+            'hsl(0,25%,75%)' => ['hsl(0,25%,75%)', 'rgb(207,175,175)'],
+            'hsl(360,25%,75%)' => ['hsl(360,25%,75%)', 'rgb(207,175,175)'],
+            'hsl(-360,25%,75%)' => ['hsl(-360,25%,75%)', 'rgb(207,175,175)'],
+            'hsl(45,75%,25%)' => ['hsl(45,75%,25%)', 'rgb(112,88,16)'],
+            'hsl(405,75%,25%)' => ['hsl(405,75%,25%)', 'rgb(112,88,16)'],
+            'hsl(-315,75%,25%)' => ['hsl(-315,75%,25%)', 'rgb(112,88,16)'],
         ];
     }
 }
