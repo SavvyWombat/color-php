@@ -32,6 +32,24 @@ class ColorTest extends TestCase
 
     /**
      * @test
+     * @dataProvider valid_hex_names
+     */
+
+
+    /**
+     * @test
+     * @dataProvider valid_hex_names
+     */
+    public function creates_a_hex_color_from_a_name($name, $value)
+    {
+        $color = Color::fromString($name);
+
+        $this->assertInstanceOf(Hex::class, $color);
+        $this->assertEquals($value, (string) $color);
+    }
+
+    /**
+     * @test
      */
     public function cannot_convert_to_unregistered_color()
     {
@@ -306,6 +324,15 @@ class ColorTest extends TestCase
 
         $this->assertEquals(16.67, round($color->adjustValue(50, '-2/3', 100), 2));
         $this->assertEquals(30, round($color->adjustValue(50, '-2/3', 100, 20), 2));
+    }
+
+    public function valid_hex_names()
+    {
+        return [
+            'black' => ['black', '#000000'],
+            'papayawhip' => ['papayawhip', '#FFEFD5'],
+            'wheat' => ['wheat', '#F5DEB3'],
+        ];
     }
 }
 

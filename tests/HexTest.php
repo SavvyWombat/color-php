@@ -40,6 +40,18 @@ class HexTest extends TestCase
 
     /**
      * @test
+     * @dataProvider valid_hex_names
+     */
+    public function creates_a_color_from_a_name($name, $value)
+    {
+        $hex = Hex::fromString($name);
+
+        $this->assertInstanceOf(Hex::class, $hex);
+        $this->assertEquals($value, (string) $hex);
+    }
+
+    /**
+     * @test
      * @dataProvider invalid_channels
      */
     public function throws_error_if_channel_is_not_valid($red, $green, $blue, $alpha)
@@ -183,6 +195,15 @@ class HexTest extends TestCase
             '123' => ['123'],
             '#12' => ['#12'],
             'rgb(12,34,56)' => ['rgb(12,34,56)'],
+        ];
+    }
+
+    public function valid_hex_names()
+    {
+        return [
+            'black' => ['black', '#000000'],
+            'papayawhip' => ['papayawhip', '#FFEFD5'],
+            'wheat' => ['wheat', '#F5DEB3'],
         ];
     }
 

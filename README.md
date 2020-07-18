@@ -261,6 +261,16 @@ public function gray($gray): self
 
 The modifier is also responsible for ensuring the new value is valid for the property being modified.
 
-## License
+## Support for color keywords
+
+```Color::fromString()``` and ```Hex::fromString()``` will accept any of the CSS color keywords to create a Hex color.
+
+If you wish to generate a color of a different type from a keyword, you can convert from the Hex color after creation:
+
+```php
+$hsl = Color::fromString('deepskyblue')->toHsl();
+```
+
+# License
 
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

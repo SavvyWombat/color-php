@@ -166,6 +166,10 @@ abstract class Color implements ColorInterface
      */
     public static function fromString(string $colorSpec): ColorInterface
     {
+        if (isset(Hex::namedColors()[$colorSpec])) {
+            $colorSpec = Hex::namedColors()[$colorSpec];
+        }
+
         $patterns = array_keys(self::$registeredColorSpecs);
 
         $found = false;
