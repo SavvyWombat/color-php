@@ -48,11 +48,11 @@ Color::fromString('#1234'); // Hex (with alpha): #11223344
 Color::fromString('#123456'); // Hex: #123456
 Color::fromString('#12345678'); // Hex: #12345678
 
-Color::fromString('rgb(10,20,30)'); // Rgb
-Color::fromString('rgba(10,20,30,0.4)'); // Rgb
+Color::fromString('rgb(10, 20, 30)'); // Rgb
+Color::fromString('rgba(10, 20, 30, 0.4)'); // Rgb
 
-Color::fromString('hsl(10,20%,30%)'); // Hsl
-Color::fromString('hsl(10,20%,30%,0.4)'); // Hsl
+Color::fromString('hsl(10, 20%, 30%)'); // Hsl
+Color::fromString('hsl(10, 20%, 30%, 0.4)'); // Hsl
 ```
 
 ## Converting a color
@@ -63,11 +63,11 @@ Colors can be converted to any other registered color type:
 echo (string) Color::fromString('#123')->toHsl(); // hsl(210,50%,8.6%)
 echo (string) Color::fromString('#123')->toRgb(); // rgb(17,34,51)
 
-echo (string) Color::fromString('rgb(25,75,125)')->toHex(); // #194B7D
-echo (string) Color::fromString('rgb(25,75,125)')->toHsl(); // hsl(210,66.7%,39.4%)
+echo (string) Color::fromString('rgb(25, 75, 125)')->toHex(); // #194B7D
+echo (string) Color::fromString('rgb(25, 75, 125)')->toHsl(); // hsl(210,66.7%,39.4%)
 
-echo (string) Color::fromString('hsl(135,50%,75%)')->toHex(); // #9FDFAF
-echo (string) Color::fromString('hsl(135,50%,75%)')->toRgb(); // rgb(159,223,175)
+echo (string) Color::fromString('hsl(135, 50%, 75%)')->toHex(); // #9FDFAF
+echo (string) Color::fromString('hsl(135, 50%, 75%)')->toRgb(); // rgb(159,223,175)
 ```
 
 ## Modifying a color

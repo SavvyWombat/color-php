@@ -226,7 +226,7 @@ class ColorTest extends TestCase
         Color::registerColor('Gray', Gray::class);
         Color::registerModifier('gray', Gray::class);
 
-        $rgb = Rgb::fromString('rgb(25,50,75)');
+        $rgb = Rgb::fromString('rgb(25, 50, 75)');
         $newRgb = $rgb->gray('25');
 
         $this->assertInstanceOf(Rgb::class, $newRgb);
