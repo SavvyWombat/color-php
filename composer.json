@@ -2,8 +2,8 @@
   "name": "savvywombat/color",
   "description": "Package for manipulating colors in multiple color spaces.",
   "type": "library",
-  "homepage": "https://github.com/SavvyWombat/color",
-  "keywords": ["color", "savvywombat", "savvy wombat"],
+  "homepage": "https://github.com/SavvyWombat/color-php",
+  "keywords": ["color", "savvywombat", "savvy wombat", "rgb", "hsl", "color space"],
   "license": "MIT",
   "authors": [
     {
