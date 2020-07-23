@@ -330,8 +330,8 @@ class ColorTest extends TestCase
     {
         return [
             'black' => ['black', '#000000'],
-            'papayawhip' => ['papayawhip', '#FFEFD5'],
-            'wheat' => ['wheat', '#F5DEB3'],
+            'papayawhip' => ['papayawhip', '#ffefd5'],
+            'wheat' => ['wheat', '#f5deb3'],
         ];
     }
 }

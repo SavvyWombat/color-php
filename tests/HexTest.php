@@ -100,7 +100,7 @@ class HexTest extends TestCase
     {
         $hex = Hex::fromString('#ABCDEF');
 
-        $this->assertEquals('#ABCDEF', (string) $hex);
+        $this->assertEquals('#abcdef', (string) $hex);
     }
 
     /**
@@ -108,9 +108,9 @@ class HexTest extends TestCase
      */
     public function castable_to_string_with_alpha_channel()
     {
-        $hex = Hex::fromString('#ABCDEF12');
+        $hex = Hex::fromString('#abcdef12');
 
-        $this->assertEquals('#ABCDEF12', (string) $hex);
+        $this->assertEquals('#abcdef12', (string) $hex);
     }
 
     /**
@@ -202,8 +202,8 @@ class HexTest extends TestCase
     {
         return [
             'black' => ['black', '#000000'],
-            'papayawhip' => ['papayawhip', '#FFEFD5'],
-            'wheat' => ['wheat', '#F5DEB3'],
+            'papayawhip' => ['papayawhip', '#ffefd5'],
+            'wheat' => ['wheat', '#f5deb3'],
         ];
     }
 

@@ -184,10 +184,10 @@ class Hex extends Color
             $alpha .= $alpha;
         }
 
-        $this->hexRed = strtoupper(self::validateChannel('red', $red));
-        $this->hexGreen = strtoupper(self::validateChannel('green', $green));
-        $this->hexBlue = strtoupper(self::validateChannel('blue', $blue));
-        $this->hexAlpha = strtoupper( self::validateChannel('alpha', $alpha));
+        $this->hexRed = strtolower(self::validateChannel('red', $red));
+        $this->hexGreen = strtolower(self::validateChannel('green', $green));
+        $this->hexBlue = strtolower(self::validateChannel('blue', $blue));
+        $this->hexAlpha = strtolower( self::validateChannel('alpha', $alpha));
 
         $this->red = hexdec($red);
         $this->green = hexdec($green);
@@ -240,7 +240,7 @@ class Hex extends Color
 
     public function __toString(): string
     {
-        if ($this->hexAlpha === 'FF') {
+        if ($this->hexAlpha === 'ff') {
             return "#{$this->hexRed}{$this->hexGreen}{$this->hexBlue}";
         }
 
