@@ -51,18 +51,16 @@ class HslTest extends TestCase
 
     /**
      * @test
+     * @dataProvider rgb_to_hsl
      */
-    public function creates_an_hsl_color_from_an_rgb_color()
+    public function creates_an_hsl_color_from_an_rgb_color($rgbString, $hslString)
     {
-        $rgb = Rgb::fromString('rgb(48,96,192)');
+        $rgb = Rgb::fromString($rgbString);
         $hsl = Hsl::fromRgb($rgb);
 
         $this->assertInstanceOf(Hsl::class, $hsl);
 
-        $this->assertEquals(48, $hsl->red);
-        $this->assertEquals(96, $hsl->green);
-        $this->assertEquals(192, $hsl->blue);
-        $this->assertEquals(1, $hsl->alpha);
+        $this->assertEquals($hslString, (string) $hsl);
     }
 
     /**
@@ -371,6 +369,15 @@ class HslTest extends TestCase
             'hsl(45,75%,25%)' => ['hsl(45,75%,25%)', 'rgb(112,88,16)'],
             'hsl(405,75%,25%)' => ['hsl(405,75%,25%)', 'rgb(112,88,16)'],
             'hsl(-315,75%,25%)' => ['hsl(-315,75%,25%)', 'rgb(112,88,16)'],
+        ];
+    }
+
+    public function rgb_to_hsl()
+    {
+        return [
+            'rgb(48,96,192)' => ['rgb(48,96,192)', 'hsl(220,60%,47.1%)'],
+            'rgb(255,255,255)' => ['rgb(255,255,255)', 'hsl(0,0%,100%)'],
+            'rgb(0,0,0)' => ['rgb(0,0,0)', 'hsl(0,0%,0%)'],
         ];
     }
 }

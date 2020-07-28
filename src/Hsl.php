@@ -115,25 +115,28 @@ class Hsl extends Color
 
         $cmax = max($r, $g, $b);
         $cmin = min($r, $g, $b);
-        $d = $cmax - $cmin;
+        $delta = $cmax - $cmin;
 
         $hue = 0;
-        if ($d > 0.0) {
+        if ($delta > 0.0) {
             if ($r === $cmax) {
-                $hue = 60 * fmod(($g - $b) / $d, 6);
+                $hue = 60 * fmod(($g - $b) / $delta, 6);
             }
 
             if ($g === $cmax) {
-                $hue = 60 * ((($b - $r) / $d) + 2);
+                $hue = 60 * ((($b - $r) / $delta) + 2);
             }
 
             if ($b === $cmax) {
-                $hue = 60 * ((($r - $g) / $d) + 4);
+                $hue = 60 * ((($r - $g) / $delta) + 4);
             }
         }
 
         $lightness = ($cmax + $cmin) / 2;
-        $saturation = $d / (1 - abs((2 * $lightness) - 1));
+        $saturation = 0;
+        if ($delta) {
+            $saturation = $delta / (1 - abs((2 * $lightness) - 1));
+        }
 
         return [$hue, min($saturation, 1) * 100, min($lightness, 1) * 100];
     }
