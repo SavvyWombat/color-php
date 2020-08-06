@@ -11,17 +11,17 @@
          processIsolation="false"
          stopOnFailure="false">
     <testsuites>
-        <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
+        <testsuite name="tests">
+            <directory suffix="Test.php">./tests</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app</directory>
+            <directory suffix=".php">./src</directory>
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-clover" target="coverage/php/clover.xml" />
+        <log type="coverage-clover" target="coverage/php/coverage.xml" />
         <log type="coverage-html" target="coverage/php" lowUpperBound="35"
              highLowerBound="70" />
     </logging>
