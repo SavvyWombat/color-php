@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SavvyWombat\Color\Test;
 
 use PHPUnit\Framework\TestCase;
-use SavvyWombat\Color\Hsl;
 use SavvyWombat\Color\Exception;
+use SavvyWombat\Color\Hsl;
 use SavvyWombat\Color\Rgb;
 
 class HslTest extends TestCase
@@ -15,7 +15,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider valid_color_strings
      */
-    public function creates_an_hsl_color_from_a_string($colorSpec, $hue, $saturation, $lightness, $alpha)
+    public function creates_an_hsl_color_from_a_string($colorSpec, $hue, $saturation, $lightness, $alpha): void
     {
         $hsl = Hsl::fromString($colorSpec);
 
@@ -31,7 +31,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider invalid_color_strings
      */
-    public function throws_an_error_if_provided_an_invalid_color_string($colorSpec)
+    public function throws_an_error_if_provided_an_invalid_color_string($colorSpec): void
     {
         $this->expectException(Exception::class);
 
@@ -42,7 +42,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider invalid_color_values
      */
-    public function throws_an_error_if_passed_invalid_color_values($hue, $saturation, $lightness, $alpha)
+    public function throws_an_error_if_passed_invalid_color_values($hue, $saturation, $lightness, $alpha): void
     {
         $this->expectException(Exception::class);
 
@@ -53,7 +53,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider rgb_to_hsl
      */
-    public function creates_an_hsl_color_from_an_rgb_color($rgbString, $hslString)
+    public function creates_an_hsl_color_from_an_rgb_color($rgbString, $hslString): void
     {
         $rgb = Rgb::fromString($rgbString);
         $hsl = Hsl::fromRgb($rgb);
@@ -66,7 +66,7 @@ class HslTest extends TestCase
     /**
      * @test
      */
-    public function creates_an_hsl_color_from_an_rgb_color_with_alpha()
+    public function creates_an_hsl_color_from_an_rgb_color_with_alpha(): void
     {
         $rgb = Rgb::fromString('rgba(48,96,192,0.35)');
         $hsl = Hsl::fromRgb($rgb);
@@ -82,7 +82,7 @@ class HslTest extends TestCase
     /**
      * @test
      */
-    public function castable_to_string()
+    public function castable_to_string(): void
     {
         $hsl = Hsl::fromString('hsl(16,32%,64%)');
 
@@ -92,7 +92,7 @@ class HslTest extends TestCase
     /**
      * @test
      */
-    public function castable_to_string_with_alpha_channel()
+    public function castable_to_string_with_alpha_channel(): void
     {
         $hsl = Hsl::fromString('hsla(16,32%,64%,0.5)');
 
@@ -103,7 +103,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider modify_red_channel
      */
-    public function can_modify_red_channel($initialColor, $newRedValue, $result)
+    public function can_modify_red_channel($initialColor, $newRedValue, $result): void
     {
         $hsl = Hsl::fromString($initialColor);
         $newHsl = $hsl->red($newRedValue);
@@ -118,7 +118,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider modify_green_channel
      */
-    public function can_modify_green_channel($initialColor, $newGreenValue, $result)
+    public function can_modify_green_channel($initialColor, $newGreenValue, $result): void
     {
         $hsl = Hsl::fromString($initialColor);
         $newHsl = $hsl->green($newGreenValue);
@@ -133,7 +133,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider modify_blue_channel
      */
-    public function can_modify_blue_channel($initialColor, $newBlueValue, $result)
+    public function can_modify_blue_channel($initialColor, $newBlueValue, $result): void
     {
         $hsl = Hsl::fromString($initialColor);
         $newHsl = $hsl->blue($newBlueValue);
@@ -148,7 +148,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider modify_alpha_channel
      */
-    public function can_modify_alpha_channel($initialColor, $newAlphaValue, $result)
+    public function can_modify_alpha_channel($initialColor, $newAlphaValue, $result): void
     {
         $hsl = Hsl::fromString($initialColor);
         $newHsl = $hsl->alpha($newAlphaValue);
@@ -163,7 +163,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider modify_hue
      */
-    public function can_modify_hue($initialColor, $newHueValue, $result)
+    public function can_modify_hue($initialColor, $newHueValue, $result): void
     {
         $hsl = Hsl::fromString($initialColor);
         $newHsl = $hsl->hue($newHueValue);
@@ -178,7 +178,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider modify_saturation
      */
-    public function can_modify_saturation($initialColor, $newSaturationValue, $result)
+    public function can_modify_saturation($initialColor, $newSaturationValue, $result): void
     {
         $hsl = Hsl::fromString($initialColor);
         $newHsl = $hsl->saturation($newSaturationValue);
@@ -193,7 +193,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider modify_lightness
      */
-    public function can_modify_lightness($initialColor, $newLightnessValue, $result)
+    public function can_modify_lightness($initialColor, $newLightnessValue, $result): void
     {
         $hsl = Hsl::fromString($initialColor);
         $newHsl = $hsl->lightness($newLightnessValue);
@@ -208,7 +208,7 @@ class HslTest extends TestCase
      * @test
      * @dataProvider hsl_to_rgb
      */
-    public function converts_to_rgb($hslString, $rgbString)
+    public function converts_to_rgb($hslString, $rgbString): void
     {
         $hsl = Hsl::fromString($hslString);
         $rgb = $hsl->toRgb();
@@ -217,7 +217,7 @@ class HslTest extends TestCase
         $this->assertEquals($rgbString, (string) $rgb);
     }
 
-    public function valid_color_strings()
+    public function valid_color_strings(): array
     {
         return [
             'hsl(16,32%,64%)' => ['hsl(16,32%,64%)', 16, 32, 64, 1],
@@ -227,7 +227,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function invalid_color_strings()
+    public function invalid_color_strings(): array
     {
         return [
             '(empty string)' => [''],
@@ -239,7 +239,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function invalid_color_values()
+    public function invalid_color_values(): array
     {
         return [
             'saturation:negative' => [34, -1, 56, 1.0],
@@ -253,7 +253,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function modify_red_channel()
+    public function modify_red_channel(): array
     {
         return [
             'red:127' => ['hsl(12,34%,56%)', 127, 'hsl(41,9.6%,45.4%)'],
@@ -267,7 +267,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function modify_green_channel()
+    public function modify_green_channel(): array
     {
         return [
             'green:127' => ['hsl(12,34%,56%)', 127, 'hsl(18,34%,56%)'],
@@ -281,7 +281,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function modify_blue_channel()
+    public function modify_blue_channel(): array
     {
         return [
             'blue:127' => ['hsl(12,34%,56%)', 127, 'hsl(-7,29.2%,59%)'],
@@ -295,7 +295,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function modify_alpha_channel()
+    public function modify_alpha_channel(): array
     {
         return [
             'alpha:0.5' => ['hsl(12,34%,56%)', 0.5, 'hsla(12,34%,56%,0.5)'],
@@ -312,7 +312,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function modify_hue()
+    public function modify_hue(): array
     {
         return [
             'hue:127' => ['hsl(12,34%,56%)', 127, 'hsl(127,34%,56%)'],
@@ -326,7 +326,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function modify_saturation()
+    public function modify_saturation(): array
     {
         return [
             'saturation:50' => ['hsl(12,34%,56%)', 50, 'hsl(12,50%,56%)'],
@@ -343,7 +343,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function modify_lightness()
+    public function modify_lightness(): array
     {
         return [
             'lightness:50' => ['hsl(12,34%,56%)', 50, 'hsl(12,34%,50%)'],
@@ -360,7 +360,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function hsl_to_rgb()
+    public function hsl_to_rgb(): array
     {
         return [
             'hsl(0,25%,75%)' => ['hsl(0,25%,75%)', 'rgb(207,175,175)'],
@@ -372,7 +372,7 @@ class HslTest extends TestCase
         ];
     }
 
-    public function rgb_to_hsl()
+    public function rgb_to_hsl(): array
     {
         return [
             'rgb(48,96,192)' => ['rgb(48,96,192)', 'hsl(220,60%,47.1%)'],

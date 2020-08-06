@@ -36,7 +36,7 @@ class Rgb extends Color
         if (empty($channels)) {
             throw Exception::invalidRgbSpec($colorSpec);
         }
-        if (!isset($channels[4])) {
+        if ( ! isset($channels[4])) {
             $channels[4] = 1;
         }
 
@@ -120,7 +120,7 @@ class Rgb extends Color
         $blue = round($this->blue);
         $alpha = round($this->alpha, 2);
 
-        if ($alpha === 1.0) {
+        if (1.0 === $alpha) {
             return "rgb({$red},{$green},{$blue})";
         }
 

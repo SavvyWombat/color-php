@@ -40,7 +40,7 @@ class Hsl extends Color
         if (empty($channels)) {
             throw Exception::invalidHslSpec($colorSpec);
         }
-        if (!isset($channels[6])) {
+        if ( ! isset($channels[6])) {
             $channels[6] = 1;
         }
 
@@ -50,14 +50,14 @@ class Hsl extends Color
     public function __toString(): string
     {
         $hue = round($this->hue);
-        if ($hue === 0.0) { // deals with -0 from rounding
+        if (0.0 === $hue) { // deals with -0 from rounding
             $hue = 0;
         }
         $saturation = round($this->saturation, 1);
         $lightness = round($this->lightness, 1);
         $alpha = round($this->alpha, 2);
 
-        if ($alpha === 1.0) {
+        if (1.0 === $alpha) {
             return "hsl({$hue},{$saturation}%,{$lightness}%)";
         }
 
@@ -104,6 +104,7 @@ class Hsl extends Color
     public static function fromRgb(Rgb $rgb): ColorInterface
     {
         [$hue, $saturation, $lightness] = static::rgbToHsl($rgb->red, $rgb->green, $rgb->blue);
+
         return new Hsl($hue, $saturation, $lightness, $rgb->alpha);
     }
 
@@ -158,9 +159,9 @@ class Hsl extends Color
 
         $m1 = ($l * 2) - $m2;
 
-        $red = static::hueToRgb($m1, $m2, $h + (1/3));
+        $red = static::hueToRgb($m1, $m2, $h + (1 / 3));
         $green = static::hueToRgb($m1, $m2, $h);
-        $blue = static::hueToRgb($m1, $m2, $h - (1/3));
+        $blue = static::hueToRgb($m1, $m2, $h - (1 / 3));
 
         return [$red, $green, $blue];
     }
@@ -184,8 +185,9 @@ class Hsl extends Color
             return $m2 * 255;
         }
         if ($h * 3 < 2) {
-            return ($m1 + ($m2 - $m1) * ((2/3) - $h) * 6) * 255;
+            return ($m1 + ($m2 - $m1) * ((2 / 3) - $h) * 6) * 255;
         }
+
         return $m1 * 255;
     }
 }

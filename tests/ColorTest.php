@@ -7,9 +7,9 @@ namespace SavvyWombat\Color\Test;
 use PHPUnit\Framework\TestCase;
 use SavvyWombat\Color\Color;
 use SavvyWombat\Color\ColorInterface;
+use SavvyWombat\Color\Exception;
 use SavvyWombat\Color\Hex;
 use SavvyWombat\Color\Hsl;
-use SavvyWombat\Color\Exception;
 use SavvyWombat\Color\Rgb;
 
 class ColorTest extends TestCase
@@ -17,7 +17,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function creates_an_rgb_color_with_alpha()
+    public function creates_an_rgb_color_with_alpha(): void
     {
         $color = new Gray(50, 0.45);
 
@@ -35,12 +35,11 @@ class ColorTest extends TestCase
      * @dataProvider valid_hex_names
      */
 
-
     /**
      * @test
      * @dataProvider valid_hex_names
      */
-    public function creates_a_hex_color_from_a_name($name, $value)
+    public function creates_a_hex_color_from_a_name($name, $value): void
     {
         $color = Color::fromString($name);
 
@@ -51,7 +50,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function cannot_convert_to_unregistered_color()
+    public function cannot_convert_to_unregistered_color(): void
     {
         $this->expectException(Exception::class);
 
@@ -62,7 +61,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function can_convert_to_hex()
+    public function can_convert_to_hex(): void
     {
         $color = new Gray(50, 0.45);
         $hex = $color->toHex();
@@ -77,7 +76,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function can_convert_to_hsl()
+    public function can_convert_to_hsl(): void
     {
         $color = new Gray(50, 0.45);
         $hsl = $color->toHsl();
@@ -92,7 +91,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function can_convert_to_rgb()
+    public function can_convert_to_rgb(): void
     {
         $color = new Gray(50, 0.45);
         $rgb = $color->toRgb();
@@ -107,7 +106,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function can_register_new_color()
+    public function can_register_new_color(): void
     {
         Color::registerColor('Gray', Gray::class);
 
@@ -120,7 +119,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function color_class_must_exist()
+    public function color_class_must_exist(): void
     {
         $this->expectException(Exception::class);
 
@@ -130,7 +129,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function colors_must_extend_abstract()
+    public function colors_must_extend_abstract(): void
     {
         $this->expectException(Exception::class);
 
@@ -140,7 +139,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function can_convert_to_new_color()
+    public function can_convert_to_new_color(): void
     {
         $rgb = new Rgb(25, 50, 75, 0.5);
 
@@ -155,7 +154,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function can_convert_to_new_color_from_any_other()
+    public function can_convert_to_new_color_from_any_other(): void
     {
         $hsl = new Hsl(25, 50, 75, 0.5);
 
@@ -170,7 +169,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function color_for_spec_must_be_registered()
+    public function color_for_spec_must_be_registered(): void
     {
         $this->expectException(Exception::class);
 
@@ -180,7 +179,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function new_color_spec_can_be_used()
+    public function new_color_spec_can_be_used(): void
     {
         Color::registerColor('Gray', Gray::class);
         Color::registerColorSpec('gray\((\d{1,3}(\.\d{1})?)%\)', Gray::class);
@@ -194,7 +193,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function new_color_spec_cannot_be_used_on_wrong_color()
+    public function new_color_spec_cannot_be_used_on_wrong_color(): void
     {
         $this->expectException(Exception::class);
 
@@ -207,7 +206,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function new_color_spec_can_be_used_by_the_abstract()
+    public function new_color_spec_can_be_used_by_the_abstract(): void
     {
         Color::registerColor('Gray', Gray::class);
         Color::registerColorSpec('gray\((\d{1,3}(\.\d{1})?)%\)', Gray::class);
@@ -221,7 +220,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function can_register_new_color_modifier()
+    public function can_register_new_color_modifier(): void
     {
         Color::registerColor('Gray', Gray::class);
         Color::registerModifier('gray', Gray::class);
@@ -237,7 +236,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function color_for_modifier_must_be_registered()
+    public function color_for_modifier_must_be_registered(): void
     {
         $this->expectException(Exception::class);
 
@@ -247,7 +246,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function modifier_method_must_exist()
+    public function modifier_method_must_exist(): void
     {
         $this->expectException(Exception::class);
 
@@ -257,7 +256,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function adjust_value_returns_absolute_value()
+    public function adjust_value_returns_absolute_value(): void
     {
         $color = new Gray(50);
 
@@ -267,7 +266,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function adjust_value_increases_original_value()
+    public function adjust_value_increases_original_value(): void
     {
         $color = new Gray(50);
 
@@ -277,7 +276,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function adjust_value_decreases_original_value()
+    public function adjust_value_decreases_original_value(): void
     {
         $color = new Gray(50);
 
@@ -287,7 +286,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function adjust_value_increases_by_percentage()
+    public function adjust_value_increases_by_percentage(): void
     {
         $color = new Gray(50);
 
@@ -297,7 +296,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function adjust_value_decreases_by_percentage()
+    public function adjust_value_decreases_by_percentage(): void
     {
         $color = new Gray(50);
 
@@ -307,7 +306,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function adjust_value_increase_by_fraction()
+    public function adjust_value_increase_by_fraction(): void
     {
         $color = new Gray(50);
 
@@ -318,7 +317,7 @@ class ColorTest extends TestCase
     /**
      * @test
      */
-    public function adjust_value_decrease_by_fraction()
+    public function adjust_value_decrease_by_fraction(): void
     {
         $color = new Gray(50);
 
@@ -336,8 +335,12 @@ class ColorTest extends TestCase
     }
 }
 
-abstract class DoesNotImplementInterface extends Color {}
-abstract class DoesNotExtendAbstract implements ColorInterface {}
+abstract class DoesNotImplementInterface extends Color
+{
+}
+abstract class DoesNotExtendAbstract implements ColorInterface
+{
+}
 
 class Gray extends Color implements ColorInterface
 {
@@ -358,7 +361,7 @@ class Gray extends Color implements ColorInterface
     {
         $channels = Color::extractChannels($colorSpec, self::class);
 
-        if (!isset($channels[3])) {
+        if ( ! isset($channels[3])) {
             $channels[3] = 1.0;
         }
 
@@ -370,7 +373,7 @@ class Gray extends Color implements ColorInterface
         $value = round($this->value, 1);
         $alpha = round($this->alpha, 2);
 
-        if ($alpha === 1.0) {
+        if (1.0 === $alpha) {
             return "gray({$value}%)";
         }
 
@@ -399,5 +402,4 @@ class Gray extends Color implements ColorInterface
 
         return new self($gray, $this->alpha);
     }
-
 }

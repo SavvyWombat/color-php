@@ -14,7 +14,7 @@ class RgbTest extends TestCase
      * @test
      * @dataProvider valid_color_strings
      */
-    public function creates_an_rgb_color_from_a_string($colorSpec, $red, $green, $blue, $alpha)
+    public function creates_an_rgb_color_from_a_string($colorSpec, $red, $green, $blue, $alpha): void
     {
         $rgb = Rgb::fromString($colorSpec);
 
@@ -30,7 +30,7 @@ class RgbTest extends TestCase
      * @test
      * @dataProvider invalid_color_strings
      */
-    public function throws_an_error_if_provided_an_invalid_color_string($colorSpec)
+    public function throws_an_error_if_provided_an_invalid_color_string($colorSpec): void
     {
         $this->expectException(Exception::class);
 
@@ -41,7 +41,7 @@ class RgbTest extends TestCase
      * @test
      * @dataProvider invalid_color_values
      */
-    public function throws_an_error_if_passed_invalid_color_values($red, $green, $blue, $alpha)
+    public function throws_an_error_if_passed_invalid_color_values($red, $green, $blue, $alpha): void
     {
         $this->expectException(Exception::class);
 
@@ -51,7 +51,7 @@ class RgbTest extends TestCase
     /**
      * @test
      */
-    public function creates_a_new_rgb_color_from_an_rgb_color()
+    public function creates_a_new_rgb_color_from_an_rgb_color(): void
     {
         $rgb = Rgb::fromString('rgb(48,96,192)');
         $newRgb = Rgb::fromRgb($rgb);
@@ -68,7 +68,7 @@ class RgbTest extends TestCase
     /**
      * @test
      */
-    public function creates_a_new_rgb_color_from_an_rgb_color_with_alpha()
+    public function creates_a_new_rgb_color_from_an_rgb_color_with_alpha(): void
     {
         $rgb = Rgb::fromString('rgba(48,96,192,0.75)');
         $newRgb = Rgb::fromRgb($rgb);
@@ -85,7 +85,7 @@ class RgbTest extends TestCase
     /**
      * @test
      */
-    public function castable_to_string()
+    public function castable_to_string(): void
     {
         $rgb = Rgb::fromString('rgb(32,64,128)');
 
@@ -95,7 +95,7 @@ class RgbTest extends TestCase
     /**
      * @test
      */
-    public function castable_to_string_with_alpha_channel()
+    public function castable_to_string_with_alpha_channel(): void
     {
         $rgb = Rgb::fromString('rgba(32,64,128,0.67)');
 
@@ -106,7 +106,7 @@ class RgbTest extends TestCase
      * @test
      * @dataProvider modify_red_channel
      */
-    public function can_modify_red_channel($initialColor, $newRedValue, $result)
+    public function can_modify_red_channel($initialColor, $newRedValue, $result): void
     {
         $rgb = Rgb::fromString($initialColor);
         $newRgb = $rgb->red($newRedValue);
@@ -121,7 +121,7 @@ class RgbTest extends TestCase
      * @test
      * @dataProvider modify_green_channel
      */
-    public function can_modify_green_channel($initialColor, $newGreenValue, $result)
+    public function can_modify_green_channel($initialColor, $newGreenValue, $result): void
     {
         $rgb = Rgb::fromString($initialColor);
         $newRgb = $rgb->green($newGreenValue);
@@ -136,7 +136,7 @@ class RgbTest extends TestCase
      * @test
      * @dataProvider modify_blue_channel
      */
-    public function can_modify_blue_channel($initialColor, $newBlueValue, $result)
+    public function can_modify_blue_channel($initialColor, $newBlueValue, $result): void
     {
         $rgb = Rgb::fromString($initialColor);
         $newRgb = $rgb->blue($newBlueValue);
@@ -151,7 +151,7 @@ class RgbTest extends TestCase
      * @test
      * @dataProvider modify_alpha_channel
      */
-    public function can_modify_alpha_channel($initialColor, $newAlphaValue, $result)
+    public function can_modify_alpha_channel($initialColor, $newAlphaValue, $result): void
     {
         $rgb = Rgb::fromString($initialColor);
         $newRgb = $rgb->alpha($newAlphaValue);
@@ -166,7 +166,7 @@ class RgbTest extends TestCase
      * @test
      * @dataProvider modify_hue
      */
-    public function can_modify_hue($initialColor, $newHueValue, $result)
+    public function can_modify_hue($initialColor, $newHueValue, $result): void
     {
         $rgb = Rgb::fromString($initialColor);
         $newRgb = $rgb->hue($newHueValue);
@@ -181,7 +181,7 @@ class RgbTest extends TestCase
      * @test
      * @dataProvider modify_saturation
      */
-    public function can_modify_saturation($initialColor, $newSaturationValue, $result)
+    public function can_modify_saturation($initialColor, $newSaturationValue, $result): void
     {
         $rgb = Rgb::fromString($initialColor);
         $newRgb = $rgb->saturation($newSaturationValue);
@@ -196,7 +196,7 @@ class RgbTest extends TestCase
      * @test
      * @dataProvider modify_lightness
      */
-    public function can_modify_lightness($initialColor, $newLightnessValue, $result)
+    public function can_modify_lightness($initialColor, $newLightnessValue, $result): void
     {
         $rgb = Rgb::fromString($initialColor);
         $newRgb = $rgb->lightness($newLightnessValue);
@@ -207,7 +207,7 @@ class RgbTest extends TestCase
         $this->assertEquals($result, (string) $newRgb);
     }
 
-    public function valid_color_strings()
+    public function valid_color_strings(): array
     {
         return [
             'rgb(16,32,64)' => ['rgb(16,32,64)', 16, 32, 64, 1],
@@ -217,7 +217,7 @@ class RgbTest extends TestCase
         ];
     }
 
-    public function invalid_color_strings()
+    public function invalid_color_strings(): array
     {
         return [
             '(empty string)' => [''],
@@ -228,7 +228,7 @@ class RgbTest extends TestCase
         ];
     }
 
-    public function invalid_color_values()
+    public function invalid_color_values(): array
     {
         return [
             'red:negative' => [-1, 34, 56, 1.0],
@@ -245,7 +245,7 @@ class RgbTest extends TestCase
         ];
     }
 
-    public function modify_red_channel()
+    public function modify_red_channel(): array
     {
         return [
             'red:127' => ['rgb(12,34,56)', 127, 'rgb(127,34,56)'],
@@ -262,7 +262,7 @@ class RgbTest extends TestCase
         ];
     }
 
-    public function modify_green_channel()
+    public function modify_green_channel(): array
     {
         return [
             'green:127' => ['rgb(12,34,56)', 127, 'rgb(12,127,56)'],
@@ -279,7 +279,7 @@ class RgbTest extends TestCase
         ];
     }
 
-    public function modify_blue_channel()
+    public function modify_blue_channel(): array
     {
         return [
             'blue:127' => ['rgb(12,34,56)', 127, 'rgb(12,34,127)'],
@@ -296,7 +296,7 @@ class RgbTest extends TestCase
         ];
     }
 
-    public function modify_alpha_channel()
+    public function modify_alpha_channel(): array
     {
         return [
             'alpha:0.5' => ['rgb(12,34,56)', 0.5, 'rgba(12,34,56,0.5)'],
@@ -313,7 +313,7 @@ class RgbTest extends TestCase
         ];
     }
 
-    public function modify_hue()
+    public function modify_hue(): array
     {
         return [
             'hue:180' => ['rgb(12,34,56)', 180, 'rgb(12,56,56)'],
@@ -327,7 +327,7 @@ class RgbTest extends TestCase
         ];
     }
 
-    public function modify_saturation()
+    public function modify_saturation(): array
     {
         return [
             'saturation:25' => ['rgb(12,34,56)', 25, 'rgb(26,34,43)'],
@@ -341,7 +341,7 @@ class RgbTest extends TestCase
         ];
     }
 
-    public function modify_lightness()
+    public function modify_lightness(): array
     {
         return [
             'lightness:25' => ['rgb(12,34,56)', 25, 'rgb(23,64,105)'],
