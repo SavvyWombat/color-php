@@ -1,5 +1,8 @@
 # SavvyWombat Color
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/savvywombat/color.svg?style=flat-square)](https://packagist.org/packages/savvywombat/color)
+[![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
+
 A PHP package to help convert between and manipulate HSL and RGB colorspaces/types.
 
 Main features:
