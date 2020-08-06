@@ -171,23 +171,23 @@ class Hex extends Color
 
     public function __construct(string $red, string $green, string $blue, string $alpha = 'ff')
     {
-        if (strlen($red) === 1) {
+        if (1 === mb_strlen($red)) {
             $red .= $red;
         }
-        if (strlen($green) === 1) {
+        if (1 === mb_strlen($green)) {
             $green .= $green;
         }
-        if (strlen($blue) === 1) {
+        if (1 === mb_strlen($blue)) {
             $blue .= $blue;
         }
-        if (strlen($alpha) === 1) {
+        if (1 === mb_strlen($alpha)) {
             $alpha .= $alpha;
         }
 
-        $this->hexRed = strtolower(self::validateChannel('red', $red));
-        $this->hexGreen = strtolower(self::validateChannel('green', $green));
-        $this->hexBlue = strtolower(self::validateChannel('blue', $blue));
-        $this->hexAlpha = strtolower( self::validateChannel('alpha', $alpha));
+        $this->hexRed = mb_strtolower(self::validateChannel('red', $red));
+        $this->hexGreen = mb_strtolower(self::validateChannel('green', $green));
+        $this->hexBlue = mb_strtolower(self::validateChannel('blue', $blue));
+        $this->hexAlpha = mb_strtolower(self::validateChannel('alpha', $alpha));
 
         $this->red = hexdec($red);
         $this->green = hexdec($green);
@@ -197,7 +197,7 @@ class Hex extends Color
 
     public static function validateChannel($channel, $value)
     {
-        if (!preg_match("/^[0-9a-f]{2}$/i", $value)) {
+        if ( ! preg_match("/^[0-9a-f]{2}$/i", $value)) {
             throw Exception::invalidChannel($channel, $value, 'must be a valid hex value (0-f or 00-ff)');
         }
 
@@ -216,7 +216,7 @@ class Hex extends Color
             throw Exception::invalidHexSpec($colorSpec);
         }
 
-        if (!isset($channels[4])) {
+        if ( ! isset($channels[4])) {
             $channels[4] = 'ff';
         }
 
@@ -240,7 +240,7 @@ class Hex extends Color
 
     public function __toString(): string
     {
-        if ($this->hexAlpha === 'ff') {
+        if ('ff' === $this->hexAlpha) {
             return "#{$this->hexRed}{$this->hexGreen}{$this->hexBlue}";
         }
 

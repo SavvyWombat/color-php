@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace SavvyWombat\Color\Test;
 
 use PHPUnit\Framework\TestCase;
-use SavvyWombat\Color\Hex;
 use SavvyWombat\Color\Exception;
+use SavvyWombat\Color\Hex;
 use SavvyWombat\Color\Rgb;
 
 class HexTest extends TestCase
@@ -15,7 +15,7 @@ class HexTest extends TestCase
      * @test
      * @dataProvider valid_hex_strings
      */
-    public function creates_a_hex_color_from_a_hex_string($colorSpec, $red, $green, $blue, $alpha)
+    public function creates_a_hex_color_from_a_hex_string($colorSpec, $red, $green, $blue, $alpha): void
     {
         $hex = Hex::fromString($colorSpec);
 
@@ -31,7 +31,7 @@ class HexTest extends TestCase
      * @test
      * @dataProvider invalid_hex_strings
      */
-    public function throws_error_if_color_spec_is_invalid($colorSpec)
+    public function throws_error_if_color_spec_is_invalid($colorSpec): void
     {
         $this->expectException(Exception::class);
 
@@ -42,7 +42,7 @@ class HexTest extends TestCase
      * @test
      * @dataProvider valid_hex_names
      */
-    public function creates_a_color_from_a_name($name, $value)
+    public function creates_a_color_from_a_name($name, $value): void
     {
         $hex = Hex::fromString($name);
 
@@ -54,7 +54,7 @@ class HexTest extends TestCase
      * @test
      * @dataProvider invalid_channels
      */
-    public function throws_error_if_channel_is_not_valid($red, $green, $blue, $alpha)
+    public function throws_error_if_channel_is_not_valid($red, $green, $blue, $alpha): void
     {
         $this->expectException(Exception::class);
 
@@ -64,7 +64,7 @@ class HexTest extends TestCase
     /**
      * @test
      */
-    public function creates_a_hex_color_from_an_rgb_color()
+    public function creates_a_hex_color_from_an_rgb_color(): void
     {
         $rgb = Rgb::fromString('rgb(12,36,108)');
         $hex = Hex::fromRgb($rgb);
@@ -80,7 +80,7 @@ class HexTest extends TestCase
     /**
      * @test
      */
-    public function creates_a_hex_color_from_an_rgb_color_with_alpha()
+    public function creates_a_hex_color_from_an_rgb_color_with_alpha(): void
     {
         $rgb = Rgb::fromString('rgba(12,36,108,0.33)');
         $hex = Hex::fromRgb($rgb);
@@ -96,7 +96,7 @@ class HexTest extends TestCase
     /**
      * @test
      */
-    public function castable_to_string()
+    public function castable_to_string(): void
     {
         $hex = Hex::fromString('#ABCDEF');
 
@@ -106,7 +106,7 @@ class HexTest extends TestCase
     /**
      * @test
      */
-    public function castable_to_string_with_alpha_channel()
+    public function castable_to_string_with_alpha_channel(): void
     {
         $hex = Hex::fromString('#abcdef12');
 
@@ -116,7 +116,7 @@ class HexTest extends TestCase
     /**
      * @test
      */
-    public function can_set_alpha_to_a_new_value()
+    public function can_set_alpha_to_a_new_value(): void
     {
         $hex = Hex::fromString('#123456');
         $newHex = $hex->alpha('0.5');
@@ -129,7 +129,7 @@ class HexTest extends TestCase
     /**
      * @test
      */
-    public function can_increase_alpha()
+    public function can_increase_alpha(): void
     {
         $hex = Hex::fromString('#12345610');
         $newHex = $hex->alpha('+0.5');
@@ -142,7 +142,7 @@ class HexTest extends TestCase
     /**
      * @test
      */
-    public function can_decrease_alpha()
+    public function can_decrease_alpha(): void
     {
         $hex = Hex::fromString('#123456ff');
         $newHex = $hex->alpha('-0.5');
@@ -155,7 +155,7 @@ class HexTest extends TestCase
     /**
      * @test
      */
-    public function can_increase_alpha_by_a_relative_amount()
+    public function can_increase_alpha_by_a_relative_amount(): void
     {
         $hex = Hex::fromString('#12345610');
         $newHex = $hex->alpha('+20%');
@@ -168,7 +168,7 @@ class HexTest extends TestCase
     /**
      * @test
      */
-    public function can_decrease_alpha_by_a_relative_amount()
+    public function can_decrease_alpha_by_a_relative_amount(): void
     {
         $hex = Hex::fromString('#12345650');
         $newHex = $hex->alpha('-20%');

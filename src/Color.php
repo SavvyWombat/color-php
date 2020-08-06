@@ -61,17 +61,17 @@ abstract class Color implements ColorInterface
      *
      * This allows conversion using methods such as `toHex`.
      */
-    final public static function registerColor(string $name, string $className)
+    final public static function registerColor(string $name, string $className): void
     {
-        if (!class_exists($className)) {
+        if ( ! class_exists($className)) {
             throw new Exception("Could not register `{$name}`. `{$className}` does not exist.");
         }
 
-        if (!in_array(ColorInterface::class, class_implements($className))) {
+        if ( ! \in_array(ColorInterface::class, class_implements($className), true)) {
             throw new Exception("Could not register `{$name}`. `{$className}` does not implement `{ColorInterface::class}`.");
         }
 
-        if (!in_array(Color::class, class_parents($className))) {
+        if ( ! \in_array(Color::class, class_parents($className), true)) {
             throw new Exception("Could not register `{$name}`. `{$className}` does not extend `{Color::class}`.");
         }
 
@@ -88,9 +88,9 @@ abstract class Color implements ColorInterface
      *
      * When searching, the regex will be completed as "/^ *{$pattern} *$/i" and any matches returned as an array so that fromString() can construct the relevant class.
      */
-    final public static function registerColorSpec(string $pattern, string $className)
+    final public static function registerColorSpec(string $pattern, string $className): void
     {
-        if (!in_array($className, static::$registeredColorTypes)) {
+        if ( ! \in_array($className, static::$registeredColorTypes, true)) {
             throw new Exception("Could not register `{$pattern}` as a color spec. You must register the color `{$className}` first.");
         }
 
@@ -106,13 +106,13 @@ abstract class Color implements ColorInterface
      * Register a color modifier.
      * Modifiers map to methods on the specified class.
      */
-    final public static function registerModifier(string $name, string $className)
+    final public static function registerModifier(string $name, string $className): void
     {
-        if (!in_array($className, static::$registeredColorTypes)) {
+        if ( ! \in_array($className, static::$registeredColorTypes, true)) {
             throw new Exception("Could not register `{$name}` as a modifier. You must register the color `{$className}` first.");
         }
 
-        if (!method_exists($className, $name)) {
+        if ( ! method_exists($className, $name)) {
             throw new Exception("Could not register `{$name}` as a modifier. `{$className}` does not have this method.");
         }
 
@@ -134,7 +134,7 @@ abstract class Color implements ColorInterface
     {
         $accepted = array_keys(array_filter(
             Color::$registeredColorSpecs,
-            function($value) use ($filter) {
+            function ($value) use ($filter) {
                 return $value === $filter;
             }
         ));
@@ -144,7 +144,7 @@ abstract class Color implements ColorInterface
             $pattern = array_pop($accepted);
             preg_match("/^ *{$pattern} *$/i", $colorSpec, $matches);
         }
-        
+
         return $matches;
     }
 
@@ -179,7 +179,7 @@ abstract class Color implements ColorInterface
             }
         }
 
-        if (!$found) {
+        if ( ! $found) {
             throw Exception::invalidColorSpec($colorSpec);
         }
 
@@ -200,11 +200,11 @@ abstract class Color implements ColorInterface
      */
     private function to($color): ColorInterface
     {
-        if (!isset(Color::registeredColors()[$color])) {
+        if ( ! isset(Color::registeredColors()[$color])) {
             throw Exception::unregisteredColor($color);
         }
 
-        return call_user_func([Color::registeredColors()[$color], 'fromRgb'], $this->toRgb());
+        return \call_user_func([Color::registeredColors()[$color], 'fromRgb'], $this->toRgb());
     }
 
     /**
@@ -223,32 +223,34 @@ abstract class Color implements ColorInterface
      */
     final public function adjustValue($originalValue, $newValue, $max = 0, $min = 0)
     {
-        if (is_string($newValue)) {
-            if ($newValue[0] === '+') {
-                $delta = substr($newValue, 1);
-                if (substr($delta, -1) === '%') {
-                    $delta = $originalValue * (substr($delta, 0, -1) / 100);
+        if (\is_string($newValue)) {
+            if ('+' === $newValue[0]) {
+                $delta = mb_substr($newValue, 1);
+                if ('%' === mb_substr($delta, -1)) {
+                    $delta = $originalValue * (mb_substr($delta, 0, -1) / 100);
                 }
-                if (strpos($newValue, '/')) {
+                if (mb_strpos($newValue, '/')) {
                     $matches = [];
                     if (preg_match('/^\+([0-9]+)\/([0-9]+)$/', $newValue, $matches)) {
                         $delta = ($max - $originalValue) * $matches[1] / $matches[2];
                     }
                 }
+
                 return $originalValue + $delta;
             }
 
-            if ($newValue[0] === '-') {
-                $delta = substr($newValue, 1);
-                if (substr($delta, -1) === '%') {
-                    $delta = $originalValue * (substr($delta, 0, -1) / 100);
+            if ('-' === $newValue[0]) {
+                $delta = mb_substr($newValue, 1);
+                if ('%' === mb_substr($delta, -1)) {
+                    $delta = $originalValue * (mb_substr($delta, 0, -1) / 100);
                 }
-                if (strpos($newValue, '/')) {
+                if (mb_strpos($newValue, '/')) {
                     $matches = [];
                     if (preg_match('/^\-([0-9]+)\/([0-9]+)$/', $newValue, $matches)) {
                         $delta = ($originalValue - $min) * $matches[1] / $matches[2];
                     }
                 }
+
                 return $originalValue - $delta;
             }
         }
@@ -262,7 +264,7 @@ abstract class Color implements ColorInterface
     public function __get($name)
     {
         if (property_exists($this, $name)) {
-            return $this->$name;
+            return $this->{$name};
         }
     }
 
@@ -273,14 +275,15 @@ abstract class Color implements ColorInterface
     public function __call($name, $arguments)
     {
         // Enables the use of conversion methods such as `toHex` from any subclass.
-        if (substr($name, 0, 2) === 'to') {
-            return $this->to(substr($name, 2));
+        if ('to' === mb_substr($name, 0, 2)) {
+            return $this->to(mb_substr($name, 2));
         }
 
         // Enables the use of modifiers from any subclass.
         if (isset(self::$registeredModifiers[$name])) {
             $converter = (self::$registeredModifiers[$name])::fromRgb($this->toRgb());
-            $converter = $converter->$name($arguments[0]);
+            $converter = $converter->{$name}($arguments[0]);
+
             return static::fromRgb($converter->toRgb());
         }
     }
