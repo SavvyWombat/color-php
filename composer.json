@@ -3,12 +3,14 @@
   "description": "Package for manipulating colors in multiple color spaces.",
   "type": "library",
   "homepage": "https://github.com/SavvyWombat/color-php",
-  "keywords": ["color", "savvywombat", "savvy wombat", "rgb", "hsl", "color space"],
+  "keywords": ["color", "colors", "hex", "rgb", "hsl", "color space", "transform", "convert", "conversion", "manipulation", "savvywombat", "savvy wombat"],
   "license": "MIT",
   "authors": [
     {
       "name": "Stuart Jones",
-      "email": "stuart@savvywombat.com.au"
+      "email": "stuart@savvywombat.com.au",
+      "homepage": "https://savvywombat.com.au",
+      "role": "creator"
     }
   ],
   "require": {
