@@ -398,7 +398,7 @@ class HslTest extends TestCase
 
     public function invert_colors(): array
     {
-        return[
+        return [
             'hsl(0,25%,75%)' => ['hsl(0,25%,75%)', 'hsl(180,25%,75%)'],
             'hsl(180,25%,75%)' => ['hsl(180,25%,75%)', 'hsl(0,25%,75%)'],
             'hsl(45,25%,75%)' => ['hsl(45,25%,75%)', 'hsl(225,25%,75%)'],
