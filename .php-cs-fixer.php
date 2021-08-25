@@ -1,8 +1,14 @@
 <?php
 
+$finder = new PhpCsFixer\Finder();
+$finder
+    ->in(__DIR__);
+;
+
 $config = new PhpCsFixer\Config();
 
 return $config
+    ->setFinder($finder)
     ->setRiskyAllowed(true)
     ->setRules([
         "@PSR2" => true,
@@ -27,7 +33,6 @@ return $config
         "multiline_comment_opening_closing" => true,
         "no_alternative_syntax" => true,
         "no_php4_constructor" => true,
-        "no_short_echo_tag" => true,
         "no_superfluous_elseif" => true,
         "no_superfluous_phpdoc_tags" => [
             'allow_mixed' => true,
@@ -36,10 +41,11 @@ return $config
         "no_useless_else" => true,
         "no_useless_return" => true,
         "not_operator_with_space" => true,
-        "php_unit_ordered_covers" => true,
         "php_unit_test_annotation" => [
-            "case" => "camel",
             "style" => "annotation",
+        ],
+        "php_unit_method_casing" => [
+            "case" => "snake_case",
         ],
         "php_unit_test_class_requires_covers" => false,
         "phpdoc_order" => true,
