@@ -53,6 +53,8 @@ abstract class Color implements ColorInterface
         'hue' => Hsl::class,
         'saturation' => Hsl::class,
         'lightness' => Hsl::class,
+
+        'invert' => Hsl::class,
     ];
 
     /**

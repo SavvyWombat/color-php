@@ -217,6 +217,21 @@ class HslTest extends TestCase
         $this->assertEquals($rgbString, (string) $rgb);
     }
 
+    /**
+     * @test
+     * @dataProvider invert_colors
+     */
+    public function inverts_colors($hslString, $invertedHueString): void
+    {
+        $hsl = Hsl::fromString($hslString);
+
+        $invertedHsl = $hsl->invert();
+
+        $this->assertInstanceOf(Hsl::class, $invertedHsl);
+        $this->assertNotSame($hsl, $invertedHsl);
+        $this->assertEquals($invertedHueString, (string) $invertedHsl);
+    }
+
     public function valid_color_strings(): array
     {
         return [
@@ -378,6 +393,16 @@ class HslTest extends TestCase
             'rgb(48,96,192)' => ['rgb(48,96,192)', 'hsl(220,60%,47.1%)'],
             'rgb(255,255,255)' => ['rgb(255,255,255)', 'hsl(0,0%,100%)'],
             'rgb(0,0,0)' => ['rgb(0,0,0)', 'hsl(0,0%,0%)'],
+        ];
+    }
+
+    public function invert_colors(): array
+    {
+        return[
+            'hsl(0,25%,75%)' => ['hsl(0,25%,75%)', 'hsl(180,25%,75%)'],
+            'hsl(180,25%,75%)' => ['hsl(180,25%,75%)', 'hsl(0,25%,75%)'],
+            'hsl(45,25%,75%)' => ['hsl(45,25%,75%)', 'hsl(225,25%,75%)'],
+            'hsl(200,25%,75%)' => ['hsl(200,25%,75%)', 'hsl(20,25%,75%)'],
         ];
     }
 }

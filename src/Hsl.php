@@ -101,6 +101,13 @@ class Hsl extends Color
         return new self($this->hue, $this->saturation, $lightness, $this->alpha);
     }
 
+    public function invert(): self
+    {
+        $newHue = $this->hue >= 180 ? $this->hue - 180 : $this->hue + 180;
+
+        return new self($newHue, $this->saturation, $this->lightness, $this->alpha);
+    }
+
     public static function fromRgb(Rgb $rgb): ColorInterface
     {
         [$hue, $saturation, $lightness] = static::rgbToHsl($rgb->red, $rgb->green, $rgb->blue);
