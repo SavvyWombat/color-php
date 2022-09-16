@@ -13,6 +13,7 @@ class HexTest extends TestCase
 {
     /**
      * @test
+     *
      * @dataProvider valid_hex_strings
      */
     public function creates_a_hex_color_from_a_hex_string($colorSpec, $red, $green, $blue, $alpha): void
@@ -29,6 +30,7 @@ class HexTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider invalid_hex_strings
      */
     public function throws_error_if_color_spec_is_invalid($colorSpec): void
@@ -40,6 +42,7 @@ class HexTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider valid_hex_names
      */
     public function creates_a_color_from_a_name($name, $value): void
@@ -52,6 +55,7 @@ class HexTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider invalid_channels
      */
     public function throws_error_if_channel_is_not_valid($red, $green, $blue, $alpha): void

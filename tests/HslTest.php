@@ -13,6 +13,7 @@ class HslTest extends TestCase
 {
     /**
      * @test
+     *
      * @dataProvider valid_color_strings
      */
     public function creates_an_hsl_color_from_a_string($colorSpec, $hue, $saturation, $lightness, $alpha): void
@@ -29,6 +30,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider invalid_color_strings
      */
     public function throws_an_error_if_provided_an_invalid_color_string($colorSpec): void
@@ -40,6 +42,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider invalid_color_values
      */
     public function throws_an_error_if_passed_invalid_color_values($hue, $saturation, $lightness, $alpha): void
@@ -51,6 +54,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider rgb_to_hsl
      */
     public function creates_an_hsl_color_from_an_rgb_color($rgbString, $hslString): void
@@ -73,10 +77,10 @@ class HslTest extends TestCase
 
         $this->assertInstanceOf(Hsl::class, $hsl);
 
-        $this->assertEquals(48, $hsl->red);
-        $this->assertEquals(96, $hsl->green);
-        $this->assertEquals(192, $hsl->blue);
-        $this->assertEquals(0.35, $hsl->alpha);
+        $this->assertEquals(48.00, round($hsl->red, 2));
+        $this->assertEquals(96.00, round($hsl->green, 2));
+        $this->assertEquals(192.00, round($hsl->blue, 2));
+        $this->assertEquals(0.35, round($hsl->alpha, 2));
     }
 
     /**
@@ -101,6 +105,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_red_channel
      */
     public function can_modify_red_channel($initialColor, $newRedValue, $result): void
@@ -116,6 +121,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_green_channel
      */
     public function can_modify_green_channel($initialColor, $newGreenValue, $result): void
@@ -131,6 +137,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_blue_channel
      */
     public function can_modify_blue_channel($initialColor, $newBlueValue, $result): void
@@ -146,6 +153,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_alpha_channel
      */
     public function can_modify_alpha_channel($initialColor, $newAlphaValue, $result): void
@@ -161,6 +169,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_hue
      */
     public function can_modify_hue($initialColor, $newHueValue, $result): void
@@ -176,6 +185,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_saturation
      */
     public function can_modify_saturation($initialColor, $newSaturationValue, $result): void
@@ -191,6 +201,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_lightness
      */
     public function can_modify_lightness($initialColor, $newLightnessValue, $result): void
@@ -206,6 +217,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider hsl_to_rgb
      */
     public function converts_to_rgb($hslString, $rgbString): void
@@ -219,6 +231,7 @@ class HslTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider invert_colors
      */
     public function inverts_colors($hslString, $invertedHueString): void

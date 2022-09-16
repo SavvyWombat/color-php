@@ -32,11 +32,13 @@ class ColorTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider valid_hex_names
      */
 
     /**
      * @test
+     *
      * @dataProvider valid_hex_names
      */
     public function creates_a_hex_color_from_a_name($name, $value): void

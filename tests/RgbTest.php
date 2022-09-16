@@ -12,6 +12,7 @@ class RgbTest extends TestCase
 {
     /**
      * @test
+     *
      * @dataProvider valid_color_strings
      */
     public function creates_an_rgb_color_from_a_string($colorSpec, $red, $green, $blue, $alpha): void
@@ -28,6 +29,7 @@ class RgbTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider invalid_color_strings
      */
     public function throws_an_error_if_provided_an_invalid_color_string($colorSpec): void
@@ -39,6 +41,7 @@ class RgbTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider invalid_color_values
      */
     public function throws_an_error_if_passed_invalid_color_values($red, $green, $blue, $alpha): void
@@ -104,6 +107,7 @@ class RgbTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_red_channel
      */
     public function can_modify_red_channel($initialColor, $newRedValue, $result): void
@@ -119,6 +123,7 @@ class RgbTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_green_channel
      */
     public function can_modify_green_channel($initialColor, $newGreenValue, $result): void
@@ -134,6 +139,7 @@ class RgbTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_blue_channel
      */
     public function can_modify_blue_channel($initialColor, $newBlueValue, $result): void
@@ -149,6 +155,7 @@ class RgbTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_alpha_channel
      */
     public function can_modify_alpha_channel($initialColor, $newAlphaValue, $result): void
@@ -164,6 +171,7 @@ class RgbTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_hue
      */
     public function can_modify_hue($initialColor, $newHueValue, $result): void
@@ -179,6 +187,7 @@ class RgbTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_saturation
      */
     public function can_modify_saturation($initialColor, $newSaturationValue, $result): void
@@ -194,6 +203,7 @@ class RgbTest extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider modify_lightness
      */
     public function can_modify_lightness($initialColor, $newLightnessValue, $result): void

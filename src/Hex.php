@@ -226,10 +226,10 @@ class Hex extends Color
     public static function fromRgb(Rgb $rgb): ColorInterface
     {
         return new Hex(
-            str_pad(dechex(round($rgb->red)), 2, '0', \STR_PAD_LEFT),
-            str_pad(dechex(round($rgb->green)), 2, '0', \STR_PAD_LEFT),
-            str_pad(dechex(round($rgb->blue)), 2, '0', \STR_PAD_LEFT),
-            str_pad(dechex(round($rgb->alpha * 255)), 2, '0', \STR_PAD_LEFT)
+            str_pad(dechex((int) round($rgb->red)), 2, '0', \STR_PAD_LEFT),
+            str_pad(dechex((int) round($rgb->green)), 2, '0', \STR_PAD_LEFT),
+            str_pad(dechex((int) round($rgb->blue)), 2, '0', \STR_PAD_LEFT),
+            str_pad(dechex((int) round($rgb->alpha * 255)), 2, '0', \STR_PAD_LEFT)
         );
     }
 
