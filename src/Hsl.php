@@ -40,11 +40,11 @@ class Hsl extends Color
         if (empty($channels)) {
             throw Exception::invalidHslSpec($colorSpec);
         }
-        if ( ! isset($channels[6])) {
-            $channels[6] = 1;
+        if ( ! isset($channels[4])) {
+            $channels[4] = 1;
         }
 
-        return new Hsl((float) $channels[1], (float) $channels[2], (float) $channels[4], (float) $channels[6]);
+        return new Hsl((float) $channels[1], (float) $channels[2], (float) $channels[3], (float) $channels[4]);
     }
 
     public function __toString(): string
