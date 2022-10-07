@@ -19,8 +19,8 @@ abstract class Color implements ColorInterface
      */
     private static $registeredColorTypes = [
         'Hex' => Hex::class,
-        'Hsl' => Hsl::class,
-        'Rgb' => Rgb::class,
+        'HSL' => HSL::class,
+        'RGB' => RGB::class,
     ];
 
     /**
@@ -33,12 +33,12 @@ abstract class Color implements ColorInterface
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
         '#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})' => Hex::class,
 
-        'hsl\((-?\d+|\d*\.\d+),\s*(\d+|\d*\.\d+)%,\s*(\d+|\d*\.\d+)%\)' => Hsl::class,
-        'hsl\((-?\d+|\d*\.\d+),\s*(\d+|\d*\.\d+)%,\s*(\d+|\d*\.\d+)%,\s*([0-1]|[0-1]?\.\d+)\)' => Hsl::class,
-        'hsla\((-?\d+|\d*\.\d+),\s*(\d+|\d*\.\d+)%,\s*(\d+|\d*\.\d+)%,\s*([0-1]|[0-1]?\.\d+)\)' => Hsl::class,
+        'hsl\((-?\d+|\d*\.\d+),\s*(\d+|\d*\.\d+)%,\s*(\d+|\d*\.\d+)%\)' => HSL::class,
+        'hsl\((-?\d+|\d*\.\d+),\s*(\d+|\d*\.\d+)%,\s*(\d+|\d*\.\d+)%,\s*([0-1]|[0-1]?\.\d+)\)' => HSL::class,
+        'hsla\((-?\d+|\d*\.\d+),\s*(\d+|\d*\.\d+)%,\s*(\d+|\d*\.\d+)%,\s*([0-1]|[0-1]?\.\d+)\)' => HSL::class,
 
-        'rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)' => Rgb::class,
-        'rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*([0-1](\.\d{1,2})?)\)' => Rgb::class,
+        'rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)' => RGB::class,
+        'rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*([0-1](\.\d{1,2})?)\)' => RGB::class,
     ];
 
     /**
@@ -46,16 +46,16 @@ abstract class Color implements ColorInterface
      * Modifiers can be called on any object which extends Color.
      */
     private static $registeredModifiers = [
-        'red' => Rgb::class,
-        'blue' => Rgb::class,
-        'green' => Rgb::class,
-        'alpha' => Rgb::class,
+        'red' => RGB::class,
+        'blue' => RGB::class,
+        'green' => RGB::class,
+        'alpha' => RGB::class,
 
-        'hue' => Hsl::class,
-        'saturation' => Hsl::class,
-        'lightness' => Hsl::class,
+        'hue' => HSL::class,
+        'saturation' => HSL::class,
+        'lightness' => HSL::class,
 
-        'invert' => Hsl::class,
+        'invert' => HSL::class,
     ];
 
     /**
@@ -190,12 +190,12 @@ abstract class Color implements ColorInterface
     }
 
     /**
-     * Convert any subclass of Color to Rgb.
+     * Convert any subclass of Color to RGB.
      * Expects the subclass to set RGB equivalents - otherwise the subclass will have to reimplement this method.
      */
-    public function toRgb(): Rgb
+    public function toRGB(): RGB
     {
-        return new Rgb($this->red, $this->green, $this->blue, $this->alpha);
+        return new RGB($this->red, $this->green, $this->blue, $this->alpha);
     }
 
     /**
@@ -207,7 +207,7 @@ abstract class Color implements ColorInterface
             throw Exception::unregisteredColor($color);
         }
 
-        return \call_user_func([Color::registeredColors()[$color], 'fromRgb'], $this->toRgb());
+        return \call_user_func([Color::registeredColors()[$color], 'fromRGB'], $this->toRGB());
     }
 
     /**
@@ -284,10 +284,10 @@ abstract class Color implements ColorInterface
 
         // Enables the use of modifiers from any subclass.
         if (isset(self::$registeredModifiers[$name])) {
-            $converter = (self::$registeredModifiers[$name])::fromRgb($this->toRgb());
+            $converter = (self::$registeredModifiers[$name])::fromRgb($this->toRGB());
             $converter = $converter->{$name}($arguments[0]);
 
-            return static::fromRgb($converter->toRgb());
+            return static::fromRGB($converter->toRgb());
         }
     }
 }

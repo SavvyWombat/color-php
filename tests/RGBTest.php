@@ -6,9 +6,9 @@ namespace Test;
 
 use PHPUnit\Framework\TestCase;
 use SavvyWombat\Color\Exception;
-use SavvyWombat\Color\Rgb;
+use SavvyWombat\Color\RGB;
 
-class RgbTest extends TestCase
+class RGBTest extends TestCase
 {
     /**
      * @test
@@ -17,9 +17,9 @@ class RgbTest extends TestCase
      */
     public function creates_an_rgb_color_from_a_string($colorSpec, $red, $green, $blue, $alpha): void
     {
-        $rgb = Rgb::fromString($colorSpec);
+        $rgb = RGB::fromString($colorSpec);
 
-        $this->assertInstanceOf(Rgb::class, $rgb);
+        $this->assertInstanceOf(RGB::class, $rgb);
 
         $this->assertEquals($red, $rgb->red);
         $this->assertEquals($green, $rgb->green);
@@ -36,7 +36,7 @@ class RgbTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        Rgb::fromString($colorSpec);
+        RGB::fromString($colorSpec);
     }
 
     /**
@@ -48,7 +48,7 @@ class RgbTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        new Rgb($red, $green, $blue, $alpha);
+        new RGB($red, $green, $blue, $alpha);
     }
 
     /**
@@ -56,10 +56,10 @@ class RgbTest extends TestCase
      */
     public function creates_a_new_rgb_color_from_an_rgb_color(): void
     {
-        $rgb = Rgb::fromString('rgb(48,96,192)');
-        $newRgb = Rgb::fromRgb($rgb);
+        $rgb = RGB::fromString('rgb(48,96,192)');
+        $newRgb = RGB::fromRGB($rgb);
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertInstanceOf(RGB::class, $newRgb);
         $this->assertNotSame($newRgb, $rgb);
 
         $this->assertEquals(48, $newRgb->red);
@@ -73,10 +73,10 @@ class RgbTest extends TestCase
      */
     public function creates_a_new_rgb_color_from_an_rgb_color_with_alpha(): void
     {
-        $rgb = Rgb::fromString('rgba(48,96,192,0.75)');
-        $newRgb = Rgb::fromRgb($rgb);
+        $rgb = RGB::fromString('rgba(48,96,192,0.75)');
+        $newRgb = RGB::fromRGB($rgb);
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertInstanceOf(RGB::class, $newRgb);
         $this->assertNotSame($newRgb, $rgb);
 
         $this->assertEquals(48, $newRgb->red);
@@ -90,7 +90,7 @@ class RgbTest extends TestCase
      */
     public function castable_to_string(): void
     {
-        $rgb = Rgb::fromString('rgb(32,64,128)');
+        $rgb = RGB::fromString('rgb(32,64,128)');
 
         $this->assertEquals('rgb(32,64,128)', (string) $rgb);
     }
@@ -100,7 +100,7 @@ class RgbTest extends TestCase
      */
     public function castable_to_string_with_alpha_channel(): void
     {
-        $rgb = Rgb::fromString('rgba(32,64,128,0.67)');
+        $rgb = RGB::fromString('rgba(32,64,128,0.67)');
 
         $this->assertEquals('rgba(32,64,128,0.67)', (string) $rgb);
     }
@@ -112,10 +112,10 @@ class RgbTest extends TestCase
      */
     public function can_modify_red_channel($initialColor, $newRedValue, $result): void
     {
-        $rgb = Rgb::fromString($initialColor);
+        $rgb = RGB::fromString($initialColor);
         $newRgb = $rgb->red($newRedValue);
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertInstanceOf(RGB::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
         $this->assertEquals($initialColor, (string) $rgb);
         $this->assertEquals($result, (string) $newRgb);
@@ -128,10 +128,10 @@ class RgbTest extends TestCase
      */
     public function can_modify_green_channel($initialColor, $newGreenValue, $result): void
     {
-        $rgb = Rgb::fromString($initialColor);
+        $rgb = RGB::fromString($initialColor);
         $newRgb = $rgb->green($newGreenValue);
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertInstanceOf(RGB::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
         $this->assertEquals($initialColor, (string) $rgb);
         $this->assertEquals($result, (string) $newRgb);
@@ -144,10 +144,10 @@ class RgbTest extends TestCase
      */
     public function can_modify_blue_channel($initialColor, $newBlueValue, $result): void
     {
-        $rgb = Rgb::fromString($initialColor);
+        $rgb = RGB::fromString($initialColor);
         $newRgb = $rgb->blue($newBlueValue);
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertInstanceOf(RGB::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
         $this->assertEquals($initialColor, (string) $rgb);
         $this->assertEquals($result, (string) $newRgb);
@@ -160,10 +160,10 @@ class RgbTest extends TestCase
      */
     public function can_modify_alpha_channel($initialColor, $newAlphaValue, $result): void
     {
-        $rgb = Rgb::fromString($initialColor);
+        $rgb = RGB::fromString($initialColor);
         $newRgb = $rgb->alpha($newAlphaValue);
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertInstanceOf(RGB::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
         $this->assertEquals($initialColor, (string) $rgb);
         $this->assertEquals($result, (string) $newRgb);
@@ -176,10 +176,10 @@ class RgbTest extends TestCase
      */
     public function can_modify_hue($initialColor, $newHueValue, $result): void
     {
-        $rgb = Rgb::fromString($initialColor);
+        $rgb = RGB::fromString($initialColor);
         $newRgb = $rgb->hue($newHueValue);
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertInstanceOf(RGB::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
         $this->assertEquals($initialColor, (string) $rgb);
         $this->assertEquals($result, (string) $newRgb);
@@ -192,10 +192,10 @@ class RgbTest extends TestCase
      */
     public function can_modify_saturation($initialColor, $newSaturationValue, $result): void
     {
-        $rgb = Rgb::fromString($initialColor);
+        $rgb = RGB::fromString($initialColor);
         $newRgb = $rgb->saturation($newSaturationValue);
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertInstanceOf(RGB::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
         $this->assertEquals($initialColor, (string) $rgb);
         $this->assertEquals($result, (string) $newRgb);
@@ -208,10 +208,10 @@ class RgbTest extends TestCase
      */
     public function can_modify_lightness($initialColor, $newLightnessValue, $result): void
     {
-        $rgb = Rgb::fromString($initialColor);
+        $rgb = RGB::fromString($initialColor);
         $newRgb = $rgb->lightness($newLightnessValue);
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertInstanceOf(RGB::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
         $this->assertEquals($initialColor, (string) $rgb);
         $this->assertEquals($result, (string) $newRgb);

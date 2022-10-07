@@ -28,12 +28,12 @@ class Exception extends BaseException
         return new static("`{$colorSpec}` is not a valid hex color specification.");
     }
 
-    public static function invalidHslSpec(string $colorSpec): self
+    public static function invalidHSLSpec(string $colorSpec): self
     {
         return new static("`{$colorSpec}` is not a valid hsl or hsla color specification.");
     }
 
-    public static function invalidRgbSpec(string $colorSpec): self
+    public static function invalidRGBSpec(string $colorSpec): self
     {
         return new static("`{$colorSpec}` is not a valid rgb or rgba color specification.");
     }

@@ -7,7 +7,7 @@ namespace Test;
 use PHPUnit\Framework\TestCase;
 use SavvyWombat\Color\Exception;
 use SavvyWombat\Color\Hex;
-use SavvyWombat\Color\Rgb;
+use SavvyWombat\Color\RGB;
 
 class HexTest extends TestCase
 {
@@ -70,8 +70,8 @@ class HexTest extends TestCase
      */
     public function creates_a_hex_color_from_an_rgb_color(): void
     {
-        $rgb = Rgb::fromString('rgb(12,36,108)');
-        $hex = Hex::fromRgb($rgb);
+        $rgb = RGB::fromString('rgb(12,36,108)');
+        $hex = Hex::fromRGB($rgb);
 
         $this->assertInstanceOf(Hex::class, $hex);
 
@@ -86,8 +86,8 @@ class HexTest extends TestCase
      */
     public function creates_a_hex_color_from_an_rgb_color_with_alpha(): void
     {
-        $rgb = Rgb::fromString('rgba(12,36,108,0.33)');
-        $hex = Hex::fromRgb($rgb);
+        $rgb = RGB::fromString('rgba(12,36,108,0.33)');
+        $hex = Hex::fromRGB($rgb);
 
         $this->assertInstanceOf(Hex::class, $hex);
 

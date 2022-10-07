@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SavvyWombat\Color;
 
-class Hsl extends Color
+class HSL extends Color
 {
     protected $hue;
     protected $saturation;
@@ -13,8 +13,8 @@ class Hsl extends Color
     public function __construct(float $hue, float $saturation, float $lightness, $alpha = 1.0)
     {
         $this->hue = $hue;
-        $this->saturation = self::validateHslChannel('saturation)', $saturation);
-        $this->lightness = self::validateHslChannel('lightness', $lightness);
+        $this->saturation = self::validateHSLChannel('saturation)', $saturation);
+        $this->lightness = self::validateHSLChannel('lightness', $lightness);
         $this->alpha = self::validateAlphaChannel($alpha);
 
         // calculate RGB equivalent values for easy conversion
@@ -24,7 +24,7 @@ class Hsl extends Color
         $this->blue = $blue;
     }
 
-    public static function validateHslChannel($channel, $value)
+    public static function validateHSLChannel($channel, $value)
     {
         if ($value < 0 || $value > 100) {
             throw Exception::invalidChannel($channel, $value, 'must be a valid hsl value (0-100)');
@@ -38,13 +38,13 @@ class Hsl extends Color
         $channels = Color::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
-            throw Exception::invalidHslSpec($colorSpec);
+            throw Exception::invalidHSLSpec($colorSpec);
         }
         if ( ! isset($channels[4])) {
             $channels[4] = 1;
         }
 
-        return new Hsl((float) $channels[1], (float) $channels[2], (float) $channels[3], (float) $channels[4]);
+        return new HSL((float) $channels[1], (float) $channels[2], (float) $channels[3], (float) $channels[4]);
     }
 
     public function __toString(): string
@@ -108,14 +108,14 @@ class Hsl extends Color
         return new self($newHue, $this->saturation, $this->lightness, $this->alpha);
     }
 
-    public static function fromRgb(Rgb $rgb): ColorInterface
+    public static function fromRGB(RGB $rgb): ColorInterface
     {
-        [$hue, $saturation, $lightness] = static::rgbToHsl($rgb->red, $rgb->green, $rgb->blue);
+        [$hue, $saturation, $lightness] = static::rgbToHSL($rgb->red, $rgb->green, $rgb->blue);
 
-        return new Hsl($hue, $saturation, $lightness, $rgb->alpha);
+        return new HSL($hue, $saturation, $lightness, $rgb->alpha);
     }
 
-    public static function rgbToHsl(float $red, float $green, float $blue): array
+    public static function rgbToHSL(float $red, float $green, float $blue): array
     {
         $r = $red / 255;
         $g = $green / 255;

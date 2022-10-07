@@ -223,7 +223,7 @@ class Hex extends Color
         return new Hex($channels[1], $channels[2], $channels[3], $channels[4]);
     }
 
-    public static function fromRgb(Rgb $rgb): ColorInterface
+    public static function fromRGB(RGB $rgb): ColorInterface
     {
         return new Hex(
             str_pad(dechex((int) round($rgb->red)), 2, '0', \STR_PAD_LEFT),

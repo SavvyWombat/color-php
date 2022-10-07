@@ -6,10 +6,10 @@ namespace Test;
 
 use PHPUnit\Framework\TestCase;
 use SavvyWombat\Color\Exception;
-use SavvyWombat\Color\Hsl;
-use SavvyWombat\Color\Rgb;
+use SavvyWombat\Color\HSL;
+use SavvyWombat\Color\RGB;
 
-class HslTest extends TestCase
+class HSLTest extends TestCase
 {
     /**
      * @test
@@ -18,9 +18,9 @@ class HslTest extends TestCase
      */
     public function creates_an_hsl_color_from_a_string($colorSpec, $hue, $saturation, $lightness, $alpha): void
     {
-        $hsl = Hsl::fromString($colorSpec);
+        $hsl = HSL::fromString($colorSpec);
 
-        $this->assertInstanceOf(Hsl::class, $hsl);
+        $this->assertInstanceOf(HSL::class, $hsl);
 
         $this->assertEquals($hue, $hsl->hue);
         $this->assertEquals($saturation, $hsl->saturation);
@@ -37,7 +37,7 @@ class HslTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        Hsl::fromString($colorSpec);
+        HSL::fromString($colorSpec);
     }
 
     /**
@@ -49,7 +49,7 @@ class HslTest extends TestCase
     {
         $this->expectException(Exception::class);
 
-        new Hsl($hue, $saturation, $lightness, $alpha);
+        new HSL($hue, $saturation, $lightness, $alpha);
     }
 
     /**
@@ -59,10 +59,10 @@ class HslTest extends TestCase
      */
     public function creates_an_hsl_color_from_an_rgb_color($rgbString, $hslString): void
     {
-        $rgb = Rgb::fromString($rgbString);
-        $hsl = Hsl::fromRgb($rgb);
+        $rgb = RGB::fromString($rgbString);
+        $hsl = HSL::fromRGB($rgb);
 
-        $this->assertInstanceOf(Hsl::class, $hsl);
+        $this->assertInstanceOf(HSL::class, $hsl);
 
         $this->assertEquals($hslString, (string) $hsl);
     }
@@ -72,10 +72,10 @@ class HslTest extends TestCase
      */
     public function creates_an_hsl_color_from_an_rgb_color_with_alpha(): void
     {
-        $rgb = Rgb::fromString('rgba(48,96,192,0.35)');
-        $hsl = Hsl::fromRgb($rgb);
+        $rgb = RGB::fromString('rgba(48,96,192,0.35)');
+        $hsl = HSL::fromRGB($rgb);
 
-        $this->assertInstanceOf(Hsl::class, $hsl);
+        $this->assertInstanceOf(HSL::class, $hsl);
 
         $this->assertEquals(48.00, round($hsl->red, 2));
         $this->assertEquals(96.00, round($hsl->green, 2));
@@ -88,7 +88,7 @@ class HslTest extends TestCase
      */
     public function castable_to_string(): void
     {
-        $hsl = Hsl::fromString('hsl(16,32%,64%)');
+        $hsl = HSL::fromString('hsl(16,32%,64%)');
 
         $this->assertEquals('hsl(16,32%,64%)', (string) $hsl);
     }
@@ -98,7 +98,7 @@ class HslTest extends TestCase
      */
     public function castable_to_string_with_alpha_channel(): void
     {
-        $hsl = Hsl::fromString('hsla(16,32%,64%,0.5)');
+        $hsl = HSL::fromString('hsla(16,32%,64%,0.5)');
 
         $this->assertEquals('hsla(16,32%,64%,0.5)', (string) $hsl);
     }
@@ -110,10 +110,10 @@ class HslTest extends TestCase
      */
     public function can_modify_red_channel($initialColor, $newRedValue, $result): void
     {
-        $hsl = Hsl::fromString($initialColor);
+        $hsl = HSL::fromString($initialColor);
         $newHsl = $hsl->red($newRedValue);
 
-        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertInstanceOf(HSL::class, $newHsl);
         $this->assertNotSame($hsl, $newHsl);
         $this->assertEquals($initialColor, (string) $hsl);
         $this->assertEquals($result, (string) $newHsl);
@@ -126,10 +126,10 @@ class HslTest extends TestCase
      */
     public function can_modify_green_channel($initialColor, $newGreenValue, $result): void
     {
-        $hsl = Hsl::fromString($initialColor);
+        $hsl = HSL::fromString($initialColor);
         $newHsl = $hsl->green($newGreenValue);
 
-        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertInstanceOf(HSL::class, $newHsl);
         $this->assertNotSame($hsl, $newHsl);
         $this->assertEquals($initialColor, (string) $hsl);
         $this->assertEquals($result, (string) $newHsl);
@@ -142,10 +142,10 @@ class HslTest extends TestCase
      */
     public function can_modify_blue_channel($initialColor, $newBlueValue, $result): void
     {
-        $hsl = Hsl::fromString($initialColor);
+        $hsl = HSL::fromString($initialColor);
         $newHsl = $hsl->blue($newBlueValue);
 
-        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertInstanceOf(HSL::class, $newHsl);
         $this->assertNotSame($hsl, $newHsl);
         $this->assertEquals($initialColor, (string) $hsl);
         $this->assertEquals($result, (string) $newHsl);
@@ -158,10 +158,10 @@ class HslTest extends TestCase
      */
     public function can_modify_alpha_channel($initialColor, $newAlphaValue, $result): void
     {
-        $hsl = Hsl::fromString($initialColor);
+        $hsl = HSL::fromString($initialColor);
         $newHsl = $hsl->alpha($newAlphaValue);
 
-        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertInstanceOf(HSL::class, $newHsl);
         $this->assertNotSame($hsl, $newHsl);
         $this->assertEquals($initialColor, (string) $hsl);
         $this->assertEquals($result, (string) $newHsl);
@@ -174,10 +174,10 @@ class HslTest extends TestCase
      */
     public function can_modify_hue($initialColor, $newHueValue, $result): void
     {
-        $hsl = Hsl::fromString($initialColor);
+        $hsl = HSL::fromString($initialColor);
         $newHsl = $hsl->hue($newHueValue);
 
-        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertInstanceOf(HSL::class, $newHsl);
         $this->assertNotSame($hsl, $newHsl);
         $this->assertEquals($initialColor, (string) $hsl);
         $this->assertEquals($result, (string) $newHsl);
@@ -190,10 +190,10 @@ class HslTest extends TestCase
      */
     public function can_modify_saturation($initialColor, $newSaturationValue, $result): void
     {
-        $hsl = Hsl::fromString($initialColor);
+        $hsl = HSL::fromString($initialColor);
         $newHsl = $hsl->saturation($newSaturationValue);
 
-        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertInstanceOf(HSL::class, $newHsl);
         $this->assertNotSame($hsl, $newHsl);
         $this->assertEquals($initialColor, (string) $hsl);
         $this->assertEquals($result, (string) $newHsl);
@@ -206,10 +206,10 @@ class HslTest extends TestCase
      */
     public function can_modify_lightness($initialColor, $newLightnessValue, $result): void
     {
-        $hsl = Hsl::fromString($initialColor);
+        $hsl = HSL::fromString($initialColor);
         $newHsl = $hsl->lightness($newLightnessValue);
 
-        $this->assertInstanceOf(Hsl::class, $newHsl);
+        $this->assertInstanceOf(HSL::class, $newHsl);
         $this->assertNotSame($hsl, $newHsl);
         $this->assertEquals($initialColor, (string) $hsl);
         $this->assertEquals($result, (string) $newHsl);
@@ -222,10 +222,10 @@ class HslTest extends TestCase
      */
     public function converts_to_rgb($hslString, $rgbString): void
     {
-        $hsl = Hsl::fromString($hslString);
-        $rgb = $hsl->toRgb();
+        $hsl = HSL::fromString($hslString);
+        $rgb = $hsl->toRGB();
 
-        $this->assertInstanceOf(Rgb::class, $rgb);
+        $this->assertInstanceOf(RGB::class, $rgb);
         $this->assertEquals($rgbString, (string) $rgb);
     }
 
@@ -236,11 +236,11 @@ class HslTest extends TestCase
      */
     public function inverts_colors($hslString, $invertedHueString): void
     {
-        $hsl = Hsl::fromString($hslString);
+        $hsl = HSL::fromString($hslString);
 
         $invertedHsl = $hsl->invert();
 
-        $this->assertInstanceOf(Hsl::class, $invertedHsl);
+        $this->assertInstanceOf(HSL::class, $invertedHsl);
         $this->assertNotSame($hsl, $invertedHsl);
         $this->assertEquals($invertedHueString, (string) $invertedHsl);
     }

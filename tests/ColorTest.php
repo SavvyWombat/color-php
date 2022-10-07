@@ -9,8 +9,8 @@ use SavvyWombat\Color\Color;
 use SavvyWombat\Color\ColorInterface;
 use SavvyWombat\Color\Exception;
 use SavvyWombat\Color\Hex;
-use SavvyWombat\Color\Hsl;
-use SavvyWombat\Color\Rgb;
+use SavvyWombat\Color\HSL;
+use SavvyWombat\Color\RGB;
 
 class ColorTest extends TestCase
 {
@@ -21,9 +21,9 @@ class ColorTest extends TestCase
     {
         $color = new Gray(50, 0.45);
 
-        $rgb = $color->toRgb();
+        $rgb = $color->toRGB();
 
-        $this->assertInstanceOf(Rgb::class, $rgb);
+        $this->assertInstanceOf(RGB::class, $rgb);
         $this->assertEquals(128, round($rgb->red));
         $this->assertEquals(128, round($rgb->green));
         $this->assertEquals(128, round($rgb->blue));
@@ -81,9 +81,9 @@ class ColorTest extends TestCase
     public function can_convert_to_hsl(): void
     {
         $color = new Gray(50, 0.45);
-        $hsl = $color->toHsl();
+        $hsl = $color->toHSL();
 
-        $this->assertInstanceOf(Hsl::class, $hsl);
+        $this->assertInstanceOf(HSL::class, $hsl);
         $this->assertEquals(128, round($hsl->red));
         $this->assertEquals(128, round($hsl->green));
         $this->assertEquals(128, round($hsl->blue));
@@ -96,9 +96,9 @@ class ColorTest extends TestCase
     public function can_convert_to_rgb(): void
     {
         $color = new Gray(50, 0.45);
-        $rgb = $color->toRgb();
+        $rgb = $color->toRGB();
 
-        $this->assertInstanceOf(Rgb::class, $rgb);
+        $this->assertInstanceOf(RGB::class, $rgb);
         $this->assertEquals(128, round($rgb->red));
         $this->assertEquals(128, round($rgb->green));
         $this->assertEquals(128, round($rgb->blue));
@@ -143,7 +143,7 @@ class ColorTest extends TestCase
      */
     public function can_convert_to_new_color(): void
     {
-        $rgb = new Rgb(25, 50, 75, 0.5);
+        $rgb = new RGB(25, 50, 75, 0.5);
 
         Color::registerColor('Gray', Gray::class);
 
@@ -158,7 +158,7 @@ class ColorTest extends TestCase
      */
     public function can_convert_to_new_color_from_any_other(): void
     {
-        $hsl = new Hsl(25, 50, 75, 0.5);
+        $hsl = new HSL(25, 50, 75, 0.5);
 
         Color::registerColor('Gray', Gray::class);
 
@@ -202,7 +202,7 @@ class ColorTest extends TestCase
         Color::registerColor('Gray', Gray::class);
         Color::registerColorSpec('gray\((\d{1,3}(\.\d{1})?)%\)', Gray::class);
 
-        Rgb::fromString('gray(50%)');
+        RGB::fromString('gray(50%)');
     }
 
     /**
@@ -227,10 +227,10 @@ class ColorTest extends TestCase
         Color::registerColor('Gray', Gray::class);
         Color::registerModifier('gray', Gray::class);
 
-        $rgb = Rgb::fromString('rgb(25, 50, 75)');
+        $rgb = RGB::fromString('rgb(25, 50, 75)');
         $newRgb = $rgb->gray('25');
 
-        $this->assertInstanceOf(Rgb::class, $newRgb);
+        $this->assertInstanceOf(RGB::class, $newRgb);
         $this->assertNotSame($rgb, $newRgb);
         $this->assertEquals('rgb(64,64,64)', (string) $newRgb);
     }
@@ -382,7 +382,7 @@ class Gray extends Color implements ColorInterface
         return "gray({$value}%,{$alpha})";
     }
 
-    public static function fromRgb(Rgb $rgb): ColorInterface
+    public static function fromRGB(RGB $rgb): ColorInterface
     {
         $average = ($rgb->red + $rgb->green + $rgb->blue) / 3;
         $gray = $average * 100 / 255;

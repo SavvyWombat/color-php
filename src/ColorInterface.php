@@ -10,7 +10,7 @@ interface ColorInterface
 
     public function __toString(): string;
 
-    public static function fromRgb(Rgb $rgb): ColorInterface;
+    public static function fromRGB(RGB $rgb): ColorInterface;
 
-    public function toRgb(): Rgb;
+    public function toRGB(): RGB;
 }

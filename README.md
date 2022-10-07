@@ -17,7 +17,7 @@ Main features:
 - immutable behaviour.
 
 ```php
-$rgb = new \SavvyWombat\Color\Rgb(50, 60, 70);
+$rgb = new \SavvyWombat\Color\RGB(50, 60, 70);
 echo (string) $rgb; // rgb(50,60,70)
 
 $hsl = $rgb->toHsl();
@@ -53,11 +53,11 @@ Color::fromString('#1234'); // Hex (with alpha): #11223344
 Color::fromString('#123456'); // Hex: #123456
 Color::fromString('#12345678'); // Hex: #12345678
 
-Color::fromString('rgb(10, 20, 30)'); // Rgb
-Color::fromString('rgba(10, 20, 30, 0.4)'); // Rgb
+Color::fromString('rgb(10, 20, 30)'); // RGB
+Color::fromString('rgba(10, 20, 30, 0.4)'); // RGB
 
-Color::fromString('hsl(10, 20%, 30%)'); // Hsl
-Color::fromString('hsl(10, 20%, 30%, 0.4)'); // Hsl
+Color::fromString('hsl(10, 20%, 30%)'); // HSL
+Color::fromString('hsl(10, 20%, 30%, 0.4)'); // HSL
 ```
 
 ## Converting a color
@@ -66,13 +66,13 @@ Colors can be converted to any other registered color type:
 
 ```php
 echo (string) Color::fromString('#123')->toHsl(); // hsl(210,50%,8.6%)
-echo (string) Color::fromString('#123')->toRgb(); // rgb(17,34,51)
+echo (string) Color::fromString('#123')->toRGB(); // rgb(17,34,51)
 
 echo (string) Color::fromString('rgb(25, 75, 125)')->toHex(); // #194B7D
 echo (string) Color::fromString('rgb(25, 75, 125)')->toHsl(); // hsl(210,66.7%,39.4%)
 
 echo (string) Color::fromString('hsl(135, 50%, 75%)')->toHex(); // #9FDFAF
-echo (string) Color::fromString('hsl(135, 50%, 75%)')->toRgb(); // rgb(159,223,175)
+echo (string) Color::fromString('hsl(135, 50%, 75%)')->toRGB(); // rgb(159,223,175)
 ```
 
 ## Modifying a color
@@ -115,8 +115,8 @@ The package allows you to create your own color types. These must extend `Color`
     public static function fromString(string $colorSpec): ColorInterface;
     public function __toString(): string;
 
-    public static function fromRgb(Rgb $rgb): ColorInterface;
-    public function toRgb(): Rgb;
+    public static function fromRGB(Rgb $rgb): ColorInterface;
+    public function toRGB(): Rgb;
 ```
 
 #### Registering color types
@@ -136,7 +136,7 @@ You can get a list of registered color types via `Color::registeredColors()`.
 
 ```php
 echo (string) Color::fromString('#204060')->toGray(); // gray(25%)
-echo (string) Color::fromString('gray(50%, 0.25)')->toRgb(); // #80808040
+echo (string) Color::fromString('gray(50%, 0.25)')->toRGB(); // #80808040
 ```
 
 The `fromString` accepts a color specification and tests it against the registered patterns and extracts the information.
@@ -189,12 +189,12 @@ public function __toString(): string
 }
 ```
 
-### `public static function fromRgb(Rgb $rgb): ColorInterface`
+### `public static function fromRGB(Rgb $rgb): ColorInterface`
 
 This method is used to allow conversion from one color type to any another that has been registered. This means that you only have to specify how to convert _to_ your new type _from_ an RGB color.
 
 ```php
-public static function fromRgb(Rgb $rgb): ColorInterface
+public static function fromRGB(Rgb $rgb): ColorInterface
 {
     $average = ($rgb->red + $rgb->green + $rgb->blue) / 3;
     $gray = $average * 100 / 255;
@@ -203,12 +203,12 @@ public static function fromRgb(Rgb $rgb): ColorInterface
 }
 ```
 
-### `public function toRgb(): Rgb`
+### `public function toRGB(): Rgb`
 
 The abstract `\SavvyWombat\Color\Color` already implements this method:
 
 ```php
-public function toRgb(): Rgb
+public function toRGB(): Rgb
 {
     return new Rgb($this->red, $this->green, $this->blue, $this->alpha);
 }

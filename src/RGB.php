@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace SavvyWombat\Color;
 
-class Rgb extends Color
+class RGB extends Color
 {
     /**
      * While RGB channels are technically integer values in the range of 0..255, we accept floats here to prevent
@@ -14,13 +14,13 @@ class Rgb extends Color
      */
     public function __construct(float $red, float $green, float $blue, float $alpha = 1.0)
     {
-        $this->red = self::validateRgbChannel('red', $red);
-        $this->green = self::validateRgbChannel('green', $green);
-        $this->blue = self::validateRgbChannel('blue', $blue);
+        $this->red = self::validateRGBChannel('red', $red);
+        $this->green = self::validateRGBChannel('green', $green);
+        $this->blue = self::validateRGBChannel('blue', $blue);
         $this->alpha = self::validateAlphaChannel($alpha);
     }
 
-    public static function validateRgbChannel($channel, $value)
+    public static function validateRGBChannel($channel, $value)
     {
         if ($value < 0 || $value > 255) {
             throw Exception::invalidChannel($channel, $value, 'must be a valid rgb value (0-255)');
@@ -34,13 +34,13 @@ class Rgb extends Color
         $channels = Color::extractChannels($colorSpec, self::class);
 
         if (empty($channels)) {
-            throw Exception::invalidRgbSpec($colorSpec);
+            throw Exception::invalidRGBSpec($colorSpec);
         }
         if ( ! isset($channels[4])) {
             $channels[4] = 1;
         }
 
-        return new Rgb((int) $channels[1], (int) $channels[2], (int) $channels[3], (float) $channels[4]);
+        return new RGB((int) $channels[1], (int) $channels[2], (int) $channels[3], (float) $channels[4]);
     }
 
     public function red($red): self
@@ -103,9 +103,9 @@ class Rgb extends Color
         return new self($this->red, $this->green, $this->blue, $alpha);
     }
 
-    public static function fromRgb(Rgb $rgb): ColorInterface
+    public static function fromRGB(RGB $rgb): ColorInterface
     {
-        return new Rgb(
+        return new RGB(
             $rgb->red,
             $rgb->green,
             $rgb->blue,
