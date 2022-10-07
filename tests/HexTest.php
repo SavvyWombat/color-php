@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace SavvyWombat\Color\Test;
+namespace Test;
 
 use PHPUnit\Framework\TestCase;
 use SavvyWombat\Color\Exception;
