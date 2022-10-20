@@ -1,6 +1,7 @@
 # SavvyWombat Color
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/savvywombat/color.svg)](https://packagist.org/packages/savvywombat/color)
+![Supported PHP Version](https://img.shields.io/packagist/php-v/savvywombat/color?style=flat-square)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE.md)
 [![Build](https://img.shields.io/github/workflow/status/SavvyWombat/color-php/Test?label=build)](https://github.com/SavvyWombat/color-php/actions)
 [![Code Coverage](https://codecov.io/gh/SavvyWombat/color-php/branch/main/graph/badge.svg)](https://codecov.io/gh/SavvyWombat/color-php)
