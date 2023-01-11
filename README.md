@@ -39,7 +39,7 @@ echo (string) $rgb->toHex(); // #323C46
 # Installation
 
 ```
-composer require savvywombat\color
+composer require savvywombat/color
 ```
 
 # Usage
